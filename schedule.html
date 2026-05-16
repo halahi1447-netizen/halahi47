@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Live Sessions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--deep:#2E2451;--purple:#4B3F72;--mid:#8B82B9;--gold:#F4B740;--gold-light:#FFD36A;--bg:#F5F6FA;--muted:#6E6E7E;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,63,114,.09)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--deep);text-decoration:none}
+    .nav-back{font-size:.85rem;color:var(--purple);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--deep)}
+
+    .page{padding:5.5rem 2rem 4rem;max-width:720px;margin:0 auto}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,#2E2451,#4B3F72);border-radius:28px;padding:2.2rem 2.5rem;margin-bottom:2rem;position:relative;overflow:hidden;animation:fadeUp .5s ease both}
+    .hblob{position:absolute;border-radius:50%;opacity:.12;filter:blur(45px);pointer-events:none}
+    .hb1{width:220px;height:220px;background:var(--gold);top:-70px;right:-50px}
+    .hb2{width:160px;height:160px;background:white;bottom:-40px;left:-30px}
+    .hero-inner{position:relative;z-index:1}
+    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(244,183,64,.18);border:1px solid rgba(244,183,64,.3);color:var(--gold-light);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:.28rem .9rem;border-radius:50px;margin-bottom:.8rem}
+    .hero-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;margin-bottom:.4rem}
+    .hero-sub{font-size:.9rem;color:rgba(255,255,255,.75);line-height:1.6}
+
+    /* TODAY BANNER */
+    .today-banner{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:20px;padding:1.4rem 1.8rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;animation:fadeUp .5s ease .1s both}
+    .tb-left{}
+    .tb-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.6);margin-bottom:.3rem}
+    .tb-day{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:900;color:white}
+    .tb-session{font-size:.88rem;color:rgba(255,255,255,.7);margin-top:.2rem}
+    .tb-join{display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:.88rem;padding:.65rem 1.5rem;border-radius:50px;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 14px rgba(244,183,64,.4);flex-shrink:0}
+    .tb-join:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(244,183,64,.55)}
+    .tb-join.disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.5);pointer-events:none;box-shadow:none}
+
+    /* WEEK GRID */
+    .week-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--deep);margin-bottom:1rem;animation:fadeUp .5s ease .15s both}
+    .week-grid{display:flex;flex-direction:column;gap:.8rem;animation:fadeUp .5s ease .2s both}
+
+    .day-card{background:white;border-radius:18px;padding:1.2rem 1.5rem;border:1px solid rgba(75,63,114,.08);display:flex;align-items:center;gap:1.2rem;transition:transform .25s,box-shadow .25s}
+    .day-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,36,81,.1)}
+    .day-card.today{border:2px solid var(--gold);background:rgba(244,183,64,.04)}
+    .day-card.no-session{opacity:.5}
+
+    .day-indicator{width:52px;height:52px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;background:rgba(75,63,114,.07)}
+    .day-card.today .day-indicator{background:var(--gold)}
+    .day-name{font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+    .day-card.today .day-name{color:var(--deep)}
+    .day-num{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:900;color:var(--deep)}
+    .day-card.today .day-num{color:var(--deep)}
+
+    .day-info{flex:1}
+    .day-session-name{font-size:.95rem;font-weight:600;color:var(--deep);margin-bottom:.2rem}
+    .day-time{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.4rem}
+    .day-time::before{content:'🕐';font-size:.75rem}
+    .day-no-session{font-size:.88rem;color:var(--muted);font-style:italic}
+
+    .day-badge{font-size:.68rem;font-weight:600;padding:.2rem .7rem;border-radius:50px;flex-shrink:0}
+    .badge-today{background:rgba(244,183,64,.2);color:#b7770d}
+    .badge-upcoming{background:rgba(75,63,114,.1);color:var(--purple)}
+    .badge-past{background:rgba(110,110,126,.1);color:var(--muted)}
+    .badge-none{display:none}
+
+    /* JOIN BTN small */
+    .join-small{display:inline-flex;align-items:center;gap:.4rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:.75rem;padding:.4rem 1rem;border-radius:50px;text-decoration:none;transition:transform .2s;flex-shrink:0;box-shadow:0 3px 10px rgba(244,183,64,.35)}
+    .join-small:hover{transform:translateY(-1px)}
+
+    /* EMPTY */
+    .empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+    .empty-icon{font-size:3.5rem;margin-bottom:1rem}
+
+    /* LOADING */
+    .loading-wrap{text-align:center;padding:3rem;color:var(--muted)}
+    .spinner{width:36px;height:36px;border:3px solid rgba(75,63,114,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:600px){nav{padding:.6rem 1.2rem}.page{padding:5rem 1rem 3rem}.today-banner{flex-direction:column;align-items:flex-start}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Hala Hi</a>
+  <a class="nav-back" href="dashboard.html">← Dashboard</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hblob hb1"></div>
+    <div class="hblob hb2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">📅 Schedule</div>
+      <h1 class="hero-title">Weekly Sessions</h1>
+      <p class="hero-sub">Join live speaking sessions with your teacher and fellow members. All sessions are on Zoom!</p>
+    </div>
+  </div>
+
+  <!-- TODAY BANNER -->
+  <div class="today-banner" id="today-banner">
+    <div class="tb-left">
+      <div class="tb-label">Today's Session</div>
+      <div class="tb-day" id="tb-day">Loading...</div>
+      <div class="tb-session" id="tb-session"></div>
+    </div>
+    <a class="tb-join disabled" id="tb-join" href="#">🎥 Join Now</a>
+  </div>
+
+  <!-- WEEK -->
+  <p class="week-title">This Week's Schedule</p>
+  <div id="week-container">
+    <div class="loading-wrap"><div class="spinner"></div><p>Loading schedule...</p></div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const today = new Date();
+  const todayName = DAYS[today.getDay()];
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    await loadSchedule();
+  });
+
+  async function loadSchedule() {
+    try {
+      // Load schedule + zoom link in parallel
+      const [scheduleSnap, zoomSnap] = await Promise.all([
+        getDocs(collection(db, 'schedule')),
+        getDoc(doc(db, 'settings', 'zoom'))
+      ]);
+
+      const sessions = scheduleSnap.docs.map(d => ({ id: d.id, ...d.data() }));
+      const zoomLink = zoomSnap.exists() ? zoomSnap.data().link : null;
+
+      // Sort by day order
+      sessions.sort((a, b) => DAYS.indexOf(a.day) - DAYS.indexOf(b.day));
+
+      // Today's session
+      const todaySession = sessions.find(s => s.day === todayName);
+
+      // Update today banner
+      const tbDay = document.getElementById('tb-day');
+      const tbSession = document.getElementById('tb-session');
+      const tbJoin = document.getElementById('tb-join');
+
+      if (todaySession) {
+        tbDay.textContent = `${todayName} at ${todaySession.time}`;
+        tbSession.textContent = todaySession.topic;
+        if (zoomLink) {
+          tbJoin.href = zoomLink;
+          tbJoin.classList.remove('disabled');
+          tbJoin.target = '_blank';
+        }
+      } else {
+        tbDay.textContent = 'No session today';
+        tbSession.textContent = 'Enjoy your day off! 🌟';
+      }
+
+      // Week grid
+      const container = document.getElementById('week-container');
+
+      if (sessions.length === 0) {
+        container.innerHTML = '<div class="empty-state"><div class="empty-icon">📅</div><p>No sessions scheduled yet. Check back soon!</p></div>';
+        return;
+      }
+
+      // Build full week (all 7 days)
+      const weekDays = [];
+      for (let i = 0; i < 7; i++) {
+        const d = new Date(today);
+        d.setDate(today.getDate() - today.getDay() + i);
+        weekDays.push({
+          name: DAYS[i],
+          date: d,
+          session: sessions.find(s => s.day === DAYS[i]) || null
+        });
+      }
+
+      container.innerHTML = '<div class="week-grid">' + weekDays.map(wd => {
+        const isToday = wd.name === todayName;
+        const isPast = wd.date < today && !isToday;
+        const dateNum = wd.date.getDate();
+        const monthShort = wd.date.toLocaleDateString('en-GB', { month: 'short' });
+
+        let badge = '';
+        if (isToday) badge = '<span class="day-badge badge-today">Today</span>';
+        else if (!isPast && wd.session) badge = '<span class="day-badge badge-upcoming">Upcoming</span>';
+        else if (isPast && wd.session) badge = '<span class="day-badge badge-past">Past</span>';
+
+        let joinBtn = '';
+        if (isToday && wd.session && zoomLink) {
+          joinBtn = `<a class="join-small" href="${zoomLink}" target="_blank">Join 🎥</a>`;
+        }
+
+        return `
+          <div class="day-card ${isToday ? 'today' : ''} ${!wd.session ? 'no-session' : ''}">
+            <div class="day-indicator">
+              <div class="day-name">${wd.name.substring(0,3)}</div>
+              <div class="day-num">${dateNum}</div>
+            </div>
+            <div class="day-info">
+              ${wd.session
+                ? `<div class="day-session-name">${wd.session.topic}</div>
+                   <div class="day-time">${wd.session.time}</div>`
+                : `<div class="day-no-session">No session</div>`
+              }
+            </div>
+            ${badge}
+            ${joinBtn}
+          </div>
+        `;
+      }).join('') + '</div>';
+
+    } catch(e) {
+      console.error(e);
+      document.getElementById('week-container').innerHTML = '<div class="empty-state"><div class="empty-icon">😔</div><p>Could not load schedule.</p></div>';
+    }
+  }
+</script>
+
+</body>
+</html>
