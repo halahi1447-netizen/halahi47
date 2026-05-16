@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Member Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #2E2451;
+      --purple: #4B3F72;
+      --mid: #8B82B9;
+      --gold: #F4B740;
+      --gold-light: #FFD36A;
+      --white: #FFFFFF;
+      --bg: #F5F6FA;
+      --muted: #6E6E7E;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--deep);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 4rem;
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(75,63,114,0.09);
+    }
+    .nav-logo { display: flex; align-items: center; gap: .5rem; text-decoration: none; }
+    .nav-logo span { font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 700; color: var(--deep); }
+    .nav-back {
+      color: var(--purple); font-size: .9rem; font-weight: 500;
+      text-decoration: none; display: flex; align-items: center; gap: .4rem;
+      transition: color .2s;
+    }
+    .nav-back:hover { color: var(--deep); }
+
+    .login-page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    .brand-panel {
+      background: linear-gradient(145deg, #2E2451 0%, #4B3F72 55%, #3a2f60 100%);
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      padding: 7rem 3.5rem 4rem;
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .bp-blob { position: absolute; border-radius: 50%; opacity: .12; filter: blur(55px); pointer-events: none; }
+    .bp-b1 { width: 380px; height: 380px; background: var(--gold); top: -120px; right: -100px; }
+    .bp-b2 { width: 280px; height: 280px; background: var(--mid); bottom: -80px; left: -60px; }
+    .bp-inner { position: relative; z-index: 1; max-width: 400px; }
+    .bp-logo-wrap { width: 120px; height: 120px; margin: 0 auto 2rem; animation: float 4s ease-in-out infinite; filter: drop-shadow(0 8px 28px rgba(244,183,64,.4)); }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    .bp-tag { display: inline-block; background: rgba(244,183,64,.18); border: 1px solid rgba(244,183,64,.35); color: var(--gold-light); font-size: .75rem; letter-spacing: .13em; text-transform: uppercase; padding: .3rem 1rem; border-radius: 50px; margin-bottom: 1.4rem; }
+    .bp-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 900; color: var(--white); line-height: 1.2; margin-bottom: 1rem; }
+    .bp-title em { color: var(--gold-light); font-style: italic; }
+    .bp-desc { font-size: 1rem; color: rgba(255,255,255,.7); line-height: 1.7; margin-bottom: 2rem; }
+    .bp-perks { list-style: none; display: flex; flex-direction: column; gap: .75rem; text-align: left; }
+    .bp-perks li { display: flex; align-items: center; gap: .7rem; font-size: .9rem; color: rgba(255,255,255,.85); }
+    .bp-perks li::before { content: ''; width: 7px; height: 7px; border-radius: 50%; background: var(--gold); flex-shrink: 0; box-shadow: 0 0 0 3px rgba(244,183,64,.25); }
+
+    .form-panel { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 7rem 3.5rem 4rem; background: var(--bg); }
+    .form-box { width: 100%; max-width: 420px; }
+    .form-eyebrow { font-size: .75rem; letter-spacing: .13em; text-transform: uppercase; color: var(--purple); font-weight: 600; margin-bottom: .6rem; }
+    .form-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--deep); line-height: 1.2; margin-bottom: .5rem; }
+    .form-sub { font-size: .9rem; color: var(--muted); line-height: 1.6; margin-bottom: 2.2rem; }
+    .form-sub a { color: var(--purple); text-decoration: none; font-weight: 500; }
+    .form-sub a:hover { text-decoration: underline; }
+
+    /* TABS */
+    .tabs { display: flex; background: rgba(75,63,114,.07); border-radius: 12px; padding: 4px; margin-bottom: 1.8rem; }
+    .tab-btn { flex: 1; padding: .6rem; border: none; background: none; border-radius: 9px; font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 500; color: var(--muted); cursor: pointer; transition: all .2s; }
+    .tab-btn.active { background: var(--white); color: var(--deep); font-weight: 600; box-shadow: 0 2px 8px rgba(46,36,81,.1); }
+
+    .view { display: none; animation: fadeIn .3s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    .input-group { margin-bottom: 1.2rem; }
+    .input-label { display: block; font-size: .82rem; font-weight: 600; color: var(--deep); margin-bottom: .45rem; }
+    .input-field {
+      width: 100%; padding: .85rem 1rem;
+      border: 2px solid rgba(75,63,114,.15);
+      border-radius: 14px; background: var(--white);
+      font-size: .95rem; font-family: 'DM Sans', sans-serif; color: var(--deep);
+      outline: none; transition: border-color .2s, box-shadow .2s;
+    }
+    .input-field:focus { border-color: var(--purple); box-shadow: 0 0 0 4px rgba(75,63,114,.08); }
+    .input-field::placeholder { color: rgba(110,110,126,.45); }
+
+    .password-wrap { position: relative; }
+    .password-wrap .input-field { padding-right: 3rem; }
+    .toggle-pw { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--muted); font-size: .85rem; padding: 0; }
+
+    .forgot-link { display: block; text-align: right; font-size: .8rem; color: var(--purple); text-decoration: none; margin-top: .3rem; font-weight: 500; }
+    .forgot-link:hover { text-decoration: underline; }
+
+    .btn-primary {
+      width: 100%; background: var(--gold); color: var(--deep);
+      border: none; cursor: pointer; font-weight: 700; font-size: 1rem;
+      font-family: 'DM Sans', sans-serif; padding: .9rem 2rem; border-radius: 50px;
+      box-shadow: 0 6px 20px rgba(244,183,64,.4);
+      transition: transform .25s, box-shadow .25s, opacity .2s;
+      display: flex; align-items: center; justify-content: center; gap: .5rem;
+      margin-top: 1.4rem;
+    }
+    .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(244,183,64,.55); }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+    .btn-primary .spinner { width: 18px; height: 18px; border: 2px solid rgba(46,36,81,.3); border-top-color: var(--deep); border-radius: 50%; animation: spin .7s linear infinite; display: none; }
+    .btn-primary.loading .spinner { display: block; }
+    .btn-primary.loading .btn-text { display: none; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg { display: none; background: rgba(220,60,60,.08); border: 1px solid rgba(220,60,60,.2); color: #c03030; border-radius: 10px; padding: .65rem 1rem; font-size: .85rem; margin-bottom: 1rem; }
+    .error-msg.show { display: block; animation: fadeIn .2s ease; }
+
+    .success-msg { display: none; background: rgba(46,204,113,.08); border: 1px solid rgba(46,204,113,.25); color: #1a8a4a; border-radius: 10px; padding: .65rem 1rem; font-size: .85rem; margin-bottom: 1rem; }
+    .success-msg.show { display: block; animation: fadeIn .2s ease; }
+
+    /* SUCCESS STATE */
+    .success-box { text-align: center; padding: 1rem 0; display: none; }
+    .success-box.show { display: block; animation: fadeIn .4s ease; }
+    .success-icon { width: 72px; height: 72px; background: linear-gradient(135deg, var(--gold), var(--gold-light)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; font-size: 2rem; box-shadow: 0 8px 24px rgba(244,183,64,.4); animation: popIn .4s cubic-bezier(.18,.89,.32,1.28); }
+    @keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .success-title { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 700; color: var(--deep); margin-bottom: .5rem; }
+    .success-desc { font-size: .95rem; color: var(--muted); line-height: 1.6; }
+
+    footer { text-align: center; padding: 2rem; font-size: .82rem; color: var(--muted); border-top: 1px solid rgba(75,63,114,.08); }
+    footer span { color: var(--deep); font-weight: 600; }
+
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      .login-page { grid-template-columns: 1fr; }
+      .brand-panel { display: none; }
+      .form-panel { padding: 6rem 1.5rem 3rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html"><span>Hala Hi</span></a>
+  <a href="index.html" class="nav-back">← Back to Home</a>
+</nav>
+
+<div class="login-page">
+
+  <!-- LEFT: Brand Panel -->
+  <div class="brand-panel">
+    <div class="bp-blob bp-b1"></div>
+    <div class="bp-blob bp-b2"></div>
+    <div class="bp-inner">
+      <div class="bp-logo-wrap">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="60" cy="60" r="58" fill="rgba(244,183,64,0.15)" stroke="rgba(244,183,64,0.4)" stroke-width="1.5"/>
+          <text x="60" y="78" text-anchor="middle" font-family="Playfair Display, serif" font-size="42" font-weight="900" fill="#F4B740">H</text>
+        </svg>
+      </div>
+      <span class="bp-tag">Members Area</span>
+      <h2 class="bp-title">Welcome back to <em>Hala Hi</em></h2>
+      <p class="bp-desc">Your speaking club is waiting. Log in to join today's live session.</p>
+      <ul class="bp-perks">
+        <li>Live speaking sessions — up to 4 hours daily</li>
+        <li>Daily smart flash cards</li>
+        <li>Discussion board & community</li>
+        <li>Supportive teachers in small groups</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- RIGHT: Form Panel -->
+  <div class="form-panel">
+    <div class="form-box">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('login')">Login</button>
+        <button class="tab-btn" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- ═══ LOGIN VIEW ═══ -->
+      <div class="view active" id="view-login">
+        <p class="form-eyebrow">Member Login</p>
+        <h1 class="form-title">Welcome back!</h1>
+        <p class="form-sub">Don't have an account? <a href="pricing.html">Join Hala Hi →</a></p>
+
+        <div class="error-msg" id="login-err"></div>
+
+        <div class="input-group">
+          <label class="input-label" for="login-email">Email Address</label>
+          <input type="email" id="login-email" class="input-field" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="login-password">Password</label>
+          <div class="password-wrap">
+            <input type="password" id="login-password" class="input-field" placeholder="••••••••" autocomplete="current-password"/>
+            <button class="toggle-pw" onclick="togglePw('login-password', this)" type="button">👁</button>
+          </div>
+          <a href="#" class="forgot-link" onclick="forgotPassword(event)">Forgot password?</a>
+        </div>
+
+        <div class="success-msg" id="reset-success">Password reset email sent! Check your inbox.</div>
+
+        <button class="btn-primary" id="btn-login" onclick="loginUser()">
+          <span class="btn-text">Login →</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
+
+      <!-- ═══ REGISTER VIEW ═══ -->
+      <div class="view" id="view-register">
+        <p class="form-eyebrow">Set Up Account</p>
+        <h1 class="form-title">Create your password</h1>
+        <p class="form-sub">Already paid on Salla? Enter your email and set a password to access your account.</p>
+
+        <div class="error-msg" id="reg-err"></div>
+
+        <div class="input-group">
+          <label class="input-label" for="reg-email">Email Address (used on Salla)</label>
+          <input type="email" id="reg-email" class="input-field" placeholder="you@example.com" autocomplete="email"/>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="reg-password">Choose a Password</label>
+          <div class="password-wrap">
+            <input type="password" id="reg-password" class="input-field" placeholder="Min. 8 characters" autocomplete="new-password"/>
+            <button class="toggle-pw" onclick="togglePw('reg-password', this)" type="button">👁</button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label class="input-label" for="reg-password2">Confirm Password</label>
+          <div class="password-wrap">
+            <input type="password" id="reg-password2" class="input-field" placeholder="••••••••" autocomplete="new-password"/>
+            <button class="toggle-pw" onclick="togglePw('reg-password2', this)" type="button">👁</button>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-register" onclick="registerUser()">
+          <span class="btn-text">Create Account →</span>
+          <div class="spinner"></div>
+        </button>
+      </div>
+
+      <!-- SUCCESS STATE -->
+      <div class="success-box" id="success-box">
+        <div class="success-icon">✨</div>
+        <h2 class="success-title">Welcome back!</h2>
+        <p class="success-desc">You're verified. Redirecting you to your dashboard…</p>
+        <div style="margin-top:2rem">
+          <div style="height:4px;background:rgba(75,63,114,.1);border-radius:50px;overflow:hidden">
+            <div id="progress-bar" style="height:100%;width:0;background:var(--gold);border-radius:50px;transition:width 2.5s ease"></div>
+          </div>
+          <p style="font-size:.8rem;color:var(--muted);margin-top:.6rem;text-align:center">Redirecting in 3 seconds…</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p>© 2025 <span>Hala Hi</span> · Speak · Connect · Grow · All rights reserved</p>
+</footer>
+
+<!-- ═══ FIREBASE ═══ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASLKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2",
+    measurementId: "G-QGLJ09GK6Y"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ── إذا مسجل دخول يروح للداشبورد ──
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      window.location.href = 'dashboard.html';
+    }
+  });
+
+  // ── تسجيل الدخول ──
+  window.loginUser = async function() {
+    const email = document.getElementById('login-email').value.trim();
+    const password = document.getElementById('login-password').value;
+    const errEl = document.getElementById('login-err');
+    const btn = document.getElementById('btn-login');
+
+    errEl.classList.remove('show');
+
+    if (!email || !password) {
+      errEl.textContent = 'Please enter your email and password.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      showSuccess();
+    } catch (err) {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        errEl.textContent = 'Incorrect email or password. Please try again.';
+      } else if (err.code === 'auth/too-many-requests') {
+        errEl.textContent = 'Too many attempts. Please try again later.';
+      } else {
+        errEl.textContent = 'Something went wrong. Please try again.';
+      }
+      errEl.classList.add('show');
+    }
+  };
+
+  // ── إنشاء حساب ──
+  window.registerUser = async function() {
+    const email = document.getElementById('reg-email').value.trim();
+    const password = document.getElementById('reg-password').value;
+    const password2 = document.getElementById('reg-password2').value;
+    const errEl = document.getElementById('reg-err');
+    const btn = document.getElementById('btn-register');
+
+    errEl.classList.remove('show');
+
+    if (!email || !password || !password2) {
+      errEl.textContent = 'Please fill in all fields.';
+      errEl.classList.add('show');
+      return;
+    }
+    if (password !== password2) {
+      errEl.textContent = 'Passwords do not match.';
+      errEl.classList.add('show');
+      return;
+    }
+    if (password.length < 8) {
+      errEl.textContent = 'Password must be at least 8 characters.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      // نتحقق إن الإيميل موجود في Firestore (عضو مسجل من سلة)
+      const memberRef = doc(db, 'members', email.toLowerCase());
+      const memberSnap = await getDoc(memberRef);
+
+      if (!memberSnap.exists()) {
+        errEl.textContent = 'This email is not registered as a member. Have you joined Hala Hi on Salla?';
+        errEl.classList.add('show');
+        btn.classList.remove('loading');
+        btn.disabled = false;
+        return;
+      }
+
+      await createUserWithEmailAndPassword(auth, email, password);
+      showSuccess();
+    } catch (err) {
+      btn.classList.remove('loading');
+      btn.disabled = false;
+      if (err.code === 'auth/email-already-in-use') {
+        errEl.textContent = 'This email already has an account. Please login instead.';
+      } else {
+        errEl.textContent = 'Something went wrong. Please try again.';
+      }
+      errEl.classList.add('show');
+    }
+  };
+
+  // ── نسيت كلمة المرور ──
+  window.forgotPassword = async function(e) {
+    e.preventDefault();
+    const email = document.getElementById('login-email').value.trim();
+    const errEl = document.getElementById('login-err');
+    const successEl = document.getElementById('reset-success');
+
+    if (!email) {
+      errEl.textContent = 'Please enter your email address first.';
+      errEl.classList.add('show');
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      errEl.classList.remove('show');
+      successEl.classList.add('show');
+    } catch (err) {
+      errEl.textContent = 'Could not send reset email. Please check your email address.';
+      errEl.classList.add('show');
+    }
+  };
+
+  function showSuccess() {
+    document.querySelectorAll('.view').forEach(v => v.style.display = 'none');
+    document.querySelector('.tabs').style.display = 'none';
+    const box = document.getElementById('success-box');
+    box.classList.add('show');
+    setTimeout(() => { document.getElementById('progress-bar').style.width = '100%'; }, 100);
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 3000);
+  }
+</script>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelector(`.tab-btn[onclick="switchTab('${tab}')"]`).classList.add('active');
+    document.getElementById(`view-${tab}`).classList.add('active');
+    document.getElementById('login-err').classList.remove('show');
+    document.getElementById('reg-err').classList.remove('show');
+    document.getElementById('reset-success').classList.remove('show');
+  }
+
+  function togglePw(id, btn) {
+    const input = document.getElementById(id);
+    if (input.type === 'password') { input.type = 'text'; btn.textContent = '🙈'; }
+    else { input.type = 'password'; btn.textContent = '👁'; }
+  }
+
+  // Enter key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const activeView = document.querySelector('.view.active');
+      if (activeView?.id === 'view-login') window.loginUser();
+      else if (activeView?.id === 'view-register') window.registerUser();
+    }
+  });
+</script>
+
+</body>
+</html>
