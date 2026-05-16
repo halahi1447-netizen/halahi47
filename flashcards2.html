@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Flash Cards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--deep:#2E2451;--purple:#4B3F72;--mid:#8B82B9;--gold:#F4B740;--gold-light:#FFD36A;--bg:#F5F6FA;--muted:#6E6E7E;--card-bg:#FFFFFF;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,63,114,.09)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--deep);text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.2rem}
+    .nav-back{font-size:.85rem;color:var(--purple);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--deep)}
+
+    .page{padding:5.5rem 2rem 4rem;max-width:680px;margin:0 auto}
+
+    .screen{display:none}
+    .screen.active{display:block;animation:fadeUp .4s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+    @keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+
+    /* WELCOME */
+    .welcome-hero{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:28px;padding:3rem 2.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1.5rem}
+    .wh-blob{position:absolute;border-radius:50%;opacity:.1;filter:blur(40px);pointer-events:none}
+    .wh-b1{width:250px;height:250px;background:var(--gold);top:-60px;right:-60px}
+    .wh-b2{width:180px;height:180px;background:var(--mid);bottom:-50px;left:-30px}
+    .welcome-inner{position:relative;z-index:1}
+    .welcome-icon{font-size:3.5rem;animation:floatIcon 3s ease-in-out infinite;margin-bottom:1rem}
+    .welcome-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:.5rem}
+    .welcome-sub{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:2rem}
+    .welcome-stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem}
+    .ws-item{text-align:center}
+    .ws-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--gold-light)}
+    .ws-label{font-size:.72rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em}
+    .btn-start{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:1rem;padding:.9rem 2.5rem;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(244,183,64,.4);transition:transform .2s,box-shadow .2s}
+    .btn-start:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(244,183,64,.55)}
+    .btn-start:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+    /* SESSION INFO */
+    .session-info{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem}
+    .si-card{background:white;border-radius:16px;padding:1.2rem;text-align:center;border:1px solid rgba(75,63,114,.08)}
+    .si-num{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--deep)}
+    .si-label{font-size:.72rem;color:var(--muted);margin-top:.2rem}
+
+    /* PROGRESS BAR */
+    .progress-wrap{margin-bottom:1.5rem}
+    .progress-top{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-bottom:.4rem}
+    .progress-bar{height:8px;background:rgba(75,63,114,.1);border-radius:50px;overflow:hidden}
+    .progress-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-light));border-radius:50px;transition:width .4s ease}
+
+    /* FLASHCARD */
+    .card-wrap{perspective:1000px;margin-bottom:1.5rem}
+    .card-inner{position:relative;width:100%;min-height:320px;transform-style:preserve-3d;transition:transform .6s cubic-bezier(.25,.46,.45,.94);cursor:pointer}
+    .card-inner.flipped{transform:rotateY(180deg)}
+    .card-face{position:absolute;width:100%;min-height:320px;border-radius:28px;padding:2.5rem;display:flex;flex-direction:column;align-items:center;justify-content:center;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+    .card-front{background:linear-gradient(145deg,var(--deep),var(--purple));box-shadow:0 20px 60px rgba(46,36,81,.3)}
+    .card-back{background:white;border:2px solid rgba(75,63,114,.1);box-shadow:0 20px 60px rgba(46,36,81,.15);transform:rotateY(180deg)}
+    .card-category{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:1rem;background:rgba(255,255,255,.1);padding:.3rem .9rem;border-radius:50px}
+    .card-word{font-family:'Playfair Display',serif;font-size:2.8rem;font-weight:900;color:white;text-align:center;margin-bottom:.8rem}
+    .card-tap{font-size:.8rem;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:.4rem}
+    .card-tap-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:pulse 1.5s ease-in-out infinite}
+
+    .card-back-img{width:100%;height:160px;object-fit:cover;border-radius:16px;margin-bottom:1.2rem;background:var(--bg)}
+    .card-back-img-placeholder{width:100%;height:160px;border-radius:16px;background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:3rem;margin-bottom:1.2rem}
+    .card-back-word{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--deep);margin-bottom:.3rem;text-align:center}
+    .card-back-cat{font-size:.72rem;background:rgba(75,63,114,.1);color:var(--purple);padding:.2rem .7rem;border-radius:50px;font-weight:600;margin-bottom:.8rem}
+    .card-back-example{font-size:.88rem;color:var(--muted);font-style:italic;text-align:center;line-height:1.6;margin-bottom:.5rem}
+    .card-back-translation{font-size:.82rem;color:var(--mid);text-align:center;font-weight:500}
+
+    /* RATING BUTTONS */
+    .rating-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-bottom:1.5rem}
+    .rating-btn{padding:.9rem;border-radius:16px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.88rem;transition:transform .2s,box-shadow .2s;display:flex;flex-direction:column;align-items:center;gap:.3rem}
+    .rating-btn:hover{transform:translateY(-3px)}
+    .btn-hard{background:rgba(231,76,60,.1);color:#c0392b;border:2px solid rgba(231,76,60,.2)}
+    .btn-hard:hover{background:rgba(231,76,60,.18);box-shadow:0 8px 20px rgba(231,76,60,.2)}
+    .btn-ok{background:rgba(243,156,18,.1);color:#b7770d;border:2px solid rgba(243,156,18,.2)}
+    .btn-ok:hover{background:rgba(243,156,18,.18);box-shadow:0 8px 20px rgba(243,156,18,.2)}
+    .btn-easy{background:rgba(46,204,113,.1);color:#1a8a4a;border:2px solid rgba(46,204,113,.2)}
+    .btn-easy:hover{background:rgba(46,204,113,.18);box-shadow:0 8px 20px rgba(46,204,113,.2)}
+    .rating-emoji{font-size:1.4rem}
+    .rating-label{font-size:.75rem}
+    .rating-sub{font-size:.68rem;opacity:.7}
+
+    /* DONE SCREEN */
+    .done-hero{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:28px;padding:3rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1.5rem}
+    .done-icon{font-size:4rem;animation:popIn .5s cubic-bezier(.18,.89,.32,1.28);margin-bottom:1rem}
+    .done-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:.5rem}
+    .done-sub{font-size:.95rem;color:rgba(255,255,255,.7);margin-bottom:2rem}
+    .done-stats{display:flex;justify-content:center;gap:2.5rem}
+    .ds-item{text-align:center}
+    .ds-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-light)}
+    .ds-label{font-size:.72rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em}
+    .done-actions{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem}
+    .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-weight:600;font-size:.9rem;padding:.75rem 1.8rem;border-radius:50px;text-decoration:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+    .btn-secondary:hover{background:rgba(255,255,255,.22)}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+    .empty-icon{font-size:4rem;margin-bottom:1rem}
+
+    /* LOADING */
+    .loading-wrap{text-align:center;padding:4rem;color:var(--muted)}
+    .spinner{width:40px;height:40px;border:3px solid rgba(75,63,114,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Hala Hi</a>
+  <div class="nav-right">
+    <a class="nav-back" href="dashboard.html">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- LOADING -->
+  <div class="screen active" id="screen-loading">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <p>Loading your flashcards...</p>
+    </div>
+  </div>
+
+  <!-- WELCOME SCREEN -->
+  <div class="screen" id="screen-welcome">
+    <div class="welcome-hero">
+      <div class="wh-blob wh-b1"></div>
+      <div class="wh-blob wh-b2"></div>
+      <div class="welcome-inner">
+        <div class="welcome-icon">🃏</div>
+        <h1 class="welcome-title">Flash Cards</h1>
+        <p class="welcome-sub">Smart spaced repetition — the app remembers which words you find hard and shows them more often!</p>
+        <div class="welcome-stats">
+          <div class="ws-item">
+            <div class="ws-num" id="ws-due">—</div>
+            <div class="ws-label">Due Today</div>
+          </div>
+          <div class="ws-item">
+            <div class="ws-num" id="ws-total">—</div>
+            <div class="ws-label">Total Words</div>
+          </div>
+          <div class="ws-item">
+            <div class="ws-num" id="ws-mastered">—</div>
+            <div class="ws-label">Mastered</div>
+          </div>
+        </div>
+        <button class="btn-start" id="btn-start" onclick="startSession()">Start Session 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD SCREEN -->
+  <div class="screen" id="screen-card">
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span id="progress-text">Card 1 of 20</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+
+    <div class="session-info">
+      <div class="si-card"><div class="si-num" id="si-easy">0</div><div class="si-label">Easy ✅</div></div>
+      <div class="si-card"><div class="si-num" id="si-ok">0</div><div class="si-label">OK 🤔</div></div>
+      <div class="si-card"><div class="si-num" id="si-hard">0</div><div class="si-label">Hard ❌</div></div>
+    </div>
+
+    <div class="card-wrap" id="card-wrap" onclick="flipCard()">
+      <div class="card-inner" id="card-inner">
+        <!-- FRONT -->
+        <div class="card-face card-front">
+          <div class="card-category" id="card-category">noun</div>
+          <div class="card-word" id="card-word">word</div>
+          <div class="card-tap"><span class="card-tap-dot"></span> Tap to reveal</div>
+        </div>
+        <!-- BACK -->
+        <div class="card-face card-back">
+          <div id="card-img-wrap"></div>
+          <div class="card-back-word" id="card-back-word">word</div>
+          <div class="card-back-cat" id="card-back-cat">noun</div>
+          <div class="card-back-example" id="card-back-example">"Example sentence here."</div>
+          <div class="card-back-translation" id="card-back-translation">الترجمة</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-wrap" id="rating-wrap" style="display:none">
+      <button class="rating-btn btn-hard" onclick="rateCard('hard')">
+        <span class="rating-emoji">😓</span>
+        <span class="rating-label">Hard</span>
+        <span class="rating-sub">Show again soon</span>
+      </button>
+      <button class="rating-btn btn-ok" onclick="rateCard('ok')">
+        <span class="rating-emoji">🤔</span>
+        <span class="rating-label">OK</span>
+        <span class="rating-sub">Show in 3 days</span>
+      </button>
+      <button class="rating-btn btn-easy" onclick="rateCard('easy')">
+        <span class="rating-emoji">😊</span>
+        <span class="rating-label">Easy</span>
+        <span class="rating-sub">Show in 7 days</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- DONE SCREEN -->
+  <div class="screen" id="screen-done">
+    <div class="done-hero">
+      <div class="wh-blob wh-b1"></div>
+      <div class="wh-blob wh-b2"></div>
+      <div class="welcome-inner">
+        <div class="done-icon">🎉</div>
+        <h2 class="done-title">Session Complete!</h2>
+        <p class="done-sub">Great work! You're building real vocabulary skills.</p>
+        <div class="done-stats">
+          <div class="ds-item"><div class="ds-num" id="done-easy">0</div><div class="ds-label">Easy</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-ok">0</div><div class="ds-label">OK</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-hard">0</div><div class="ds-label">Hard</div></div>
+        </div>
+        <div class="done-actions">
+          <button class="btn-secondary" onclick="restartSession()">🔄 Review Hard Words</button>
+          <a class="btn-secondary" href="dashboard.html">🏠 Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="screen" id="screen-empty">
+    <div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h2 style="font-family:'Playfair Display',serif;color:var(--deep);margin-bottom:.5rem">No flashcards yet!</h2>
+      <p>Your teacher hasn't uploaded any words yet. Check back soon!</p>
+      <a href="dashboard.html" style="display:inline-block;margin-top:1.5rem;color:var(--purple);font-weight:600;text-decoration:none">← Back to Dashboard</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let allCards = [];
+  let dueCards = [];
+  let currentIndex = 0;
+  let sessionStats = { easy: 0, ok: 0, hard: 0 };
+  let isFlipped = false;
+  let currentUser = null;
+  let userProgress = {};
+
+  // ── Auth ──
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+    await loadCards();
+  });
+
+  // ── Load cards from Firestore ──
+  async function loadCards() {
+    try {
+      const snap = await getDocs(collection(db, 'flashcards'));
+      allCards = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(c => c.published);
+
+      if (allCards.length === 0) { showScreen('empty'); return; }
+
+      // Load user progress
+      const progressSnap = await getDoc(doc(db, 'members', currentUser.email.toLowerCase(), 'flashcardProgress', 'data'));
+      userProgress = progressSnap.exists() ? progressSnap.data() : {};
+
+      // Calculate due cards (spaced repetition)
+      const now = Date.now();
+      dueCards = allCards.filter(card => {
+        const prog = userProgress[card.id];
+        if (!prog) return true; // Never seen = due
+        if (!prog.nextReview) return true;
+        return now >= prog.nextReview;
+      });
+
+      // Shuffle due cards
+      dueCards = dueCards.sort(() => Math.random() - 0.5);
+
+      // Stats
+      const mastered = allCards.filter(c => userProgress[c.id]?.level >= 3).length;
+      document.getElementById('ws-due').textContent = dueCards.length;
+      document.getElementById('ws-total').textContent = allCards.length;
+      document.getElementById('ws-mastered').textContent = mastered;
+
+      if (dueCards.length === 0) {
+        document.getElementById('btn-start').textContent = '✅ All caught up! Review anyway';
+        dueCards = [...allCards].sort(() => Math.random() - 0.5).slice(0, 20);
+      }
+
+      showScreen('welcome');
+    } catch(e) {
+      console.error(e);
+      showScreen('empty');
+    }
+  }
+
+  // ── Start session ──
+  window.startSession = function() {
+    if (dueCards.length === 0) return;
+    currentIndex = 0;
+    sessionStats = { easy: 0, ok: 0, hard: 0 };
+    showScreen('card');
+    showCard();
+  };
+
+  // ── Show card ──
+  function showCard() {
+    if (currentIndex >= dueCards.length) { endSession(); return; }
+
+    const card = dueCards[currentIndex];
+    isFlipped = false;
+    document.getElementById('card-inner').classList.remove('flipped');
+    document.getElementById('rating-wrap').style.display = 'none';
+
+    // Front
+    document.getElementById('card-category').textContent = card.category || 'word';
+    document.getElementById('card-word').textContent = card.word;
+
+    // Back
+    document.getElementById('card-back-word').textContent = card.word;
+    document.getElementById('card-back-cat').textContent = card.category || 'word';
+    document.getElementById('card-back-example').textContent = card.example ? `"${card.example}"` : '';
+    document.getElementById('card-back-translation').textContent = card.translation || '';
+
+    // Image
+    const imgWrap = document.getElementById('card-img-wrap');
+    if (card.imgUrl) {
+      imgWrap.innerHTML = `<img class="card-back-img" src="${card.imgUrl}" alt="${card.word}" onerror="this.parentElement.innerHTML='<div class=card-back-img-placeholder>🖼️</div>'"/>`;
+    } else {
+      imgWrap.innerHTML = `<div class="card-back-img-placeholder">🖼️</div>`;
+    }
+
+    // Progress
+    const pct = Math.round((currentIndex / dueCards.length) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = `Card ${currentIndex + 1} of ${dueCards.length}`;
+    document.getElementById('progress-pct').textContent = pct + '%';
+
+    // Session stats
+    document.getElementById('si-easy').textContent = sessionStats.easy;
+    document.getElementById('si-ok').textContent = sessionStats.ok;
+    document.getElementById('si-hard').textContent = sessionStats.hard;
+  }
+
+  // ── Flip card ──
+  window.flipCard = function() {
+    if (isFlipped) return;
+    isFlipped = true;
+    document.getElementById('card-inner').classList.add('flipped');
+    setTimeout(() => { document.getElementById('rating-wrap').style.display = 'grid'; }, 400);
+  };
+
+  // ── Rate card (Spaced Repetition) ──
+  window.rateCard = async function(rating) {
+    const card = dueCards[currentIndex];
+    sessionStats[rating]++;
+
+    // Calculate next review interval
+    const prog = userProgress[card.id] || { level: 0, reviews: 0 };
+    let newLevel = prog.level || 0;
+    let daysUntilNext;
+
+    if (rating === 'easy') {
+      newLevel = Math.min(newLevel + 2, 7);
+      daysUntilNext = [1,3,7,14,21,30,60,90][newLevel];
+    } else if (rating === 'ok') {
+      newLevel = Math.min(newLevel + 1, 7);
+      daysUntilNext = [1,2,5,10,14,21,30,60][newLevel];
+    } else {
+      newLevel = Math.max(newLevel - 1, 0);
+      daysUntilNext = 1;
+    }
+
+    userProgress[card.id] = {
+      level: newLevel,
+      reviews: (prog.reviews || 0) + 1,
+      lastRating: rating,
+      nextReview: Date.now() + (daysUntilNext * 24 * 60 * 60 * 1000),
+      lastReviewed: Date.now()
+    };
+
+    currentIndex++;
+    showCard();
+
+    // Save progress to Firestore (debounced)
+    clearTimeout(window._saveTimer);
+    window._saveTimer = setTimeout(() => saveProgress(), 2000);
+  };
+
+  async function saveProgress() {
+    try {
+      await setDoc(
+        doc(db, 'members', currentUser.email.toLowerCase(), 'flashcardProgress', 'data'),
+        userProgress
+      );
+      // Update member stats
+      await updateDoc(doc(db, 'members', currentUser.email.toLowerCase()), {
+        cardsReviewed: increment(sessionStats.easy + sessionStats.ok + sessionStats.hard),
+        xp: increment((sessionStats.easy * 3) + (sessionStats.ok * 2) + sessionStats.hard)
+      });
+    } catch(e) { console.error('Save error:', e); }
+  }
+
+  // ── End session ──
+  function endSession() {
+    saveProgress();
+    document.getElementById('done-easy').textContent = sessionStats.easy;
+    document.getElementById('done-ok').textContent = sessionStats.ok;
+    document.getElementById('done-hard').textContent = sessionStats.hard;
+    showScreen('done');
+  }
+
+  // ── Restart with hard words ──
+  window.restartSession = function() {
+    const hardCards = dueCards.filter((_, i) => {
+      const prog = userProgress[dueCards[i]?.id];
+      return prog?.lastRating === 'hard';
+    });
+    if (hardCards.length > 0) { dueCards = hardCards; }
+    currentIndex = 0;
+    sessionStats = { easy: 0, ok: 0, hard: 0 };
+    showScreen('card');
+    showCard();
+  };
+
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
