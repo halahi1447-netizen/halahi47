@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #2E2451; --purple: #4B3F72; --mid: #8B82B9;
+      --gold: #F4B740; --gold-light: #FFD36A;
+      --white: #FFFFFF; --bg: #F5F6FA; --muted: #6E6E7E;
+      --success: #2ECC71; --danger: #E74C3C; --warning: #F39C12;
+      --sidebar: #1E1740; --disc: #9B59B6;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--deep); min-height: 100vh; overflow-x: hidden; }
+
+    #login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(145deg, #2E2451 0%, #4B3F72 100%); }
+    .login-card { background: white; border-radius: 24px; padding: 3rem; width: 100%; max-width: 400px; box-shadow: 0 24px 60px rgba(0,0,0,.25); }
+    .login-card h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--deep); margin-bottom: .3rem; }
+    .login-card p { color: var(--muted); font-size: .9rem; margin-bottom: 2rem; }
+    .login-input { width: 100%; padding: .85rem 1rem; border: 2px solid rgba(75,63,114,.15); border-radius: 12px; font-size: .95rem; font-family: 'DM Sans', sans-serif; color: var(--deep); outline: none; margin-bottom: 1rem; transition: border-color .2s; }
+    .login-input:focus { border-color: var(--purple); }
+    .login-btn { width: 100%; padding: .9rem; background: var(--gold); color: var(--deep); border: none; border-radius: 50px; font-weight: 700; font-size: 1rem; cursor: pointer; font-family: 'DM Sans', sans-serif; box-shadow: 0 6px 20px rgba(244,183,64,.4); transition: transform .2s; }
+    .login-btn:hover { transform: translateY(-2px); }
+    .login-err { display: none; background: rgba(220,60,60,.08); border: 1px solid rgba(220,60,60,.2); color: #c03030; border-radius: 10px; padding: .6rem 1rem; font-size: .85rem; margin-bottom: 1rem; }
+    .login-err.show { display: block; }
+
+    #admin-screen { display: none; min-height: 100vh; }
+    .admin-layout { display: flex; min-height: 100vh; }
+
+    .sidebar { width: 240px; background: var(--sidebar); flex-shrink: 0; display: flex; flex-direction: column; position: fixed; top: 0; left: 0; height: 100vh; z-index: 50; overflow-y: auto; }
+    .sidebar-logo { padding: 1.8rem 1.5rem 1.2rem; border-bottom: 1px solid rgba(255,255,255,.07); }
+    .sidebar-logo span { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--gold); }
+    .sidebar-logo small { display: block; font-size: .7rem; color: rgba(255,255,255,.4); letter-spacing: .1em; text-transform: uppercase; margin-top: .15rem; }
+    .nav-section { padding: 1rem 0; }
+    .nav-label { font-size: .65rem; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.3); padding: .5rem 1.5rem; font-weight: 600; }
+    .nav-item { display: flex; align-items: center; gap: .8rem; padding: .7rem 1.5rem; color: rgba(255,255,255,.6); text-decoration: none; font-size: .88rem; font-weight: 500; cursor: pointer; border: none; background: none; width: 100%; text-align: left; transition: all .2s; border-left: 3px solid transparent; }
+    .nav-item:hover { color: white; background: rgba(255,255,255,.05); }
+    .nav-item.active { color: var(--gold); background: rgba(244,183,64,.08); border-left-color: var(--gold); }
+    .nav-item .icon { font-size: 1.1rem; width: 22px; text-align: center; }
+    .sidebar-footer { margin-top: auto; padding: 1.2rem 1.5rem; border-top: 1px solid rgba(255,255,255,.07); }
+    .logout-btn { display: flex; align-items: center; gap: .6rem; color: rgba(255,255,255,.4); font-size: .82rem; cursor: pointer; background: none; border: none; font-family: 'DM Sans', sans-serif; transition: color .2s; }
+    .logout-btn:hover { color: var(--danger); }
+
+    .main-content { margin-left: 240px; flex: 1; padding: 2rem 2.5rem; }
+    .page-header { margin-bottom: 2rem; }
+    .page-header h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--deep); }
+    .page-header p { color: var(--muted); font-size: .9rem; margin-top: .3rem; }
+
+    .panel { display: none; }
+    .panel.active { display: block; animation: fadeUp .4s ease; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* STATS */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 1.5rem; }
+    .stat-card { background: white; border-radius: 18px; padding: 1.4rem 1.6rem; border: 1px solid rgba(75,63,114,.08); }
+    .stat-card.disc-card { background: linear-gradient(135deg, #f8f0ff, #efe6ff); border-color: rgba(155,89,182,.2); }
+    .stat-icon { font-size: 1.6rem; margin-bottom: .6rem; }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900; color: var(--deep); line-height: 1; }
+    .stat-num.disc-num { color: var(--disc); }
+    .stat-label { font-size: .78rem; color: var(--muted); margin-top: .3rem; }
+    .stat-sub { font-size: .72rem; color: var(--disc); font-weight: 600; margin-top: .2rem; }
+
+    /* SEATS PROGRESS */
+    .seats-card { background: linear-gradient(135deg, #f8f0ff, #efe6ff); border: 1.5px solid rgba(155,89,182,.2); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .seats-bar-wrap { background: rgba(155,89,182,.12); border-radius: 50px; height: 10px; margin: .8rem 0 .4rem; overflow: hidden; }
+    .seats-bar { height: 100%; border-radius: 50px; background: linear-gradient(90deg, var(--disc), #c39bd3); transition: width .6s ease; }
+    .seats-nums { display: flex; justify-content: space-between; font-size: .78rem; color: var(--disc); font-weight: 600; }
+
+    /* EXPIRY ALERTS */
+    .expiry-card { background: linear-gradient(135deg, #fff8ee, #fff3e0); border: 1.5px solid rgba(243,156,18,.3); border-radius: 20px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .expiry-row { display: flex; align-items: center; justify-content: space-between; padding: .65rem 0; border-bottom: 1px solid rgba(243,156,18,.12); }
+    .expiry-row:last-child { border-bottom: none; }
+    .expiry-name { font-weight: 600; font-size: .88rem; }
+    .expiry-days.urgent { color: var(--danger); font-weight: 700; font-size: .82rem; }
+    .expiry-days.soon { color: var(--warning); font-weight: 700; font-size: .82rem; }
+
+    /* CARD + TABLE */
+    .card { background: white; border-radius: 20px; padding: 1.6rem; border: 1px solid rgba(75,63,114,.08); margin-bottom: 1.5rem; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.2rem; flex-wrap: wrap; gap: 1rem; }
+    .card-title { font-size: 1rem; font-weight: 700; color: var(--deep); }
+    .search-input { padding: .55rem 1rem; border: 1.5px solid rgba(75,63,114,.15); border-radius: 50px; font-size: .85rem; font-family: 'DM Sans', sans-serif; outline: none; width: 200px; transition: border-color .2s; }
+    .search-input:focus { border-color: var(--purple); }
+    table { width: 100%; border-collapse: collapse; }
+    th { font-size: .75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; padding: .6rem 1rem; text-align: left; border-bottom: 1px solid rgba(75,63,114,.08); }
+    td { padding: .85rem 1rem; font-size: .88rem; border-bottom: 1px solid rgba(75,63,114,.05); vertical-align: middle; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(75,63,114,.02); }
+
+    .badge { display: inline-block; font-size: .7rem; font-weight: 600; padding: .2rem .7rem; border-radius: 50px; }
+    .badge-active { background: rgba(46,204,113,.12); color: #1a8a4a; }
+    .badge-expired { background: rgba(231,76,60,.1); color: var(--danger); }
+    .badge-pending { background: rgba(243,156,18,.1); color: var(--warning); }
+
+    .disc-star { display: inline-flex; align-items: center; gap: .15rem; background: rgba(155,89,182,.15); color: var(--disc); font-size: .63rem; font-weight: 700; padding: .12rem .4rem; border-radius: 50px; white-space: nowrap; }
+    .expiring-tag { display: inline-flex; align-items: center; gap: .15rem; background: rgba(243,156,18,.15); color: #b57c00; font-size: .63rem; font-weight: 700; padding: .12rem .4rem; border-radius: 50px; animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:.5} }
+    .name-cell { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+
+    .btn { display: inline-flex; align-items: center; gap: .4rem; padding: .45rem 1rem; border-radius: 50px; font-size: .8rem; font-weight: 600; cursor: pointer; border: none; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+    .btn-gold { background: var(--gold); color: var(--deep); box-shadow: 0 4px 14px rgba(244,183,64,.35); }
+    .btn-gold:hover { transform: translateY(-1px); }
+    .btn-outline { background: none; border: 1.5px solid rgba(75,63,114,.2); color: var(--purple); }
+    .btn-outline:hover { background: rgba(75,63,114,.06); }
+    .btn-danger { background: rgba(231,76,60,.1); color: var(--danger); }
+    .btn-danger:hover { background: rgba(231,76,60,.2); }
+    .btn-success { background: rgba(46,204,113,.12); color: #1a8a4a; }
+    .btn-success:hover { background: rgba(46,204,113,.22); }
+    .btn-disc { background: rgba(155,89,182,.15); color: var(--disc); }
+    .btn-disc:hover { background: rgba(155,89,182,.28); }
+    .btn-disc.on { background: rgba(155,89,182,.28); }
+    .btn-sm { padding: .3rem .7rem; font-size: .75rem; }
+
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.4); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+    .modal-overlay.show { display: flex; }
+    .modal { background: white; border-radius: 24px; padding: 2rem; width: 100%; max-width: 480px; box-shadow: 0 24px 60px rgba(0,0,0,.2); animation: slideUp .3s ease; }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+    .modal h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--deep); margin-bottom: 1.5rem; }
+    .modal-input { width: 100%; padding: .8rem 1rem; border: 2px solid rgba(75,63,114,.15); border-radius: 12px; font-size: .9rem; font-family: 'DM Sans', sans-serif; color: var(--deep); outline: none; margin-bottom: 1rem; transition: border-color .2s; }
+    .modal-input:focus { border-color: var(--purple); }
+    .modal-select { width: 100%; padding: .8rem 1rem; border: 2px solid rgba(75,63,114,.15); border-radius: 12px; font-size: .9rem; font-family: 'DM Sans', sans-serif; color: var(--deep); outline: none; margin-bottom: 1rem; background: white; }
+    .modal-footer { display: flex; gap: .8rem; justify-content: flex-end; margin-top: .5rem; }
+    .modal-label { font-size: .82rem; font-weight: 600; color: var(--deep); margin-bottom: .4rem; display: block; }
+    .check-row { display: flex; align-items: center; gap: .6rem; margin-bottom: 1rem; padding: .8rem 1rem; background: rgba(155,89,182,.07); border-radius: 10px; cursor: pointer; }
+    .check-row input { accent-color: var(--disc); width: 16px; height: 16px; cursor: pointer; }
+    .check-row label { font-size: .88rem; color: var(--deep); cursor: pointer; }
+
+    .zoom-card { background: linear-gradient(135deg, #1a1040, #2E2451); border-radius: 20px; padding: 2rem; color: white; margin-bottom: 1.5rem; }
+    .zoom-card h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: .5rem; }
+    .zoom-card p { font-size: .88rem; color: rgba(255,255,255,.65); margin-bottom: 1.4rem; }
+    .zoom-input { width: 100%; padding: .85rem 1.2rem; background: rgba(255,255,255,.1); border: 1.5px solid rgba(255,255,255,.2); border-radius: 12px; font-size: .95rem; font-family: 'DM Sans', sans-serif; color: white; outline: none; transition: border-color .2s; }
+    .zoom-input::placeholder { color: rgba(255,255,255,.35); }
+    .zoom-input:focus { border-color: var(--gold); }
+    .zoom-actions { display: flex; gap: .8rem; margin-top: 1rem; flex-wrap: wrap; }
+
+    .upload-zone { border: 2px dashed rgba(75,63,114,.25); border-radius: 16px; padding: 2.5rem; text-align: center; cursor: pointer; transition: all .2s; }
+    .upload-zone:hover { border-color: var(--purple); background: rgba(75,63,114,.03); }
+    .upload-zone .upload-icon { font-size: 2.5rem; margin-bottom: .8rem; }
+    .upload-zone p { color: var(--muted); font-size: .9rem; }
+    .upload-zone strong { color: var(--purple); }
+    #csv-file-input { display: none; }
+    .word-preview-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+    .word-card { background: white; border-radius: 16px; border: 1px solid rgba(75,63,114,.1); overflow: hidden; }
+    .word-card-img { width: 100%; height: 130px; object-fit: cover; background: var(--bg); display: flex; align-items: center; justify-content: center; font-size: 2rem; overflow: hidden; }
+    .word-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .word-card-body { padding: 1rem; }
+    .word-card-word { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--deep); }
+    .word-card-cat { font-size: .72rem; background: rgba(75,63,114,.1); color: var(--purple); padding: .15rem .6rem; border-radius: 50px; font-weight: 600; display: inline-block; margin: .3rem 0; }
+
+    .question-item { background: var(--bg); border-radius: 14px; padding: 1.2rem; margin-bottom: .8rem; display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
+    .question-text { font-size: .9rem; color: var(--deep); line-height: 1.5; flex: 1; }
+    .question-meta { font-size: .72rem; color: var(--muted); margin-top: .3rem; }
+
+    .api-box { background: rgba(75,63,114,.04); border: 1.5px solid rgba(75,63,114,.12); border-radius: 14px; padding: 1.2rem; margin-bottom: 1.2rem; }
+    .api-row { display: flex; gap: .8rem; align-items: center; }
+    .api-input { flex: 1; padding: .7rem 1rem; border: 2px solid rgba(75,63,114,.15); border-radius: 10px; font-size: .85rem; font-family: monospace; color: var(--deep); outline: none; transition: border-color .2s; }
+    .api-input:focus { border-color: var(--purple); }
+
+    .settings-section { background: white; border-radius: 20px; padding: 1.6rem; border: 1px solid rgba(75,63,114,.08); margin-bottom: 1.2rem; }
+    .settings-section h3 { font-size: .95rem; font-weight: 700; color: var(--deep); margin-bottom: 1rem; }
+    .settings-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .settings-input { padding: .7rem 1rem; border: 2px solid rgba(75,63,114,.15); border-radius: 10px; font-size: .9rem; font-family: 'DM Sans', sans-serif; color: var(--deep); outline: none; width: 120px; transition: border-color .2s; }
+    .settings-input:focus { border-color: var(--purple); }
+
+    .toast { position: fixed; bottom: 2rem; right: 2rem; background: var(--deep); color: white; padding: .8rem 1.4rem; border-radius: 12px; font-size: .88rem; z-index: 999; animation: slideInRight .3s ease; box-shadow: 0 8px 24px rgba(0,0,0,.2); }
+    .toast.success { background: #1a8a4a; }
+    .toast.error { background: var(--danger); }
+    @keyframes slideInRight { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+    .loading-spinner { display: inline-block; width: 16px; height: 16px; border: 2px solid rgba(46,36,81,.3); border-top-color: var(--deep); border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .empty-state { text-align: center; padding: 3rem; color: var(--muted); }
+    .empty-icon { font-size: 3rem; margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>Admin Panel</h1>
+    <p>Hala Hi — Restricted Access Only</p>
+    <div class="login-err" id="login-err">Access denied.</div>
+    <input type="email" class="login-input" id="admin-email" placeholder="Admin email"/>
+    <input type="password" class="login-input" id="admin-password" placeholder="Password"/>
+    <button class="login-btn" onclick="adminLogin()">Enter Admin Panel →</button>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin-screen">
+  <div class="admin-layout">
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <span>Hala Hi</span>
+        <small>Admin Panel</small>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">Main</div>
+        <button class="nav-item active" onclick="showPanel('dashboard',this)"><span class="icon">📊</span><span>Dashboard</span></button>
+        <button class="nav-item" onclick="showPanel('members',this)"><span class="icon">👥</span><span>Members</span></button>
+        <div class="nav-label" style="margin-top:.5rem">Content</div>
+        <button class="nav-item" onclick="showPanel('zoom',this)"><span class="icon">🎥</span><span>Zoom Sessions</span></button>
+        <button class="nav-item" onclick="showPanel('flashcards',this)"><span class="icon">📚</span><span>Flashcards</span></button>
+        <button class="nav-item" onclick="showPanel('community',this)"><span class="icon">💬</span><span>Community</span></button>
+        <div class="nav-label" style="margin-top:.5rem">Config</div>
+        <button class="nav-item" onclick="showPanel('settings',this)"><span class="icon">⚙️</span><span>Settings</span></button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" onclick="adminLogout()">🚪 <span>Logout</span></button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="panel active" id="panel-dashboard">
+        <div class="page-header"><h1>Dashboard</h1><p>Welcome back, Hala 👋</p></div>
+
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-num" id="stat-total">—</div><div class="stat-label">Total Members</div></div>
+          <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num" id="stat-active">—</div><div class="stat-label">Active</div></div>
+          <div class="stat-card"><div class="stat-icon">⏰</div><div class="stat-num" id="stat-expired">—</div><div class="stat-label">Expired</div></div>
+          <div class="stat-card disc-card">
+            <div class="stat-icon">🏷️</div>
+            <div class="stat-num disc-num" id="stat-disc">—</div>
+            <div class="stat-label">Discounted Members</div>
+            <div class="stat-sub" id="stat-seats-left">— seats remaining</div>
+          </div>
+        </div>
+
+        <!-- SEATS PROGRESS BAR -->
+        <div class="seats-card">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+            <div>
+              <div style="font-weight:700;color:var(--disc);font-size:.95rem">🏷️ Discounted Seats</div>
+              <div style="font-size:.8rem;color:#7b5ea7;margin-top:.15rem">Early-bird charter spots</div>
+            </div>
+            <button class="btn btn-disc btn-sm" onclick="showPanel('settings',document.querySelector('.nav-item[onclick*=settings]'))">Edit Limit</button>
+          </div>
+          <div class="seats-bar-wrap"><div class="seats-bar" id="seats-bar" style="width:0%"></div></div>
+          <div class="seats-nums"><span id="seats-used-lbl">0 used</span><span id="seats-total-lbl">of — total</span></div>
+        </div>
+
+        <!-- EXPIRY ALERTS -->
+        <div class="expiry-card" id="expiry-section" style="display:none">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+            <span style="font-weight:700;color:#8a5c00">⚠️ Expiring Soon</span>
+            <span id="expiry-reminder-lbl" style="font-size:.78rem;color:#8a5c00"></span>
+          </div>
+          <div id="expiry-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><span class="card-title">Recent Members</span></div>
+          <table><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Status</th></tr></thead>
+          <tbody id="recent-table"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">Loading...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- MEMBERS -->
+      <div class="panel" id="panel-members">
+        <div class="page-header"><h1>Members</h1><p>Manage all Hala Hi members</p></div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">All Members</span>
+            <div style="display:flex;gap:.7rem;align-items:center;flex-wrap:wrap">
+              <select class="search-input" id="filter-type" onchange="applyFilters()">
+                <option value="all">All Members</option>
+                <option value="discounted">🏷️ Discounted Only</option>
+                <option value="expiring">⏰ Expiring Soon</option>
+                <option value="active">Active</option>
+                <option value="expired">Expired</option>
+              </select>
+              <input type="text" class="search-input" id="filter-search" placeholder="🔍 Search..." oninput="applyFilters()"/>
+              <button class="btn btn-gold" onclick="openModal('modal-add-member')">+ Add Member</button>
+            </div>
+          </div>
+          <table><thead><tr><th>Name</th><th>Email</th><th>Joined</th><th>Expires</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="members-table"><tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">Loading...</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- ZOOM -->
+      <div class="panel" id="panel-zoom">
+        <div class="page-header"><h1>Zoom Sessions</h1><p>Set the daily Zoom link for members</p></div>
+        <div class="zoom-card">
+          <h2>🎥 Today's Session Link</h2>
+          <p>This link will appear on every member's dashboard.</p>
+          <input type="url" class="zoom-input" id="zoom-link-input" placeholder="https://zoom.us/j/your-meeting-id"/>
+          <div class="zoom-actions">
+            <button class="btn btn-gold" onclick="saveZoomLink()">💾 Save Link</button>
+            <button class="btn btn-outline" style="color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2)" onclick="window.open(document.getElementById('zoom-link-input').value,'_blank')">👁 Preview</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Weekly Schedule</span><button class="btn btn-gold btn-sm" onclick="openModal('modal-add-schedule')">+ Add Session</button></div>
+          <table><thead><tr><th>Day</th><th>Time</th><th>Topic</th><th>Actions</th></tr></thead>
+          <tbody id="schedule-table"><tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No sessions yet</td></tr></tbody></table>
+        </div>
+      </div>
+
+      <!-- FLASHCARDS -->
+      <div class="panel" id="panel-flashcards">
+        <div class="page-header"><h1>Flashcards</h1><p>Upload words — AI adds category, example & image automatically</p></div>
+
+        <div class="api-box">
+          <div style="font-size:.85rem;font-weight:600;color:var(--deep);margin-bottom:.5rem">🔑 Anthropic API Key</div>
+          <div class="api-row">
+            <input type="password" class="api-input" id="api-key-input" placeholder="sk-ant-api03-..."/>
+            <button class="btn btn-gold btn-sm" onclick="saveApiKey()">Save</button>
+          </div>
+          <div id="api-key-status" style="font-size:.78rem;margin-top:.5rem;color:var(--muted)"></div>
+        </div>
+
+        <div style="display:flex;gap:.5rem;margin-bottom:1.5rem">
+          <button class="btn btn-gold" id="fc-tab-upload" onclick="switchFcTab('upload')">📤 Upload New Words</button>
+          <button class="btn btn-outline" id="fc-tab-published" onclick="switchFcTab('published')">📚 Published Words</button>
+        </div>
+
+        <div id="fc-upload">
+          <div class="card">
+            <div class="card-header"><span class="card-title">Upload Words File</span></div>
+            <div class="upload-zone" onclick="document.getElementById('csv-file-input').click()">
+              <div class="upload-icon">📄</div>
+              <p><strong>Click to upload</strong> a CSV or TXT file (one word per line)</p>
+              <p style="font-size:.78rem;margin-top:.3rem">Just the words — AI does the rest!</p>
+            </div>
+            <input type="file" id="csv-file-input" accept=".csv,.txt" onchange="handleFileUpload(this)"/>
+            <div style="margin-top:1rem;display:flex;gap:.8rem;align-items:center">
+              <button class="btn btn-gold" id="btn-process" style="display:none" onclick="processWords()">✨ Generate with AI</button>
+              <span id="upload-status" style="font-size:.85rem;color:var(--muted)"></span>
+            </div>
+          </div>
+          <div id="words-preview" class="word-preview-grid"></div>
+          <div style="text-align:right;margin-top:1rem">
+            <button class="btn btn-gold" id="btn-publish" style="display:none" onclick="publishWords()">🚀 Publish to Members</button>
+          </div>
+        </div>
+
+        <div id="fc-published" style="display:none">
+          <div class="card">
+            <div class="card-header">
+              <span class="card-title">Published Words</span>
+              <div style="display:flex;gap:.8rem;align-items:center">
+                <input type="text" class="search-input" placeholder="🔍 Search words..." oninput="filterPublishedWords(this.value)"/>
+                <span id="words-count" style="font-size:.82rem;color:var(--muted)"></span>
+              </div>
+            </div>
+            <div id="published-words-grid" class="word-preview-grid">
+              <div style="text-align:center;padding:2rem;color:var(--muted);grid-column:1/-1">Loading...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMMUNITY -->
+      <div class="panel" id="panel-community">
+        <div class="page-header"><h1>Community</h1><p>Manage discussion questions</p></div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Discussion Questions</span><button class="btn btn-gold" onclick="openModal('modal-add-question')">+ Add Question</button></div>
+          <div id="questions-list"><div class="empty-state"><div class="empty-icon">💬</div><p>No questions yet</p></div></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="panel" id="panel-settings">
+        <div class="page-header"><h1>Settings</h1><p>Configure your club options</p></div>
+
+        <div class="settings-section">
+          <h3>🏷️ Discounted Seats Limit</h3>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem">Max number of members who can have a discounted price.</p>
+          <div class="settings-row">
+            <input type="number" class="settings-input" id="set-seats" placeholder="e.g. 20" min="1"/>
+            <button class="btn btn-gold" onclick="saveSeats()">💾 Save</button>
+          </div>
+        </div>
+
+        <div class="settings-section">
+          <h3>⏰ Expiry Reminder Window</h3>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:1rem">Show alert in dashboard for members expiring within this many days.</p>
+          <div class="settings-row">
+            <input type="number" class="settings-input" id="set-reminder" placeholder="e.g. 7" min="1"/>
+            <span style="font-size:.85rem;color:var(--muted)">days</span>
+            <button class="btn btn-gold" onclick="saveReminder()">💾 Save</button>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-add-member">
+  <div class="modal">
+    <h2>➕ Add New Member</h2>
+    <label class="modal-label">Full Name</label><input type="text" class="modal-input" id="new-name" placeholder="Sara Ahmed"/>
+    <label class="modal-label">Email Address</label><input type="email" class="modal-input" id="new-email" placeholder="sara@example.com"/>
+    <label class="modal-label">Plan</label>
+    <select class="modal-select" id="new-plan"><option value="monthly">Monthly</option><option value="quarterly">Quarterly (3 months)</option><option value="yearly">Yearly</option></select>
+    <div class="check-row">
+      <input type="checkbox" id="new-discounted"/>
+      <label for="new-discounted">🏷️ This member has a discounted price</label>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-member')">Cancel</button>
+      <button class="btn btn-gold" onclick="addMember()">Add Member</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-question">
+  <div class="modal">
+    <h2>💬 Add Question</h2>
+    <label class="modal-label">Question (English)</label><input type="text" class="modal-input" id="new-q-en" placeholder="What did you learn today?"/>
+    <label class="modal-label">Question (Arabic) — Optional</label><input type="text" class="modal-input" id="new-q-ar" placeholder="ماذا تعلمت اليوم؟"/>
+    <label class="modal-label">Category</label>
+    <select class="modal-select" id="new-q-cat"><option value="daily">Daily Reflection</option><option value="vocabulary">Vocabulary</option><option value="culture">Culture</option><option value="grammar">Grammar</option><option value="fun">Fun & Creative</option></select>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-question')">Cancel</button>
+      <button class="btn btn-gold" onclick="addQuestion()">Add Question</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-add-schedule">
+  <div class="modal">
+    <h2>📅 Add Session</h2>
+    <label class="modal-label">Day</label>
+    <select class="modal-select" id="new-day"><option>Sunday</option><option>Monday</option><option>Tuesday</option><option>Wednesday</option><option>Thursday</option><option>Friday</option><option>Saturday</option></select>
+    <label class="modal-label">Time</label><input type="time" class="modal-input" id="new-time"/>
+    <label class="modal-label">Topic</label><input type="text" class="modal-input" id="new-topic" placeholder="Speaking practice – Beginner"/>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-add-schedule')">Cancel</button>
+      <button class="btn btn-gold" onclick="addScheduleItem()">Add Session</button>
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, deleteDoc, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const ADMIN_EMAIL = "hala.hi1447@gmail.com";
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  // ── Global config (loaded from Firestore) ─────────
+  let seatsTotal = 20;
+  let reminderDays = 7;
+
+  onAuthStateChanged(auth, user => {
+    if (user && user.email === ADMIN_EMAIL) {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('admin-screen').style.display = 'block';
+      loadSettings().then(() => { loadAll(); });
+      loadApiKeyStatus();
+    } else if (user) {
+      signOut(auth);
+      showToast('Access denied.', 'error');
+    }
+  });
+
+  window.adminLogin = async function() {
+    const email = document.getElementById('admin-email').value.trim();
+    const password = document.getElementById('admin-password').value;
+    const errEl = document.getElementById('login-err');
+    errEl.classList.remove('show');
+    if (email !== ADMIN_EMAIL) { errEl.textContent = 'Access denied. Admin only.'; errEl.classList.add('show'); return; }
+    try { await signInWithEmailAndPassword(auth, email, password); }
+    catch { errEl.textContent = 'Incorrect email or password.'; errEl.classList.add('show'); }
+  };
+
+  window.adminLogout = async function() {
+    await signOut(auth);
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('admin-screen').style.display = 'none';
+  };
+
+  function loadAll() { loadDashboard(); loadMembers(); loadZoomLink(); loadQuestions(); loadSchedule(); }
+
+  // ── SETTINGS ──────────────────────────────────────
+  async function loadSettings() {
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'general'));
+      if (snap.exists()) {
+        const d = snap.data();
+        seatsTotal = d.seatsTotal || 20;
+        reminderDays = d.reminderDays || 7;
+      }
+    } catch(e) { console.error(e); }
+    document.getElementById('set-seats').value = seatsTotal;
+    document.getElementById('set-reminder').value = reminderDays;
+  }
+
+  window.saveSeats = async function() {
+    const v = parseInt(document.getElementById('set-seats').value);
+    if (!v || v < 1) { showToast('Enter a valid number', 'error'); return; }
+    seatsTotal = v;
+    try {
+      await setDoc(doc(db, 'settings', 'general'), { seatsTotal, reminderDays }, { merge: true });
+      showToast('Seats limit saved ✅', 'success'); loadDashboard();
+    } catch { showToast('Error', 'error'); }
+  };
+
+  window.saveReminder = async function() {
+    const v = parseInt(document.getElementById('set-reminder').value);
+    if (!v || v < 1) { showToast('Enter a valid number', 'error'); return; }
+    reminderDays = v;
+    try {
+      await setDoc(doc(db, 'settings', 'general'), { seatsTotal, reminderDays }, { merge: true });
+      showToast('Reminder window saved ✅', 'success'); loadDashboard();
+    } catch { showToast('Error', 'error'); }
+  };
+
+  // ── DASHBOARD ──────────────────────────────────────
+  async function loadDashboard() {
+    try {
+      const snap = await getDocs(collection(db, 'members'));
+      const members = snap.docs.map(d => d.data());
+      const now = new Date();
+
+      const discMembers = members.filter(m => m.discounted);
+      const used = discMembers.length;
+      const left = Math.max(0, seatsTotal - used);
+      const pct = seatsTotal > 0 ? Math.min(100, (used / seatsTotal) * 100) : 0;
+
+      document.getElementById('stat-total').textContent = members.length;
+      document.getElementById('stat-active').textContent = members.filter(m => m.status === 'active').length;
+      document.getElementById('stat-expired').textContent = members.filter(m => m.status === 'expired').length;
+      document.getElementById('stat-disc').textContent = used;
+      document.getElementById('stat-seats-left').textContent = `${left} seat${left !== 1 ? 's' : ''} remaining`;
+      document.getElementById('seats-bar').style.width = pct + '%';
+      document.getElementById('seats-used-lbl').textContent = `${used} used`;
+      document.getElementById('seats-total-lbl').textContent = `of ${seatsTotal} total`;
+
+      // Expiry alerts
+      const expiring = members.filter(m => {
+        if (!m.expiresAt || m.status === 'expired') return false;
+        const diff = (new Date(m.expiresAt) - now) / 86400000;
+        return diff >= 0 && diff <= reminderDays;
+      }).map(m => ({ ...m, daysLeft: Math.ceil((new Date(m.expiresAt) - now) / 86400000) }))
+        .sort((a, b) => a.daysLeft - b.daysLeft);
+
+      const sec = document.getElementById('expiry-section');
+      const lst = document.getElementById('expiry-list');
+      if (expiring.length) {
+        sec.style.display = 'block';
+        document.getElementById('expiry-reminder-lbl').textContent = `Subscriptions ending within ${reminderDays} days`;
+        lst.innerHTML = expiring.map(m => `
+          <div class="expiry-row">
+            <div>
+              <div class="expiry-name">
+                ${m.name || '—'}
+                ${m.discounted ? ' <span class="disc-star">🏷️ Discounted</span>' : ''}
+              </div>
+              <div style="font-size:.75rem;color:var(--muted)">${m.email}</div>
+            </div>
+            <span class="expiry-days ${m.daysLeft <= 3 ? 'urgent' : 'soon'}">
+              ${m.daysLeft === 0 ? '⚠️ Expires today!' : `⏰ ${m.daysLeft}d left`}
+            </span>
+          </div>`).join('');
+      } else {
+        sec.style.display = 'none';
+      }
+
+      // Recent members
+      const recent = [...members].sort((a, b) => {
+        const da = a.joinedAt?.toDate?.() || new Date(a.joinedAt || 0);
+        const db2 = b.joinedAt?.toDate?.() || new Date(b.joinedAt || 0);
+        return db2 - da;
+      }).slice(0, 5);
+      document.getElementById('recent-table').innerHTML = recent.length
+        ? recent.map(m => `<tr>
+            <td><div class="name-cell"><strong>${m.name || '—'}</strong>${m.discounted ? '<span class="disc-star">🏷️</span>' : ''}</div></td>
+            <td style="color:var(--muted)">${m.email}</td>
+            <td style="color:var(--muted)">${fmtDate(m.joinedAt)}</td>
+            <td><span class="badge badge-${m.status || 'pending'}">${m.status || 'pending'}</span></td>
+          </tr>`).join('')
+        : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No members yet</td></tr>';
+    } catch(e) { console.error(e); }
+  }
+
+  // ── MEMBERS ──────────────────────────────────────
+  let allMembers = [];
+  async function loadMembers() {
+    try {
+      const snap = await getDocs(collection(db, 'members'));
+      allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderMembers(allMembers);
+    } catch(e) { console.error(e); }
+  }
+
+  function renderMembers(list) {
+    const now = new Date();
+    document.getElementById('members-table').innerHTML = list.length ? list.map(m => {
+      const exp = m.expiresAt ? new Date(m.expiresAt) : null;
+      const days = exp ? Math.ceil((exp - now) / 86400000) : null;
+      const expiring = days !== null && days >= 0 && days <= reminderDays && m.status !== 'expired';
+      return `<tr>
+        <td><div class="name-cell">
+          <strong>${m.name || '—'}</strong>
+          ${m.discounted ? '<span class="disc-star">🏷️ Discounted</span>' : ''}
+          ${expiring ? `<span class="expiring-tag">⏰ ${days}d</span>` : ''}
+        </div></td>
+        <td style="color:var(--muted);font-size:.82rem">${m.email}</td>
+        <td style="color:var(--muted)">${fmtDate(m.joinedAt)}</td>
+        <td style="color:var(--muted)">${fmtDate(m.expiresAt)}</td>
+        <td><span class="badge badge-${m.status || 'pending'}">${m.status || 'pending'}</span></td>
+        <td><div style="display:flex;gap:.4rem;flex-wrap:wrap">
+          ${m.status === 'active'
+            ? `<button class="btn btn-danger btn-sm" onclick="toggleStatus('${m.id}','expired')">Deactivate</button>`
+            : `<button class="btn btn-success btn-sm" onclick="toggleStatus('${m.id}','active')">Activate</button>`}
+          <button class="btn btn-outline btn-sm" onclick="extendMember('${m.id}')">Extend</button>
+          <button class="btn btn-disc btn-sm ${m.discounted ? 'on' : ''}" title="${m.discounted ? 'Remove discount' : 'Mark as discounted'}" onclick="toggleDisc('${m.id}',${!!m.discounted})">🏷️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteMember('${m.id}','${m.email}')">Delete</button>
+        </div></td>
+      </tr>`;
+    }).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:2rem">No members found</td></tr>';
+  }
+
+  window.applyFilters = function() {
+    const type = document.getElementById('filter-type').value;
+    const q = document.getElementById('filter-search').value.toLowerCase();
+    const now = new Date();
+    let f = allMembers.filter(m => (m.name||'').toLowerCase().includes(q) || m.email.toLowerCase().includes(q));
+    if (type === 'discounted') f = f.filter(m => m.discounted);
+    else if (type === 'expiring') f = f.filter(m => {
+      if (!m.expiresAt) return false;
+      const d = Math.ceil((new Date(m.expiresAt) - now) / 86400000);
+      return d >= 0 && d <= reminderDays;
+    });
+    else if (type === 'active') f = f.filter(m => m.status === 'active');
+    else if (type === 'expired') f = f.filter(m => m.status === 'expired');
+    renderMembers(f);
+  };
+
+  window.toggleDisc = async function(id, current) {
+    const next = !current;
+    if (next) {
+      const used = allMembers.filter(m => m.discounted).length;
+      if (used >= seatsTotal) { showToast(`All ${seatsTotal} discounted seats are full!`, 'error'); return; }
+    }
+    try {
+      await updateDoc(doc(db, 'members', id), { discounted: next });
+      showToast(next ? '🏷️ Marked as discounted ✅' : 'Discount removed', 'success');
+      await loadMembers(); loadDashboard();
+    } catch { showToast('Error', 'error'); }
+  };
+
+  window.addMember = async function() {
+    const name = document.getElementById('new-name').value.trim();
+    const email = document.getElementById('new-email').value.trim().toLowerCase();
+    const plan = document.getElementById('new-plan').value;
+    const discounted = document.getElementById('new-discounted').checked;
+    if (!name || !email) { showToast('Please fill all fields', 'error'); return; }
+    if (discounted) {
+      const used = allMembers.filter(m => m.discounted).length;
+      if (used >= seatsTotal) { showToast(`No discounted seats left (max ${seatsTotal})`, 'error'); return; }
+    }
+    const months = plan === 'monthly' ? 1 : plan === 'quarterly' ? 3 : 12;
+    const exp = new Date(); exp.setMonth(exp.getMonth() + months);
+    try {
+      await setDoc(doc(db, 'members', email), { name, email, plan, discounted, source: 'manual', status: 'active', joinedAt: serverTimestamp(), expiresAt: exp.toISOString(), xp: 0, streak: 0 });
+      showToast('Member added ✅', 'success'); closeModal('modal-add-member');
+      await loadMembers(); loadDashboard();
+    } catch { showToast('Error adding member', 'error'); }
+  };
+
+  window.toggleStatus = async function(id, status) {
+    try { await updateDoc(doc(db, 'members', id), { status }); showToast(`${status === 'active' ? 'Activated' : 'Deactivated'} ✅`, 'success'); await loadMembers(); loadDashboard(); }
+    catch { showToast('Error', 'error'); }
+  };
+
+  window.extendMember = async function(id) {
+    const months = parseInt(prompt('Extend by how many months?'));
+    if (!months || isNaN(months)) return;
+    const exp = new Date(); exp.setMonth(exp.getMonth() + months);
+    try { await updateDoc(doc(db, 'members', id), { expiresAt: exp.toISOString(), status: 'active' }); showToast(`Extended by ${months} month(s) ✅`, 'success'); await loadMembers(); loadDashboard(); }
+    catch { showToast('Error', 'error'); }
+  };
+
+  window.deleteMember = async function(id, email) {
+    if (!confirm(`Delete ${email}? Cannot be undone.`)) return;
+    try { await deleteDoc(doc(db, 'members', id)); showToast('Deleted', 'success'); await loadMembers(); loadDashboard(); }
+    catch { showToast('Error', 'error'); }
+  };
+
+  // ── ZOOM ──────────────────────────────────────────
+  async function loadZoomLink() {
+    try { const snap = await getDoc(doc(db, 'settings', 'zoom')); if (snap.exists()) document.getElementById('zoom-link-input').value = snap.data().link || ''; } catch {}
+  }
+  window.saveZoomLink = async function() {
+    const link = document.getElementById('zoom-link-input').value.trim();
+    if (!link) { showToast('Enter a Zoom link', 'error'); return; }
+    try { await setDoc(doc(db, 'settings', 'zoom'), { link, updatedAt: serverTimestamp() }); showToast('Zoom link saved ✅', 'success'); }
+    catch { showToast('Error', 'error'); }
+  };
+
+  // ── SCHEDULE ──────────────────────────────────────
+  let scheduleItems = [];
+  async function loadSchedule() {
+    try { const snap = await getDocs(collection(db, 'schedule')); scheduleItems = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderSchedule(); } catch {}
+  }
+  function renderSchedule() {
+    const order = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    const sorted = [...scheduleItems].sort((a, b) => order.indexOf(a.day) - order.indexOf(b.day));
+    document.getElementById('schedule-table').innerHTML = sorted.length
+      ? sorted.map(s => `<tr><td><strong>${s.day}</strong></td><td>${s.time}</td><td style="color:var(--muted)">${s.topic}</td><td><button class="btn btn-danger btn-sm" onclick="deleteScheduleItem('${s.id}')">Delete</button></td></tr>`).join('')
+      : '<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:2rem">No sessions yet</td></tr>';
+  }
+  window.addScheduleItem = async function() {
+    const day = document.getElementById('new-day').value, time = document.getElementById('new-time').value, topic = document.getElementById('new-topic').value.trim();
+    if (!time || !topic) { showToast('Fill all fields', 'error'); return; }
+    try { await addDoc(collection(db, 'schedule'), { day, time, topic }); showToast('Session added ✅', 'success'); closeModal('modal-add-schedule'); loadSchedule(); }
+    catch { showToast('Error', 'error'); }
+  };
+  window.deleteScheduleItem = async function(id) {
+    if (!confirm('Delete?')) return;
+    try { await deleteDoc(doc(db, 'schedule', id)); showToast('Deleted', 'success'); loadSchedule(); } catch {}
+  };
+
+  // ── FLASHCARDS ────────────────────────────────────
+  function loadApiKeyStatus() {
+    const key = localStorage.getItem('hala_anthropic_key');
+    const el = document.getElementById('api-key-status');
+    if (key) { el.textContent = '✅ Key saved (sk-ant-...'+key.slice(-4)+')'; el.style.color = '#1a8a4a'; }
+    else { el.textContent = '⚠️ No key saved — AI generation won\'t work.'; el.style.color = 'var(--warning)'; }
+  }
+  window.saveApiKey = function() {
+    const key = document.getElementById('api-key-input').value.trim();
+    if (!key.startsWith('sk-')) { showToast('Invalid key — must start with sk-', 'error'); return; }
+    localStorage.setItem('hala_anthropic_key', key);
+    document.getElementById('api-key-input').value = '';
+    loadApiKeyStatus();
+    showToast('API key saved ✅', 'success');
+  };
+
+  let parsedWords = [], processedWords = [];
+  window.handleFileUpload = function(input) {
+    const file = input.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      parsedWords = e.target.result.split('\n').map(w => w.trim().replace(/[,;"']/g, '')).filter(w => w.length > 0);
+      document.getElementById('upload-status').textContent = `✅ ${parsedWords.length} words loaded`;
+      document.getElementById('btn-process').style.display = 'inline-flex';
+    };
+    reader.readAsText(file);
+  };
+
+  window.processWords = async function() {
+    if (!parsedWords.length) return;
+    const apiKey = localStorage.getItem('hala_anthropic_key');
+    if (!apiKey) { showToast('Save your Anthropic API key first ⬆️', 'error'); return; }
+
+    const btn = document.getElementById('btn-process');
+    btn.innerHTML = '<span class="loading-spinner"></span> Processing...'; btn.disabled = true;
+    processedWords = []; document.getElementById('words-preview').innerHTML = '';
+    document.getElementById('btn-publish').style.display = 'none';
+
+    for (const word of parsedWords) {
+      try {
+        // AI: category + example + translation
+        const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-api-key": apiKey,
+            "anthropic-version": "2023-06-01",
+            "anthropic-dangerous-request-allowed": "true"
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 200,
+            messages: [{ role: "user", content: `For the English word "${word}", respond ONLY with valid JSON (no markdown, no explanation): {"category":"noun|verb|adjective|adverb|phrase","example":"A natural example sentence using the word.","translation":"Arabic translation"}` }]
+          })
+        });
+        const aiData = await aiRes.json();
+        if (aiData.error) { showToast(`API Error: ${aiData.error.message}`, 'error'); break; }
+
+        let info = { category: 'word', example: '', translation: '' };
+        try { info = JSON.parse(aiData.content[0].text.replace(/```json|```/g, '').trim()); } catch(pe) { console.warn('Parse error for', word, pe); }
+
+        // Image from Pixabay
+        const imgRes = await fetch(`https://pixabay.com/api/?key=49033165-b58b8c2b7cdff2b2ae6a6f87a&q=${encodeURIComponent(word)}&image_type=photo&safesearch=true&per_page=3`);
+        const imgData = await imgRes.json();
+        const imgUrl = imgData.hits?.[0]?.webformatURL || '';
+
+        const wordObj = { word, ...info, imgUrl, published: false };
+        processedWords.push(wordObj);
+
+        const card = document.createElement('div'); card.className = 'word-card';
+        card.innerHTML = `
+          <div class="word-card-img">${imgUrl ? `<img src="${imgUrl}" alt="${word}" loading="lazy"/>` : '🖼️'}</div>
+          <div class="word-card-body">
+            <div class="word-card-word">${word}</div>
+            <span class="word-card-cat">${info.category}</span>
+            <div style="font-size:.8rem;color:var(--muted);font-style:italic;margin:.3rem 0">"${info.example}"</div>
+            <div style="font-size:.75rem;color:var(--mid)">${info.translation}</div>
+          </div>`;
+        document.getElementById('words-preview').appendChild(card);
+      } catch(e) { console.error('Error processing:', word, e); }
+    }
+
+    btn.innerHTML = '✨ Generate with AI'; btn.disabled = false;
+    if (processedWords.length > 0) {
+      document.getElementById('btn-publish').style.display = 'inline-flex';
+      showToast(`${processedWords.length} words ready! Review & publish ✅`, 'success');
+    }
+  };
+
+  window.publishWords = async function() {
+    if (!processedWords.length) return;
+    const btn = document.getElementById('btn-publish');
+    btn.innerHTML = '<span class="loading-spinner"></span> Publishing...'; btn.disabled = true;
+    try {
+      for (const w of processedWords) await setDoc(doc(db, 'flashcards', w.word.toLowerCase()), { ...w, published: true, createdAt: serverTimestamp() });
+      showToast(`${processedWords.length} words published ✅`, 'success');
+      btn.style.display = 'none';
+    } catch { showToast('Error publishing', 'error'); btn.innerHTML = '🚀 Publish to Members'; btn.disabled = false; }
+  };
+
+  let allPublishedWords = [];
+  async function loadPublishedWords() {
+    const grid = document.getElementById('published-words-grid');
+    grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);grid-column:1/-1"><div class="loading-spinner" style="margin:0 auto 1rem"></div>Loading...</div>';
+    try {
+      const snap = await getDocs(collection(db, 'flashcards'));
+      allPublishedWords = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(w => w.published).sort((a, b) => a.word.localeCompare(b.word));
+      document.getElementById('words-count').textContent = `${allPublishedWords.length} words`;
+      renderPublishedWords(allPublishedWords);
+    } catch { grid.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted);grid-column:1/-1">Error loading words</div>'; }
+  }
+
+  function renderPublishedWords(words) {
+    const grid = document.getElementById('published-words-grid');
+    if (!words.length) { grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--muted);grid-column:1/-1">No published words yet</div>'; return; }
+    grid.innerHTML = words.map(w => `
+      <div class="word-card">
+        <div class="word-card-img">${w.imgUrl ? `<img src="${w.imgUrl}" alt="${w.word}" loading="lazy" style="width:100%;height:100%;object-fit:cover"/>` : '🖼️'}</div>
+        <div class="word-card-body">
+          <div class="word-card-word">${w.word}</div>
+          <span class="word-card-cat">${w.category || 'word'}</span>
+          <div style="font-size:.78rem;color:var(--muted);font-style:italic;margin:.3rem 0">"${w.example || ''}"</div>
+          <div style="font-size:.72rem;color:var(--mid)">${w.translation || ''}</div>
+          <div style="margin-top:.6rem">
+            <button class="btn btn-danger btn-sm" onclick="deleteWord('${w.id}','${w.word}')">🗑️ Delete</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  window.filterPublishedWords = function(val) {
+    const q = val.toLowerCase();
+    renderPublishedWords(allPublishedWords.filter(w => w.word.toLowerCase().includes(q) || (w.category || '').toLowerCase().includes(q)));
+  };
+
+  window.deleteWord = async function(id, word) {
+    if (!confirm(`Delete "${word}"? This cannot be undone.`)) return;
+    try {
+      await deleteDoc(doc(db, 'flashcards', id));
+      allPublishedWords = allPublishedWords.filter(w => w.id !== id);
+      document.getElementById('words-count').textContent = `${allPublishedWords.length} words`;
+      renderPublishedWords(allPublishedWords);
+      showToast(`"${word}" deleted ✅`, 'success');
+    } catch { showToast('Error deleting word', 'error'); }
+  };
+
+  window.switchFcTab = function(tab) {
+    document.getElementById('fc-upload').style.display = tab === 'upload' ? 'block' : 'none';
+    document.getElementById('fc-published').style.display = tab === 'published' ? 'block' : 'none';
+    document.getElementById('fc-tab-upload').className = tab === 'upload' ? 'btn btn-gold' : 'btn btn-outline';
+    document.getElementById('fc-tab-published').className = tab === 'published' ? 'btn btn-gold' : 'btn btn-outline';
+    if (tab === 'published') loadPublishedWords();
+  };
+
+  // ── COMMUNITY ─────────────────────────────────────
+  let questions = [];
+  async function loadQuestions() {
+    try { const snap = await getDocs(collection(db, 'questions')); questions = snap.docs.map(d => ({ id: d.id, ...d.data() })); renderQuestions(); } catch {}
+  }
+  function renderQuestions() {
+    const el = document.getElementById('questions-list');
+    el.innerHTML = questions.length
+      ? questions.map(q => `<div class="question-item"><div><div class="question-text">${q.questionEn}</div>${q.questionAr ? `<div class="question-text" style="color:var(--muted);font-size:.82rem;margin-top:.2rem">${q.questionAr}</div>` : ''}<div class="question-meta">Category: ${q.category}</div></div><button class="btn btn-danger btn-sm" onclick="deleteQuestion('${q.id}')">Delete</button></div>`).join('')
+      : '<div class="empty-state"><div class="empty-icon">💬</div><p>No questions yet</p></div>';
+  }
+  window.addQuestion = async function() {
+    const en = document.getElementById('new-q-en').value.trim(), ar = document.getElementById('new-q-ar').value.trim(), cat = document.getElementById('new-q-cat').value;
+    if (!en) { showToast('Enter a question', 'error'); return; }
+    try { await addDoc(collection(db, 'questions'), { questionEn: en, questionAr: ar, category: cat, createdAt: serverTimestamp() }); showToast('Question added ✅', 'success'); closeModal('modal-add-question'); loadQuestions(); }
+    catch { showToast('Error', 'error'); }
+  };
+  window.deleteQuestion = async function(id) {
+    if (!confirm('Delete?')) return;
+    try { await deleteDoc(doc(db, 'questions', id)); showToast('Deleted', 'success'); loadQuestions(); } catch {}
+  };
+
+  // ── HELPERS ───────────────────────────────────────
+  function fmtDate(val) {
+    if (!val) return '—';
+    try { const d = val.toDate ? val.toDate() : new Date(val); return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }); } catch { return '—'; }
+  }
+
+  document.addEventListener('keydown', e => { if (e.key === 'Enter' && document.getElementById('login-screen').style.display !== 'none') window.adminLogin(); });
+</script>
+
+<script>
+  function showPanel(name, el) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    if (el) el.classList.add('active');
+  }
+  function openModal(id) { document.getElementById(id).classList.add('show'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+  window.openModal = openModal; window.closeModal = closeModal;
+  document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('show'); }));
+  function showToast(msg, type = '') {
+    const t = document.createElement('div'); t.className = `toast ${type}`; t.textContent = msg;
+    document.body.appendChild(t); setTimeout(() => t.remove(), 3500);
+  }
+  window.showToast = showToast;
+</script>
+</body>
+</html>
