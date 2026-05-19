@@ -736,18 +736,12 @@
 
   // ── FLASHCARDS ────────────────────────────────────
   function loadApiKeyStatus() {
-    const key = localStorage.getItem('hala_anthropic_key');
     const el = document.getElementById('api-key-status');
-    if (key) { el.textContent = '✅ Key saved (sk-ant-...'+key.slice(-4)+')'; el.style.color = '#1a8a4a'; }
-    else { el.textContent = '⚠️ No key saved — AI generation won\'t work.'; el.style.color = 'var(--warning)'; }
+    el.textContent = '✅ AI ready — Gemini connected';
+    el.style.color = '#1a8a4a';
   }
   window.saveApiKey = function() {
-    const key = document.getElementById('api-key-input').value.trim();
-    if (!key.startsWith('sk-')) { showToast('Invalid key — must start with sk-', 'error'); return; }
-    localStorage.setItem('hala_anthropic_key', key);
-    document.getElementById('api-key-input').value = '';
-    loadApiKeyStatus();
-    showToast('API key saved ✅', 'success');
+    showToast('AI is already configured ✅', 'success');
   };
 
   let parsedWords = [], processedWords = [];
@@ -764,36 +758,33 @@
 
   window.processWords = async function() {
     if (!parsedWords.length) return;
-    const apiKey = localStorage.getItem('hala_anthropic_key');
-    if (!apiKey) { showToast('Save your Anthropic API key first ⬆️', 'error'); return; }
 
     const btn = document.getElementById('btn-process');
     btn.innerHTML = '<span class="loading-spinner"></span> Processing...'; btn.disabled = true;
     processedWords = []; document.getElementById('words-preview').innerHTML = '';
     document.getElementById('btn-publish').style.display = 'none';
 
+    const GEMINI_KEY = 'AIzaSyCboCzAhdaA6_4oLZulHb5hp3jxPZaCd04';
+
     for (const word of parsedWords) {
       try {
-        // AI: category + example + translation
-        const aiRes = await fetch("https://api.anthropic.com/v1/messages", {
+        // AI: category + example + translation via Gemini
+        const aiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_KEY}`, {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-api-key": apiKey,
-            "anthropic-version": "2023-06-01",
-            "anthropic-dangerous-request-allowed": "true"
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 200,
-            messages: [{ role: "user", content: `For the English word "${word}", respond ONLY with valid JSON (no markdown, no explanation): {"category":"noun|verb|adjective|adverb|phrase","example":"A natural example sentence using the word.","translation":"Arabic translation"}` }]
+            contents: [{ parts: [{ text: `For the English word "${word}", respond ONLY with valid JSON (no markdown, no explanation): {"category":"noun|verb|adjective|adverb|phrase","example":"A natural example sentence using the word.","translation":"Arabic translation"}` }] }],
+            generationConfig: { maxOutputTokens: 200 }
           })
         });
         const aiData = await aiRes.json();
-        if (aiData.error) { showToast(`API Error: ${aiData.error.message}`, 'error'); break; }
+        if (aiData.error) { showToast(`AI Error: ${aiData.error.message}`, 'error'); break; }
 
         let info = { category: 'word', example: '', translation: '' };
-        try { info = JSON.parse(aiData.content[0].text.replace(/```json|```/g, '').trim()); } catch(pe) { console.warn('Parse error for', word, pe); }
+        try {
+          const raw = aiData.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          info = JSON.parse(raw.replace(/```json|```/g, '').trim());
+        } catch(pe) { console.warn('Parse error for', word, pe); }
 
         // Image from Pixabay
         const imgRes = await fetch(`https://pixabay.com/api/?key=49033165-b58b8c2b7cdff2b2ae6a6f87a&q=${encodeURIComponent(word)}&image_type=photo&safesearch=true&per_page=3`);
