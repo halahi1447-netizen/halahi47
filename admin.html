@@ -766,10 +766,11 @@
 
     
 
+    const GEMINI_API_KEY = 'AIzaSyBxzdpJ4E_glBg4DH8DqgfT3g_Q7cewocE';
     for (const word of parsedWords) {
       try {
         // AI: category + example + translation via Gemini
-        const aiRes = await fetch(`/api/gemini`, {
+        const aiRes = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
