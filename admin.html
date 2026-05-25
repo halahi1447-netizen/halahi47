@@ -787,10 +787,14 @@
           info = JSON.parse(raw.replace(/```json|```/g, '').trim());
         } catch(pe) { console.warn('Parse error for', word, pe); }
 
-        // Image from Pixabay
-        const imgRes = await fetch(`https://pixabay.com/api/?key=49033165-b58b8c2b7cdff2b2ae6a6f87a&q=${encodeURIComponent(word)}&image_type=photo&safesearch=true&per_page=3&lang=en`);
+       // Image from Pexels
+        const PEXELS_API_KEY = 'ZCGcQSiJnD33eLzW0KpHFFWfRMcmzqwBENKjKFAvrgT24qRTqM4UXkmt';
+        const safeQuery = `${word} -woman -women -girl -female -bikini -sexy -nude`;
+        const imgRes = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(safeQuery)}&per_page=3&orientation=landscape`, {
+        headers: { Authorization: PEXELS_API_KEY }
+        });
         const imgData = await imgRes.json();
-        const imgUrl = imgData.hits?.[0]?.webformatURL || '';
+        const imgUrl = imgData.photos?.[0]?.src?.medium || '';
 
         const wordObj = { word, ...info, imgUrl, published: false };
         processedWords.push(wordObj);
