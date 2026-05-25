@@ -616,7 +616,7 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contents: [{ parts: [{ text: `For the English word "${word}", respond ONLY with valid JSON (no markdown, no explanation): {"category":"noun|verb|adjective|adverb|phrase","example":"A natural example sentence using the word.","translation":"Arabic translation"}` }] }],
-            generationConfig: { maxOutputTokens: 200 }
+            generationConfig: { maxOutputTokens: 400 }
           })
         });
         const aiData = await aiRes.json();
