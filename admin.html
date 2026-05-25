@@ -615,7 +615,7 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: `For the English word "${word}", respond ONLY with valid JSON (no markdown, no explanation): {"category":"noun|verb|adjective|adverb|phrase","example":"A natural example sentence using the word.","translation":"Arabic translation"}` }] }],
+            contents: [{ parts: [{ text: `For the word "${word}" reply ONLY with JSON: {"category":"noun","example":"Short sentence.","translation":"ترجمة"}. Max 8 words in example.` }] }],
             generationConfig: { maxOutputTokens: 400 }
           })
         });
