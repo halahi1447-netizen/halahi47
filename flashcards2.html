@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Flash Cards</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--deep:#2E2451;--purple:#4B3F72;--mid:#8B82B9;--gold:#F4B740;--gold-light:#FFD36A;--bg:#F5F6FA;--muted:#6E6E7E;--card-bg:#FFFFFF;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,63,114,.09)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--deep);text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.2rem}
+    .nav-back{font-size:.85rem;color:var(--purple);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--deep)}
+
+    .page{padding:5rem 1.5rem 3rem;max-width:700px;margin:0 auto}
+    @media(min-width:768px){.page{padding:6rem 2rem 4rem}}
+    @media(min-width:1024px){.page{max-width:760px}}
+
+    .screen{display:none}
+    .screen.active{display:block;animation:fadeUp .4s ease both}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.6)}}
+    @keyframes floatIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+    @keyframes popIn{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+
+    /* WELCOME */
+    .welcome-hero{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:28px;padding:3rem 2.5rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1.5rem}
+    .wh-blob{position:absolute;border-radius:50%;opacity:.1;filter:blur(40px);pointer-events:none}
+    .wh-b1{width:250px;height:250px;background:var(--gold);top:-60px;right:-60px}
+    .wh-b2{width:180px;height:180px;background:var(--mid);bottom:-50px;left:-30px}
+    .welcome-inner{position:relative;z-index:1}
+    .welcome-icon{font-size:3.5rem;animation:floatIcon 3s ease-in-out infinite;margin-bottom:1rem}
+    .welcome-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:.5rem}
+    .welcome-sub{font-size:.95rem;color:rgba(255,255,255,.7);line-height:1.6;margin-bottom:2rem}
+    .welcome-stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2rem}
+    .ws-item{text-align:center}
+    .ws-num{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:var(--gold-light)}
+    .ws-label{font-size:.72rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em}
+    .btn-start{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:1rem;padding:.9rem 2.5rem;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 6px 20px rgba(244,183,64,.4);transition:transform .2s,box-shadow .2s}
+    .btn-start:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(244,183,64,.55)}
+    .btn-start:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+    
+    /* SPEAK BUTTON */
+    .speak-btn{background:rgba(75,63,114,.08);border:1.5px solid rgba(75,63,114,.15);border-radius:50px;padding:.35rem .9rem;font-size:1rem;cursor:pointer;margin:.4rem 0 .6rem;transition:background .2s,transform .15s;display:inline-flex;align-items:center;gap:.4rem;color:var(--purple);font-family:'DM Sans',sans-serif;font-size:.8rem;font-weight:600}
+    .speak-btn:hover{background:rgba(75,63,114,.14);transform:scale(1.04)}
+    .speak-btn:active{transform:scale(.97)}
+
+    /* FLASHCARD — single face */
+    .card-wrap{margin-bottom:1.2rem}
+    .card-face{width:100%;border-radius:24px;display:flex;flex-direction:column;align-items:center;background:white;border:1.5px solid rgba(75,63,114,.1);box-shadow:0 12px 40px rgba(46,36,81,.13);overflow:hidden;animation:fadeUp .35s ease both}
+    .card-img-area{width:100%;height:clamp(140px,28vw,220px);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:3.5rem;flex-shrink:0}
+    .card-img-area img{width:100%;height:100%;object-fit:cover;display:block}
+    .card-body{width:100%;padding:clamp(.9rem,3vw,1.6rem);text-align:center}
+    .card-category{display:inline-block;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;font-weight:600;color:var(--purple);background:rgba(75,63,114,.1);padding:.25rem .8rem;border-radius:50px;margin-bottom:.75rem}
+    .card-word{font-family:'Playfair Display',serif;font-size:clamp(1.7rem,5vw,2.4rem);font-weight:900;color:var(--deep);margin-bottom:.4rem;line-height:1.15}
+    .card-translation{font-size:clamp(.9rem,2.5vw,1.05rem);color:var(--mid);font-weight:600;margin-bottom:.55rem}
+    .card-example{font-size:clamp(.78rem,2vw,.88rem);color:var(--muted);font-style:italic;line-height:1.6}
+
+    /* RATING BUTTONS */
+    .rating-wrap{display:grid;grid-template-columns:repeat(5,1fr);gap:.45rem;margin-bottom:1.2rem}
+    .rating-btn{padding:clamp(.6rem,2vw,.9rem) .3rem;border-radius:16px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700;font-size:clamp(.7rem,1.8vw,.82rem);transition:transform .18s,box-shadow .18s;display:flex;flex-direction:column;align-items:center;gap:.3rem;min-height:clamp(72px,12vw,90px)}
+    .rating-btn:hover{transform:translateY(-4px)}
+    .rating-btn:active{transform:scale(.96)}
+    .btn-blackout{background:#fde8e8;color:#7b0000;border:2px solid #f5c0c0}
+    .btn-blackout:hover{background:#fad0d0;box-shadow:0 8px 20px rgba(123,0,0,.18)}
+    .btn-hard{background:#fdecea;color:#c0392b;border:2px solid #f5b8b4}
+    .btn-hard:hover{background:#fad5d2;box-shadow:0 8px 20px rgba(192,57,43,.2)}
+    .btn-ok{background:#fef6e4;color:#b7770d;border:2px solid #f9dfa0}
+    .btn-ok:hover{background:#fdeec4;box-shadow:0 8px 20px rgba(183,119,13,.2)}
+    .btn-good{background:#e8f4fd;color:#1a6ea8;border:2px solid #b0d8f5}
+    .btn-good:hover{background:#d0eaf9;box-shadow:0 8px 20px rgba(26,110,168,.2)}
+    .btn-easy{background:#e8f8ef;color:#1a8a4a;border:2px solid #a8e6c0}
+    .btn-easy:hover{background:#d0f2e0;box-shadow:0 8px 20px rgba(26,138,74,.2)}
+    .rating-emoji{font-size:clamp(1.2rem,3.5vw,1.6rem)}
+    .rating-label{font-size:clamp(.65rem,1.6vw,.78rem);font-weight:700}
+    .rating-sub{font-size:clamp(.55rem,1.3vw,.65rem);opacity:.65}
+
+    /* DONE SCREEN */
+    .done-hero{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:28px;padding:3rem;text-align:center;position:relative;overflow:hidden;margin-bottom:1.5rem}
+    .done-icon{font-size:4rem;animation:popIn .5s cubic-bezier(.18,.89,.32,1.28);margin-bottom:1rem}
+    .done-title{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:white;margin-bottom:.5rem}
+    .done-sub{font-size:.95rem;color:rgba(255,255,255,.7);margin-bottom:2rem}
+    .done-stats{display:flex;justify-content:center;gap:1.2rem;flex-wrap:wrap}
+    .ds-item{text-align:center}
+    .ds-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--gold-light)}
+    .ds-label{font-size:.72rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.08em}
+    .done-actions{display:flex;gap:1rem;justify-content:center;margin-top:1.5rem}
+    .btn-secondary{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:white;font-weight:600;font-size:.9rem;padding:.75rem 1.8rem;border-radius:50px;text-decoration:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background .2s}
+    .btn-secondary:hover{background:rgba(255,255,255,.22)}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+    .empty-icon{font-size:4rem;margin-bottom:1rem}
+
+    /* LOADING */
+    .loading-wrap{text-align:center;padding:4rem;color:var(--muted)}
+    .spinner{width:40px;height:40px;border:3px solid rgba(75,63,114,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Hala Hi</a>
+  <div class="nav-right">
+    <a class="nav-back" href="dashboard.html">← Dashboard</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- LOADING -->
+  <div class="screen active" id="screen-loading">
+    <div class="loading-wrap">
+      <div class="spinner"></div>
+      <p>Loading your flashcards...</p>
+    </div>
+  </div>
+
+  <!-- WELCOME SCREEN -->
+  <div class="screen" id="screen-welcome">
+    <div class="welcome-hero">
+      <div class="wh-blob wh-b1"></div>
+      <div class="wh-blob wh-b2"></div>
+      <div class="welcome-inner">
+        <div class="welcome-icon">🃏</div>
+        <h1 class="welcome-title">Flash Cards</h1>
+        <p class="welcome-sub">Smart spaced repetition — the app remembers which words you find hard and shows them more often!</p>
+        <div class="welcome-stats">
+          <div class="ws-item">
+            <div class="ws-num" id="ws-due">—</div>
+            <div class="ws-label">Due Today</div>
+          </div>
+          <div class="ws-item">
+            <div class="ws-num" id="ws-total">—</div>
+            <div class="ws-label">Total Words</div>
+          </div>
+          <div class="ws-item">
+            <div class="ws-num" id="ws-mastered">—</div>
+            <div class="ws-label">Mastered</div>
+          </div>
+        </div>
+        <button class="btn-start" id="btn-start" onclick="startSession()">Start Session 🚀</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARD SCREEN -->
+  <div class="screen" id="screen-card">
+
+    <div class="card-wrap" id="card-wrap">
+      <div class="card-face" id="card-face">
+        <div class="card-img-area" id="card-img-wrap"></div>
+        <div class="card-body">
+          <div class="card-category" id="card-category">noun</div>
+          <div class="card-word" id="card-word">word</div>
+          <button class="speak-btn" onclick="speakWord()" title="Listen again">🔊</button>
+          <div class="card-translation" id="card-back-translation"></div>
+          <div class="card-example" id="card-back-example"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rating-wrap" id="rating-wrap" style="display:none">
+      <button class="rating-btn btn-blackout" onclick="rateCard('blackout')">
+        <span class="rating-emoji">😭</span>
+        <span class="rating-label">Blackout</span>
+        <span class="rating-sub">+5 cards</span>
+      </button>
+      <button class="rating-btn btn-hard" onclick="rateCard('hard')">
+        <span class="rating-emoji">😕</span>
+        <span class="rating-label">Hard</span>
+        <span class="rating-sub">+10 cards</span>
+      </button>
+      <button class="rating-btn btn-ok" onclick="rateCard('ok')">
+        <span class="rating-emoji">😐</span>
+        <span class="rating-label">OK</span>
+        <span class="rating-sub">+20 cards</span>
+      </button>
+      <button class="rating-btn btn-good" onclick="rateCard('good')">
+        <span class="rating-emoji">🙂</span>
+        <span class="rating-label">Good</span>
+        <span class="rating-sub">2 days</span>
+      </button>
+      <button class="rating-btn btn-easy" onclick="rateCard('easy')">
+        <span class="rating-emoji">😊</span>
+        <span class="rating-label">Easy</span>
+        <span class="rating-sub">7 days</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- DONE SCREEN -->
+  <div class="screen" id="screen-done">
+    <div class="done-hero">
+      <div class="wh-blob wh-b1"></div>
+      <div class="wh-blob wh-b2"></div>
+      <div class="welcome-inner">
+        <div class="done-icon">🎉</div>
+        <h2 class="done-title">Session Complete!</h2>
+        <p class="done-sub">Great work! You're building real vocabulary skills.</p>
+        <div class="done-stats">
+          <div class="ds-item"><div class="ds-num" id="done-easy">0</div><div class="ds-label">😊 Easy</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-good">0</div><div class="ds-label">🙂 Good</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-ok">0</div><div class="ds-label">😐 OK</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-hard">0</div><div class="ds-label">😕 Hard</div></div>
+          <div class="ds-item"><div class="ds-num" id="done-blackout">0</div><div class="ds-label">😭 Blackout</div></div>
+        </div>
+        <div class="done-actions">
+          <button class="btn-secondary" onclick="restartSession()">🔄 Review Hard Words</button>
+          <a class="btn-secondary" href="dashboard.html">🏠 Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div class="screen" id="screen-empty">
+    <div class="empty-state">
+      <div class="empty-icon">📭</div>
+      <h2 style="font-family:'Playfair Display',serif;color:var(--deep);margin-bottom:.5rem">No flashcards yet!</h2>
+      <p>Your teacher hasn't uploaded any words yet. Check back soon!</p>
+      <a href="dashboard.html" style="display:inline-block;margin-top:1.5rem;color:var(--purple);font-weight:600;text-decoration:none">← Back to Dashboard</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, setDoc, updateDoc, increment, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let allCards = [];
+  let dueCards = [];
+  let currentIndex = 0;
+  let sessionStats = { easy: 0, good: 0, ok: 0, hard: 0, blackout: 0 };
+  let isFlipped = false;
+  let currentUser = null;
+  let userProgress = {};
+
+  // Preload voices (needed for some browsers)
+  if (window.speechSynthesis.onvoiceschanged !== undefined) {
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+  window.speechSynthesis.getVoices();
+
+  // ── Auth ──
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+    await loadCards();
+  });
+
+  // ── Load cards from Firestore ──
+  async function loadCards() {
+    try {
+      const snap = await getDocs(collection(db, 'flashcards'));
+      allCards = snap.docs.map(d => ({ id: d.id, ...d.data() })).filter(c => c.published);
+
+      if (allCards.length === 0) { showScreen('empty'); return; }
+
+      // Load user progress
+      const progressSnap = await getDoc(doc(db, 'members', currentUser.email.toLowerCase(), 'flashcardProgress', 'data'));
+      userProgress = progressSnap.exists() ? progressSnap.data() : {};
+
+      // Calculate due cards (spaced repetition)
+      const now = Date.now();
+      dueCards = allCards.filter(card => {
+        const prog = userProgress[card.id];
+        if (!prog) return true; // Never seen = due
+        if (!prog.nextReview) return true;
+        return now >= prog.nextReview;
+      });
+
+      // Shuffle due cards
+      dueCards = dueCards.sort(() => Math.random() - 0.5);
+
+      // Stats
+      const mastered = allCards.filter(c => userProgress[c.id]?.level >= 3).length;
+      document.getElementById('ws-due').textContent = dueCards.length;
+      document.getElementById('ws-total').textContent = allCards.length;
+      document.getElementById('ws-mastered').textContent = mastered;
+
+      if (dueCards.length === 0) {
+        document.getElementById('btn-start').textContent = '✅ All caught up! Review anyway';
+        dueCards = [...allCards].sort(() => Math.random() - 0.5).slice(0, 20);
+      }
+
+      showScreen('welcome');
+    } catch(e) {
+      console.error(e);
+      showScreen('empty');
+    }
+  }
+
+  // ── Start session ──
+  window.startSession = function() {
+    if (dueCards.length === 0) return;
+    currentIndex = 0;
+    sessionStats = { easy: 0, good: 0, ok: 0, hard: 0, blackout: 0 };
+    showScreen('card');
+    showCard();
+  };
+
+  // ── Speak word ──
+  window.speakWord = function() {
+    const word = document.getElementById('card-word').textContent;
+    if (!word || word === 'word') return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(word);
+    utt.lang = 'en-US';
+    utt.rate = 0.85;
+    // Try to pick a natural English voice
+    const voices = window.speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en') && v.localService) || voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) utt.voice = enVoice;
+    window.speechSynthesis.speak(utt);
+  };
+
+  // ── Show card ──
+  function showCard() {
+    if (currentIndex >= dueCards.length) { endSession(); return; }
+
+    const card = dueCards[currentIndex];
+    isFlipped = false;
+
+    // Card content
+    document.getElementById('card-category').textContent = card.category || 'word';
+    document.getElementById('card-word').textContent = card.word;
+    document.getElementById('card-back-example').textContent = card.example ? `"${card.example}"` : '';
+    document.getElementById('card-back-translation').textContent = card.translation || '';
+
+    // Image
+    const imgWrap = document.getElementById('card-img-wrap');
+    if (card.imgUrl) {
+      imgWrap.innerHTML = `<img src="${card.imgUrl}" alt="${card.word}" onerror="this.parentElement.innerHTML='🖼️'"/>`;
+    } else {
+      imgWrap.innerHTML = `🖼️`;
+    }
+
+    // Show rating buttons immediately
+    document.getElementById('rating-wrap').style.display = 'grid';
+
+    // Auto-speak the word
+    setTimeout(speakWord, 300);
+  }
+
+  // ── Rate card (Spaced Repetition) ──
+  window.rateCard = async function(rating) {
+    const card = dueCards[currentIndex];
+    sessionStats[rating]++;
+
+    // Spaced Repetition with in-session repeat
+    const prog = userProgress[card.id] || { level: 0, reviews: 0 };
+    let newLevel = prog.level || 0;
+    let daysUntilNext = null;
+    let repeatAfterCards = null;
+
+    if (rating === 'easy') {
+      newLevel = Math.min(newLevel + 3, 5);
+      daysUntilNext = [7,14,21,30,60,90][newLevel];
+    } else if (rating === 'good') {
+      newLevel = Math.min(newLevel + 1, 5);
+      daysUntilNext = 2;
+    } else if (rating === 'ok') {
+      // repeat in same session after 20 cards
+      repeatAfterCards = 20;
+    } else if (rating === 'hard') {
+      // repeat in same session after 10 cards
+      repeatAfterCards = 10;
+      newLevel = Math.max(newLevel - 1, 0);
+    } else {
+      // blackout — repeat in same session after 5 cards
+      repeatAfterCards = 5;
+      newLevel = 0;
+    }
+
+    // If needs in-session repeat, insert card back into queue
+    if (repeatAfterCards) {
+      const insertAt = Math.min(currentIndex + repeatAfterCards, dueCards.length);
+      dueCards.splice(insertAt, 0, card);
+    }
+
+    userProgress[card.id] = {
+      level: newLevel,
+      reviews: (prog.reviews || 0) + 1,
+      lastRating: rating,
+      ratingLabel: {blackout:'😭 Blackout',hard:'😕 Hard',ok:'😐 OK',good:'🙂 Good',easy:'😊 Easy'}[rating] || rating,
+      nextReview: daysUntilNext ? Date.now() + (daysUntilNext * 24 * 60 * 60 * 1000) : null,
+      lastReviewed: Date.now()
+    };
+
+    currentIndex++;
+    showCard();
+
+    // Save progress immediately after each card
+    saveProgress();
+  };
+
+  async function saveProgress() {
+    try {
+      await setDoc(
+        doc(db, 'members', currentUser.email.toLowerCase(), 'flashcardProgress', 'data'),
+        userProgress
+      );
+      // Update member stats
+      await updateDoc(doc(db, 'members', currentUser.email.toLowerCase()), {
+        cardsReviewed: increment(sessionStats.easy + sessionStats.ok + sessionStats.hard),
+        xp: increment((sessionStats.easy * 3) + (sessionStats.ok * 2) + sessionStats.hard)
+      });
+    } catch(e) { console.error('Save error:', e); }
+  }
+
+  // ── End session ──
+  function endSession() {
+    saveProgress();
+    document.getElementById('done-easy').textContent = sessionStats.easy;
+    document.getElementById('done-good').textContent = sessionStats.good;
+    document.getElementById('done-ok').textContent = sessionStats.ok;
+    document.getElementById('done-hard').textContent = sessionStats.hard;
+    document.getElementById('done-blackout').textContent = sessionStats.blackout;
+    showScreen('done');
+  }
+
+  // ── Restart with hard words ──
+  window.restartSession = function() {
+    const hardCards = dueCards.filter((_, i) => {
+      const prog = userProgress[dueCards[i]?.id];
+      return prog?.lastRating === 'hard';
+    });
+    if (hardCards.length > 0) { dueCards = hardCards; }
+    currentIndex = 0;
+    sessionStats = { easy: 0, good: 0, ok: 0, hard: 0, blackout: 0 };
+    showScreen('card');
+    showCard();
+  };
+
+  function showScreen(name) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
