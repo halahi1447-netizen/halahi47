@@ -4,10 +4,13 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
  
-  // Only allow requests from our domain
+  // Check origin or referer - browsers send one of these
   const origin = req.headers.origin || '';
-  const allowed = ['https://halahi47.vercel.app', 'http://localhost'];
-  if (!allowed.some(o => origin.startsWith(o))) {
+  const referer = req.headers.referer || '';
+  const allowed = 'halahi47.vercel.app';
+  
+  const isAllowed = origin.includes(allowed) || referer.includes(allowed);
+  if (!isAllowed) {
     return res.status(403).json({ error: 'Forbidden' });
   }
  
@@ -40,6 +43,6 @@ export default async function handler(req, res) {
     return res.status(200).json(result);
  
   } catch (e) {
-    return res.status(500).json({ error: 'Failed to generate word info' });
+    return res.status(500).json({ error: 'Failed to generate word info', details: e.message });
   }
 }
