@@ -1,18 +1,10 @@
 export default async function handler(req, res) {
-  // Only allow POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
+  res.setHeader('Access-Control-Allow-Origin', 'https://halahi47.vercel.app');
+  res.setHeader('Access-Control-Allow-Methods', 'POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
  
-  // Check origin or referer - browsers send one of these
-  const origin = req.headers.origin || '';
-  const referer = req.headers.referer || '';
-  const allowed = 'halahi47.vercel.app';
-  
-  const isAllowed = origin.includes(allowed) || referer.includes(allowed);
-  if (!isAllowed) {
-    return res.status(403).json({ error: 'Forbidden' });
-  }
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
  
   const { word } = req.body;
   if (!word) return res.status(400).json({ error: 'Missing word' });
@@ -43,6 +35,6 @@ export default async function handler(req, res) {
     return res.status(200).json(result);
  
   } catch (e) {
-    return res.status(500).json({ error: 'Failed to generate word info', details: e.message });
+    return res.status(500).json({ error: e.message });
   }
 }
