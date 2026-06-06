@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – My Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep:#3A3A4A; --purple:#5B43B4; --mid:#8B82C8;
+      --gold:#F6C445; --gold-light:#FFD96E;
+      --coral:#FF7B7B; --sky:#6ED6FF;
+      --white:#FFFFFF; --bg:#FFFDF8; --muted:#6E6E7E;
+      --success:#2ECC71; --danger:#E74C3C;
+      --card-bg:#FFFFFF;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    /* subtle dot bg */
+    body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,rgba(91,67,180,0.05) 1.5px,transparent 1.5px);background-size:28px 28px;pointer-events:none;z-index:0}
+    body>*{position:relative;z-index:1}
+
+    /* NAV */
+    nav{position:fixed;top:0;left:0;right:0;z-index:500;transition:top .3s;display:flex;align-items:center;justify-content:space-between;padding:.8rem 3rem;background:rgba(255,253,248,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(91,67,180,.09);box-shadow:0 2px 20px rgba(91,67,180,.06)}
+    .nav-logo{display:flex;align-items:center;gap:.5rem;text-decoration:none}
+    .nav-logo img{height:52px;width:52px;object-fit:cover;object-position:center top;border-radius:50%}
+    .nav-logo span{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--purple)}
+    .nav-right{display:flex;align-items:center;gap:1rem}
+    .nav-member{display:flex;align-items:center;gap:.6rem;font-size:.88rem;font-weight:600;color:var(--purple)}
+    .nav-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--mid));display:flex;align-items:center;justify-content:center;color:white;font-size:.82rem;font-weight:700}
+    .nav-logout{font-size:.82rem;color:var(--muted);text-decoration:none;padding:.35rem .9rem;border-radius:50px;border:1.5px solid rgba(91,67,180,.18);cursor:pointer;background:none;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .nav-logout:hover{color:var(--purple);border-color:var(--purple)}
+
+    .page{padding:5.5rem 3rem 4rem;max-width:1100px;margin:0 auto}
+
+    /* WELCOME HERO — light */
+    .welcome-hero{background:var(--white);border-radius:28px;padding:2.5rem 3rem;position:relative;overflow:hidden;margin-bottom:1.8rem;animation:fadeUp .6s ease both;border:1.5px solid rgba(91,67,180,.09);box-shadow:0 8px 40px rgba(91,67,180,.07)}
+    /* corner decoration */
+    .welcome-hero::before{content:'';position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(91,67,180,.06);top:-100px;right:-80px;pointer-events:none;filter:blur(40px)}
+    .welcome-hero::after{content:'';position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(246,196,69,.09);bottom:-60px;left:-40px;pointer-events:none;filter:blur(35px)}
+    .welcome-inner{position:relative;z-index:1}
+    .welcome-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.5rem}
+    .welcome-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(91,67,180,.08);border:1px solid rgba(91,67,180,.18);color:var(--purple);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:.28rem .9rem;border-radius:50px;margin-bottom:.8rem}
+    .welcome-tag .dot{width:6px;height:6px;border-radius:50%;background:var(--purple);animation:pulse 1.5s ease-in-out infinite}
+    @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+    .welcome-name{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:900;color:var(--deep);line-height:1.2;margin-bottom:.5rem}
+    .welcome-name span{color:var(--purple)}
+    .daily-quote{font-size:.92rem;color:var(--muted);font-style:italic;line-height:1.6;max-width:420px}
+    .streak-badge{display:flex;flex-direction:column;align-items:center;background:rgba(246,196,69,.1);border:1.5px solid rgba(246,196,69,.25);border-radius:20px;padding:1rem 1.4rem;text-align:center;flex-shrink:0}
+    .streak-fire{font-size:1.8rem;line-height:1;margin-bottom:.2rem}
+    .streak-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--deep);line-height:1}
+    .streak-label{font-size:.68rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:.2rem}
+
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.8rem;animation:fadeUp .6s ease .1s both}
+    .stat-card{background:var(--card-bg);border-radius:20px;padding:1.4rem 1.6rem;border:1.5px solid rgba(91,67,180,.08);transition:transform .3s,box-shadow .3s;box-shadow:0 4px 16px rgba(91,67,180,.05)}
+    .stat-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(91,67,180,.11)}
+    .stat-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+    .stat-icon svg{width:20px;height:20px}
+    .si-purple{background:rgba(91,67,180,.1)} .si-purple svg{stroke:var(--purple)}
+    .si-gold{background:rgba(246,196,69,.15)} .si-gold svg{stroke:#a07800}
+    .si-coral{background:rgba(255,123,123,.12)} .si-coral svg{stroke:var(--coral)}
+    .si-sky{background:rgba(110,214,255,.15)} .si-sky svg{stroke:#0077aa}
+    .stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:900;color:var(--deep);line-height:1;margin-bottom:.2rem}
+    .stat-label{font-size:.78rem;color:var(--muted)}
+    .badge{display:inline-block;font-size:.68rem;font-weight:600;padding:.15rem .55rem;border-radius:50px;margin-top:.4rem}
+    .badge-green{background:rgba(46,204,113,.1);color:#1a8a4a}
+    .badge-gold{background:rgba(246,196,69,.15);color:#8a6000}
+    .badge-purple{background:rgba(91,67,180,.1);color:var(--purple)}
+
+    /* ZOOM CARD */
+    .zoom-card{background:var(--purple);border-radius:24px;padding:2rem 2.5rem;margin-bottom:1.8rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;animation:fadeUp .6s ease .15s both;position:relative;overflow:hidden;box-shadow:0 12px 40px rgba(91,67,180,.28)}
+    .zoom-card::before{content:'';position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.05);top:-80px;right:-60px;pointer-events:none}
+    .zoom-card::after{content:'';position:absolute;width:140px;height:140px;border-radius:50%;background:rgba(246,196,69,.12);bottom:-50px;left:30px;pointer-events:none}
+    .zoom-left{position:relative;z-index:1}
+    .zoom-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:.25rem .8rem;border-radius:50px;margin-bottom:.8rem}
+    .zoom-tag .live-dot{width:6px;height:6px;border-radius:50%;background:#ef4444;animation:pulse 1.2s ease-in-out infinite}
+    .zoom-title{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:white;margin-bottom:.4rem}
+    .zoom-desc{font-size:.88rem;color:rgba(255,255,255,.65);line-height:1.5}
+    .zoom-btn{display:inline-flex;align-items:center;gap:.6rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:.95rem;padding:.8rem 2rem;border-radius:50px;text-decoration:none;flex-shrink:0;transition:transform .3s cubic-bezier(.22,.68,0,1.2),box-shadow .3s;box-shadow:0 6px 20px rgba(246,196,69,.4);position:relative;z-index:1}
+    .zoom-btn:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 30px rgba(246,196,69,.55)}
+    .zoom-btn.disabled{background:rgba(255,255,255,.15);color:rgba(255,255,255,.5);pointer-events:none;box-shadow:none}
+
+    /* MAIN CARDS */
+    .section-title{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:var(--deep);margin-bottom:1rem}
+    .main-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-bottom:1.8rem;animation:fadeUp .6s ease .2s both}
+    .main-card{border-radius:24px;padding:2rem;position:relative;overflow:hidden;cursor:pointer;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between;min-height:220px;transition:transform .35s cubic-bezier(.22,.68,0,1.2),box-shadow .35s ease}
+    .main-card:hover{transform:translateY(-8px) scale(1.02)}
+    .mc-flash{background:var(--purple);box-shadow:0 8px 30px rgba(91,67,180,.25)}
+    .mc-discuss{background:var(--coral);box-shadow:0 8px 30px rgba(255,123,123,.25)}
+    .mc-schedule{background:var(--gold);box-shadow:0 8px 30px rgba(246,196,69,.28)}
+    .mc-flash:hover{box-shadow:0 24px 50px rgba(91,67,180,.38)}
+    .mc-discuss:hover{box-shadow:0 24px 50px rgba(255,123,123,.38)}
+    .mc-schedule:hover{box-shadow:0 24px 50px rgba(246,196,69,.45)}
+    /* corner circles on cards */
+    .main-card::before{content:'';position:absolute;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.07);bottom:-50px;right:-40px;pointer-events:none}
+    .main-card::after{content:'';position:absolute;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.06);top:-20px;right:30px;pointer-events:none}
+    .mc-schedule::before{background:rgba(58,58,74,.06)}
+    .mc-schedule::after{background:rgba(58,58,74,.04)}
+    .mc-icon-wrap{width:48px;height:48px;border-radius:14px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;position:relative;z-index:1}
+    .mc-icon-wrap svg{width:24px;height:24px;stroke:white}
+    .mc-schedule .mc-icon-wrap svg{stroke:var(--deep)}
+    .mc-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:rgba(255,255,255,.55);margin-bottom:.3rem;position:relative;z-index:1}
+    .mc-schedule .mc-label{color:rgba(58,58,74,.55)}
+    .mc-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:white;margin-bottom:.4rem;position:relative;z-index:1}
+    .mc-schedule .mc-title{color:var(--deep)}
+    .mc-desc{font-size:.82rem;color:rgba(255,255,255,.65);line-height:1.5;margin-bottom:1rem;position:relative;z-index:1}
+    .mc-schedule .mc-desc{color:rgba(58,58,74,.6)}
+    .mc-cta{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;font-size:.8rem;font-weight:600;padding:.45rem 1.1rem;border-radius:50px;transition:background .2s;width:fit-content;position:relative;z-index:1}
+    .mc-cta:hover{background:rgba(255,255,255,.28)}
+    .mc-schedule .mc-cta{background:rgba(58,58,74,.1);border-color:rgba(58,58,74,.2);color:var(--deep)}
+    .mc-schedule .mc-cta:hover{background:rgba(58,58,74,.18)}
+
+    /* LEADERBOARD */
+    .leaderboard-section{animation:fadeUp .6s ease .3s both}
+    .leader-card{background:var(--card-bg);border-radius:20px;padding:1.8rem 2rem;border:1.5px solid rgba(91,67,180,.08);box-shadow:0 4px 16px rgba(91,67,180,.05)}
+    .leader-list{display:flex;flex-direction:column;gap:.6rem;margin-top:1rem}
+    .leader-item{display:flex;align-items:center;gap:.8rem;padding:.75rem 1rem;border-radius:12px;background:var(--bg);transition:background .2s}
+    .leader-item:hover{background:rgba(91,67,180,.05)}
+    .leader-item.me{background:rgba(246,196,69,.08);border:1px solid rgba(246,196,69,.2)}
+    .leader-rank{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--muted);width:24px;text-align:center;flex-shrink:0}
+    .leader-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:white;flex-shrink:0}
+    .leader-name{flex:1;font-size:.9rem;font-weight:600;color:var(--deep)}
+    .leader-name small{display:block;font-size:.72rem;color:var(--muted);font-weight:400;margin-top:1px}
+    .leader-xp{font-size:.8rem;font-weight:700;color:var(--purple);background:rgba(91,67,180,.08);padding:.25rem .75rem;border-radius:50px;white-space:nowrap}
+
+    /* MEMBERSHIP EXPIRY WARNING */
+    .expiry-warning{display:none;position:fixed;top:0;left:0;right:0;z-index:999;padding:.75rem 2rem;font-size:.88rem;font-weight:600;align-items:center;justify-content:center;gap:.7rem;text-align:center}
+    .expiry-warning.warn{background:linear-gradient(90deg,#c0392b,#e74c3c);color:#fff;box-shadow:0 4px 20px rgba(192,57,43,.4)}
+    .expiry-warning.expired{background:linear-gradient(90deg,#7b0000,#c0392b);color:#fff;box-shadow:0 4px 20px rgba(123,0,0,.5)}
+    .expiry-warning .exp-days{background:rgba(255,255,255,.2);border-radius:50px;padding:.1rem .6rem;font-size:.82rem;white-space:nowrap}
+    .expiry-warning .exp-renew{background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:50px;padding:.2rem .8rem;font-size:.78rem;font-weight:700;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .2s}
+    .expiry-warning .exp-renew:hover{background:rgba(255,255,255,.4)}
+    .expiry-warning-spacer{display:none;height:44px}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:900px){
+      nav{padding:.6rem 1.5rem}
+      .page{padding:5rem 1.2rem 3rem}
+      .welcome-hero{padding:1.8rem}
+      .welcome-top{flex-direction:column;gap:1rem}
+      .stats-row{grid-template-columns:repeat(2,1fr)}
+      .main-cards{grid-template-columns:1fr}
+      .zoom-card{flex-direction:column;align-items:flex-start;padding:1.8rem}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">
+    <img src="logo.png" alt="Hala Hi"/>
+    <span>Hala Hi</span>
+  </a>
+  <div class="nav-right">
+    <div class="nav-member">
+      <div class="nav-avatar" id="nav-avatar">?</div>
+      <span id="nav-name">Loading...</span>
+    </div>
+    <button class="nav-logout" onclick="logout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- EXPIRY WARNING -->
+  <!-- EXPIRY BANNER (fixed top) -->
+  <div class="expiry-warning" id="expiry-warning">
+    <span id="expiry-warning-text"></span>
+    <a class="exp-renew" href="mailto:hala.hi1447@gmail.com?subject=Membership Renewal">Renew Now →</a>
+  </div>
+  <div class="expiry-warning-spacer" id="expiry-spacer"></div>
+
+  <!-- WELCOME HERO -->
+  <div class="welcome-hero">
+    <div class="welcome-inner">
+      <div class="welcome-top">
+        <div>
+          <div class="welcome-tag"><span class="dot"></span> Member</div>
+          <h1 class="welcome-name">Hello, <span id="member-name">there</span>!</h1>
+          <p class="daily-quote" id="daily-quote">Loading today's inspiration...</p>
+          <p style="font-size:.82rem;color:var(--muted);margin-top:.4rem;font-style:italic">Practice makes perfect — show up every day.</p>
+        </div>
+        <div class="streak-badge">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-num" id="streak-num">0</div>
+          <div class="streak-label">Day Streak</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ZOOM CARD -->
+  <div class="zoom-card">
+    <div class="zoom-left">
+      <div class="zoom-tag"><span class="live-dot"></span> Live Session</div>
+      <div class="zoom-title">Today's Speaking Session</div>
+      <div class="zoom-desc" id="zoom-desc">Your English grows every time you show up. 🌱</div>
+    </div>
+    <a class="zoom-btn" id="zoom-btn" href="#" target="_blank" onclick="trackZoomClick(event)">Join Session →</a>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-icon si-purple">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <div class="stat-num" id="stat-sessions">0</div>
+      <div class="stat-label">Sessions Attended</div>
+      <span class="badge badge-green" id="stat-sessions-badge"></span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-gold">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      </div>
+      <div class="stat-num" id="stat-mastered">0</div>
+      <div class="stat-label">Words Mastered</div>
+      <span class="badge badge-gold" id="stat-mastered-badge">level ≥ 3</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-coral">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89L17 22l-5-3-5 3 1.523-9.11"/></svg>
+      </div>
+      <div class="stat-num" id="stat-xp">0</div>
+      <div class="stat-label">XP Points</div>
+      <span class="badge badge-purple" id="stat-rank-badge">Rank #—</span>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon si-sky">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div class="stat-num" id="stat-days">—</div>
+      <div class="stat-label">Days Until Expiry</div>
+      <span class="badge badge-green" id="stat-plan-badge"></span>
+    </div>
+  </div>
+
+  <!-- MAIN CARDS -->
+  <p class="section-title">What would you like to do today?</p>
+  <div class="main-cards">
+    <a class="main-card mc-flash" href="flashcards2.html">
+      <div class="mc-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      </div>
+      <div>
+        <div class="mc-label">Daily Practice</div>
+        <div class="mc-title">Flash Cards</div>
+        <div class="mc-desc">Review today's words and build your vocabulary streak.</div>
+        <div class="mc-cta">Start Reviewing →</div>
+      </div>
+    </a>
+    <a class="main-card mc-discuss" href="community.html">
+      <div class="mc-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="mc-label">Community</div>
+        <div class="mc-title">Discussion Board</div>
+        <div class="mc-desc">Share thoughts and stories in English. Every reply earns XP!</div>
+        <div class="mc-cta">Join Discussion →</div>
+      </div>
+    </a>
+    <a class="main-card mc-schedule" href="schedule.html">
+      <div class="mc-icon-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </div>
+      <div>
+        <div class="mc-label">Sessions</div>
+        <div class="mc-title">Weekly Schedule</div>
+        <div class="mc-desc">See upcoming live sessions and plan your week.</div>
+        <div class="mc-cta">View Schedule →</div>
+      </div>
+    </a>
+  </div>
+
+  <!-- LEADERBOARD -->
+  <div class="leaderboard-section">
+    <div class="leader-card">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <p class="section-title" style="margin-bottom:0">Leaderboard</p>
+        <span style="font-size:.78rem;color:var(--muted)">Top members this month</span>
+      </div>
+      <div class="leader-list" id="leaderboard-list">
+        <div style="text-align:center;padding:2rem;color:var(--muted)">Loading...</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc, getDocs, collection, setDoc, updateDoc, increment, serverTimestamp, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const quotes = [
+    "Every word you learn is a door to a new world.",
+    "Speak with confidence — mistakes are how you grow.",
+    "Consistency is the key to fluency. Keep going!",
+    "You are one conversation away from a breakthrough.",
+    "Small daily improvements lead to amazing results.",
+    "Your voice matters. Use it!",
+    "Language is the road map of a culture. Explore it."
+  ];
+
+  const colors = ['#4B3F72','#1b6ca8','#1a5c38','#7c2d12','#0f4c75','#6B21A8','#0369A1'];
+
+  let currentUser = null; // shared across functions
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+
+    try {
+      // Load member data — create doc if doesn't exist
+      const memberSnap = await getDoc(doc(db, 'members', user.email.toLowerCase()));
+      let memberData = { name: user.email.split('@')[0], xp: 0, streak: 0, sessionsAttended: 0, cardsReviewed: 0, plan: 'monthly' };
+      
+      if (memberSnap.exists()) {
+        memberData = { ...memberData, ...memberSnap.data() };
+      } else {
+        // Create the document so updateDoc works later
+        await setDoc(doc(db, 'members', user.email.toLowerCase()), {
+          ...memberData,
+          email: user.email.toLowerCase(),
+          joinedAt: serverTimestamp(),
+          status: 'active'
+        });
+      }
+
+      // Check membership expiry
+      // Load batch start date from settings
+      let batchStartDate = null;
+      try {
+        const cohortSnap = await getDoc(doc(db, 'settings', 'cohort'));
+        if (cohortSnap.exists() && cohortSnap.data().batchStartDate) {
+          batchStartDate = new Date(cohortSnap.data().batchStartDate);
+        }
+      } catch {}
+
+      // Calculate effective expiresAt:
+      // If member has no expiresAt, compute it now and save it
+      if (!memberData.expiresAt && memberData.joinedAt) {
+        const joinedDate = memberData.joinedAt?.toDate ? memberData.joinedAt.toDate() : new Date(memberData.joinedAt);
+        const startDate = (batchStartDate && batchStartDate > joinedDate) ? batchStartDate : joinedDate;
+        const exp = new Date(startDate);
+        exp.setMonth(exp.getMonth() + 1);
+        memberData.expiresAt = exp.toISOString();
+        // Save back to Firestore
+        try {
+          await updateDoc(doc(db, 'members', user.email.toLowerCase()), { expiresAt: memberData.expiresAt });
+        } catch {}
+      }
+
+      if (memberData.expiresAt) {
+        const exp = new Date(memberData.expiresAt);
+        const now = new Date();
+        const daysLeft = Math.ceil((exp - now) / (1000 * 60 * 60 * 24));
+        
+        document.getElementById('stat-days').textContent = daysLeft > 0 ? daysLeft : 'Expired';
+        document.getElementById('stat-plan-badge').textContent = memberData.plan || 'Monthly';
+        
+        const banner = document.getElementById('expiry-warning');
+        const spacer = document.getElementById('expiry-spacer');
+        const textEl = document.getElementById('expiry-warning-text');
+        if (daysLeft <= 7 && daysLeft > 0) {
+          textEl.textContent = daysLeft === 1
+            ? '⚠️ Your membership expires tomorrow!'
+            : '⚠️ Your membership expires in ' + daysLeft + ' days!';
+          banner.classList.add('warn');
+          banner.style.display = 'flex';
+          spacer.style.display = 'block';
+          document.querySelector('nav').style.top = banner.offsetHeight + 'px';
+        }
+        if (daysLeft <= 0) {
+          textEl.textContent = '❌ Your membership has expired. Renew to continue accessing Hala Hi.';
+          banner.classList.add('expired');
+          banner.style.display = 'flex';
+          spacer.style.display = 'block';
+          document.querySelector('nav').style.top = banner.offsetHeight + 'px';
+        }
+      }
+
+      // Update streak (if last visit was yesterday, increment; if today, keep; else reset)
+      const today = new Date().toDateString();
+      const lastVisit = memberData.lastVisit ? new Date(memberData.lastVisit).toDateString() : null;
+      const yesterday = new Date(Date.now() - 86400000).toDateString();
+      
+      let newStreak = memberData.streak || 0;
+      if (lastVisit !== today) {
+        if (lastVisit === yesterday) { newStreak += 1; }
+        else if (lastVisit !== today) { newStreak = lastVisit ? 1 : 1; }
+        await updateDoc(doc(db, 'members', user.email.toLowerCase()), {
+          lastVisit: new Date().toISOString(),
+          streak: newStreak
+        }).catch(() => {});
+      }
+
+      // Render name & avatar
+      const firstName = (memberData.name || user.email).split(' ')[0];
+      document.getElementById('member-name').textContent = firstName;
+      document.getElementById('nav-name').textContent = firstName;
+      document.getElementById('nav-avatar').textContent = firstName.charAt(0).toUpperCase();
+
+      // Daily quote
+      const dayOfWeek = new Date().getDay();
+      document.getElementById('daily-quote').textContent = quotes[dayOfWeek];
+
+      // Streak
+      document.getElementById('streak-num').textContent = newStreak;
+
+      // Stats
+      const sessions = memberData.sessionsAttended || 0;
+      const xp = memberData.xp || 0;
+
+      document.getElementById('stat-sessions').textContent = sessions;
+      document.getElementById('stat-xp').textContent = xp;
+      document.getElementById('stat-sessions-badge').textContent = sessions > 0 ? `+${sessions} this month` : 'Join your first!';
+
+      // Words Mastered — from flashcardProgress subcollection
+      try {
+        const progressSnap = await getDoc(doc(db, 'members', user.email.toLowerCase(), 'flashcardProgress', 'data'));
+        if (progressSnap.exists()) {
+          const progress = progressSnap.data();
+          const mastered = Object.values(progress).filter(p => p.level >= 3).length;
+          document.getElementById('stat-mastered').textContent = mastered;
+          document.getElementById('stat-mastered-badge').textContent = mastered > 0 ? `${mastered} words 🌟` : 'Keep reviewing!';
+        }
+      } catch {}
+
+      // Load Zoom link
+      const zoomSnap = await getDoc(doc(db, 'settings', 'zoom'));
+      if (zoomSnap.exists() && zoomSnap.data().link) {
+        const zoomBtn = document.getElementById('zoom-btn');
+        zoomBtn.href = zoomSnap.data().link;
+        zoomBtn.classList.remove('disabled');
+      } else {
+        document.getElementById('zoom-btn').classList.add('disabled');
+        document.getElementById('zoom-btn').textContent = 'No session today';
+        document.getElementById('zoom-desc').textContent = 'No live session scheduled for today. Check back later!';
+      }
+
+      // Leaderboard
+      const membersSnap = await getDocs(collection(db, 'members'));
+      const allMembers = membersSnap.docs.map(d => d.data()).sort((a,b) => (b.xp||0) - (a.xp||0)).slice(0,10);
+      
+      const myRank = allMembers.findIndex(m => m.email === user.email.toLowerCase()) + 1;
+      document.getElementById('stat-rank-badge').textContent = myRank > 0 ? `Rank #${myRank}` : 'Rank #—';
+
+      const lbList = document.getElementById('leaderboard-list');
+      if (allMembers.length === 0) {
+        lbList.innerHTML = '<div style="text-align:center;padding:2rem;color:var(--muted)">No members yet 🌱</div>';
+      } else {
+        const medals = ['🥇','🥈','🥉'];
+        lbList.innerHTML = allMembers.map((m, i) => {
+          const isMe = m.email === user.email.toLowerCase();
+          const name = (m.name || m.email || 'Member').split(' ')[0];
+          const initials = name.charAt(0).toUpperCase();
+          return `
+            <div class="leader-item ${isMe ? 'me' : ''}">
+              <div class="leader-rank">${medals[i] || (i+1)}</div>
+              <div class="leader-avatar" style="background:${colors[i % colors.length]}">${initials}</div>
+              <div class="leader-name">${name} ${isMe ? '<span style="color:var(--gold);font-weight:600">(You)</span>' : ''}<small>${m.plan || 'Member'}</small></div>
+              <div class="leader-xp">${m.xp || 0} XP</div>
+            </div>
+          `;
+        }).join('');
+      }
+
+    } catch(e) {
+      console.error('Dashboard error:', e);
+    }
+  });
+
+  // ── Zoom click tracking (max 4 clicks per day = 1 session) ──
+  window.trackZoomClick = async function(e) {
+    try {
+      if (!currentUser) return;
+      const memberRef = doc(db, 'members', currentUser.email.toLowerCase());
+      const snap = await getDoc(memberRef);
+      if (!snap.exists()) return;
+
+      const data = snap.data();
+      const today = new Date().toDateString();
+      const lastClickDate = data.zoomLastClickDate || '';
+      const todayClicks = lastClickDate === today ? (data.zoomTodayClicks || 0) : 0;
+
+      if (todayClicks < 4) {
+        const updates = {
+          zoomTodayClicks: todayClicks + 1,
+          zoomLastClickDate: today
+        };
+        if (todayClicks === 0) {
+          updates.sessionsAttended = increment(1);
+          updates.xp = increment(10);
+        }
+        await updateDoc(memberRef, updates);
+      }
+    } catch(e) { console.error('Zoom track error:', e); }
+  };
+
+  window.logout = async function() {
+    await signOut(auth);
+    window.location.href = 'login.html';
+  };
+</script>
+
+</body>
+</html>
