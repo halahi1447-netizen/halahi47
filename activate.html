@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – تفعيل العضوية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #2E2451;
+      --purple: #4B3F72;
+      --mid: #8B82B9;
+      --gold: #F4B740;
+      --gold-light: #FFD36A;
+      --white: #FFFFFF;
+      --bg: #F5F6FA;
+      --muted: #6E6E7E;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--deep);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    .bg-blob {
+      position: fixed; border-radius: 50%;
+      opacity: .07; filter: blur(80px); pointer-events: none; z-index: 0;
+    }
+    .blob1 { width: 500px; height: 500px; background: var(--gold); top: -150px; right: -150px; }
+    .blob2 { width: 400px; height: 400px; background: var(--mid); bottom: -100px; left: -100px; }
+
+    .card {
+      position: relative; z-index: 1;
+      background: var(--white);
+      border-radius: 24px;
+      width: 100%; max-width: 460px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(46,36,81,0.12);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--deep) 0%, var(--purple) 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 30px;
+      background: var(--white);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+
+    .logo-wrap {
+      width: 80px; height: 80px;
+      margin: 0 auto 1rem;
+      animation: float 4s ease-in-out infinite;
+    }
+    .logo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 16px rgba(244,183,64,.4));
+    }
+
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .card-header h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--white);
+      margin-bottom: .3rem;
+    }
+
+    .card-header p {
+      color: rgba(255,255,255,0.65);
+      font-size: .9rem;
+    }
+
+    .gold-tag {
+      display: inline-block;
+      background: rgba(244,183,64,.2);
+      border: 1px solid rgba(244,183,64,.4);
+      color: var(--gold-light);
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: .8rem;
+      letter-spacing: .5px;
+    }
+
+    .card-body {
+      padding: 2rem 2rem 2.5rem;
+    }
+
+    .success-badge {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      background: #F0FBF5;
+      border: 1px solid #B8EDD0;
+      border-radius: 12px;
+      padding: .85rem 1rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .success-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: #22C55E;
+      border-radius: 50%;
+      display: grid; place-items: center;
+    }
+    .success-icon svg { width: 18px; height: 18px; stroke: white; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .success-badge p { font-size: .88rem; color: #166534; font-weight: 500; }
+    .success-badge span { font-size: .8rem; color: #4CAF50; }
+
+    .form-group { margin-bottom: 1.25rem; }
+
+    label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: .45rem;
+      letter-spacing: .3px;
+    }
+
+    input {
+      width: 100%;
+      padding: .8rem 1rem;
+      border: 1.5px solid #E2E0ED;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem;
+      color: var(--deep);
+      background: var(--bg);
+      transition: border-color .2s, box-shadow .2s;
+      outline: none;
+    }
+    input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px rgba(75,63,114,.1);
+      background: var(--white);
+    }
+    input::placeholder { color: #AEACC0; }
+    input[dir="ltr"] { text-align: left; }
+
+    .hint {
+      font-size: .76rem;
+      color: var(--muted);
+      margin-top: .35rem;
+    }
+
+    .btn {
+      width: 100%;
+      padding: .95rem;
+      background: var(--gold);
+      color: var(--deep);
+      border: none;
+      border-radius: 50px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(244,183,64,.35);
+      margin-top: .5rem;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,183,64,.5); }
+    .btn:active { transform: translateY(0); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    .footer-note {
+      text-align: center;
+      font-size: .8rem;
+      color: var(--muted);
+      margin-top: 1.25rem;
+    }
+    .footer-note a {
+      color: var(--purple);
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .footer-note a:hover { text-decoration: underline; }
+
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 1rem 0;
+    }
+    .success-screen .big-icon {
+      width: 72px; height: 72px;
+      background: linear-gradient(135deg, var(--deep), var(--purple));
+      border-radius: 50%;
+      display: grid; place-items: center;
+      margin: 0 auto 1.25rem;
+    }
+    .success-screen .big-icon svg { width: 32px; height: 32px; stroke: var(--gold); fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+    .success-screen h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--deep); margin-bottom: .5rem; }
+    .success-screen p { font-size: .9rem; color: var(--muted); line-height: 1.6; }
+
+    .loading { display: none; }
+    .loading.active { display: inline-block; }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(46,36,81,.2);
+      border-top-color: var(--deep);
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: .5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      display: none;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #DC2626;
+      font-size: .82rem;
+      padding: .6rem .9rem;
+      border-radius: 10px;
+      margin-top: .75rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob blob1"></div>
+  <div class="bg-blob blob2"></div>
+
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-wrap">
+        <img src="https://raw.githubusercontent.com/halahi1447-netizen/halahi47/main/halahiblack.png"
+             onerror="this.style.display='none'"
+             alt="Hala Hi">
+      </div>
+      <div class="gold-tag">تفعيل العضوية</div>
+      <h1>Hala Hi</h1>
+      <p>نادي الممارسة اللغوية الإنجليزية</p>
+    </div>
+
+    <div class="card-body">
+
+      <div id="formSection">
+        <div class="success-badge">
+          <div class="success-icon">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <p>تم الدفع بنجاح</p>
+            <span>خطوة أخيرة لتفعيل عضويتك</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>رقم الطلب</label>
+          <input type="text" id="orderNumber" placeholder="مثال: 10045" />
+          <p class="hint">موجود في رسالة تأكيد الطلب من سلة</p>
+        </div>
+
+        <div class="form-group">
+          <label>البريد الإلكتروني</label>
+          <input type="email" id="email" dir="ltr" placeholder="example@email.com" />
+          <p class="hint">سيُستخدم لتسجيل دخولك في المنصة</p>
+        </div>
+
+        <button class="btn" id="submitBtn" onclick="submitForm()">
+          تفعيل عضويتي
+          <span class="loading" id="loadingSpinner"><span class="spinner"></span></span>
+        </button>
+
+        <div class="error-msg" id="errorMsg">حدث خطأ، يرجى المحاولة مجدداً أو التواصل معنا.</div>
+
+        <p class="footer-note">
+          واجهتك مشكلة؟ احنا في خدمتك على
+          <a href="https://wa.me/966550201680" target="_blank">واتساب</a>
+        </p>
+      </div>
+
+      <div class="success-screen" id="successScreen">
+        <div class="big-icon">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>تم التفعيل!</h2>
+        <p>تم استلام بياناتك بنجاح.<br>سيتم تفعيل حسابك خلال دقائق.</p>
+        <br>
+        <a href="https://halahi1447-netizen.github.io/halahi47/" style="color: var(--purple); font-weight: 600; font-size: .9rem;">الذهاب للموقع ←</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    async function submitForm() {
+      const orderNumber = document.getElementById('orderNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const btn = document.getElementById('submitBtn');
+      const spinner = document.getElementById('loadingSpinner');
+      const errorMsg = document.getElementById('errorMsg');
+
+      if (!orderNumber || !email) {
+        errorMsg.textContent = 'يرجى تعبئة جميع الحقول.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorMsg.textContent = 'يرجى إدخال بريد إلكتروني صحيح.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      errorMsg.style.display = 'none';
+      btn.disabled = true;
+      spinner.classList.add('active');
+
+      try {
+        await fetch('https://hook.eu1.make.com/ucmavc81ocxy18i5cqgruehdb84jg3vj', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ orderNumber, email, timestamp: new Date().toISOString() })
+        });
+
+        document.getElementById('formSection').style.display = 'none';
+        document.getElementById('successScreen').style.display = 'block';
+
+      } catch (err) {
+        errorMsg.textContent = 'حدث خطأ، يرجى المحاولة مجدداً.';
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        spinner.classList.remove('active');
+      }
+    }
+  </script>
+
+</body>
+</html>
