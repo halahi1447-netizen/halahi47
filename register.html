@@ -210,7 +210,17 @@
         await updateProfile(userCredential.user, { displayName: fullName });
 
         // غيّر الـ status لـ active
-        await updateDoc(memberRef, { status: "active" });
+        const today = new Date();
+        const launchDate = new Date("2026-07-04");
+        const startDate = today < launchDate ? launchDate : today;
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + 1);
+
+        await updateDoc(memberRef, {
+        status: "active",
+        membershipStart: startDate.toISOString().split('T')[0],
+        membershipEnd: endDate.toISOString().split('T')[0],
+        });
 
         // وجّه للوق إن
         window.location.href = "login.html";
