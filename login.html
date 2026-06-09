@@ -428,20 +428,18 @@
       const user = userCredential.user;
 
       // ٢. بعد الإنشاء نتحقق من Firestore (الآن عندنا auth token)
-      const memberSnap = await getDoc(doc(db, 'members', email));
-
-      if (!memberSnap.exists()) {
-        // ٣. مو عضو — نحذف الحساب فوراً ونرفضه
-        await user.delete();
-        errEl.textContent = 'This email is not registered as a member. Have you joined Hala Hi?';
-        errEl.classList.add('show');
-        btn.classList.remove('loading');
-        btn.disabled = false;
-        return;
-      }
+      const memberSnap = await getDoc(doc(db, 'pendingMembers', email));
+if (!memberSnap.data()?.approved) {
+  await user.delete();
+  errEl.textContent = 'This email is not registered as a member. Have you joined Hala Hi?';
+  errEl.classList.add('show');
+  btn.classList.remove('loading');
+  btn.disabled = false;
+  return;
+}
 
       // ٤. عضو موجود — نحفظ اسمه ونفتح له الوصول
-      await updateDoc(doc(db, 'members', email), { name });
+      await updateDoc(doc(db, 'pendingMembers', email), { name });
       showSuccess();
 
     } catch (err) {
