@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – إنشاء حساب</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #2E2451;
+      --purple: #4B3F72;
+      --mid: #8B82B9;
+      --gold: #F4B740;
+      --gold-light: #FFD36A;
+      --white: #FFFFFF;
+      --bg: #F5F6FA;
+      --muted: #6E6E7E;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--deep);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem 1rem;
+    }
+    .card {
+      background: var(--white);
+      border-radius: 24px;
+      width: 100%; max-width: 460px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(46,36,81,0.12);
+    }
+    .card-header {
+      background: linear-gradient(135deg, var(--deep) 0%, var(--purple) 100%);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+    .card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 30px;
+      background: var(--white);
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    }
+    .logo-wrap { width: 80px; height: 80px; margin: 0 auto 1rem; }
+    .logo-wrap img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 4px 16px rgba(244,183,64,.4)); }
+    .card-header h1 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--white); margin-bottom: .3rem; }
+    .card-header p { color: rgba(255,255,255,0.65); font-size: .9rem; }
+    .gold-tag {
+      display: inline-block;
+      background: rgba(244,183,64,.2);
+      border: 1px solid rgba(244,183,64,.4);
+      color: var(--gold-light);
+      font-size: .78rem; font-weight: 600;
+      padding: .3rem .9rem;
+      border-radius: 50px;
+      margin-bottom: .8rem;
+    }
+    .card-body { padding: 2rem 2rem 2.5rem; }
+    .form-group { margin-bottom: 1.25rem; }
+    label { display: block; font-size: .82rem; font-weight: 600; color: var(--muted); margin-bottom: .45rem; }
+    input {
+      width: 100%; padding: .8rem 1rem;
+      border: 1.5px solid #E2E0ED; border-radius: 12px;
+      font-family: 'DM Sans', sans-serif; font-size: .95rem;
+      color: var(--deep); background: var(--bg);
+      transition: border-color .2s, box-shadow .2s; outline: none;
+    }
+    input:focus { border-color: var(--purple); box-shadow: 0 0 0 3px rgba(75,63,114,.1); background: var(--white); }
+    input::placeholder { color: #AEACC0; }
+    .btn {
+      width: 100%; padding: .95rem;
+      background: var(--gold); color: var(--deep);
+      border: none; border-radius: 50px;
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 4px 16px rgba(244,183,64,.35); margin-top: .5rem;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(244,183,64,.5); }
+    .btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    .footer-note { text-align: center; font-size: .8rem; color: var(--muted); margin-top: 1.25rem; }
+    .footer-note a { color: var(--purple); font-weight: 600; text-decoration: none; }
+    .error-msg {
+      display: none; background: #FEF2F2; border: 1px solid #FECACA;
+      color: #DC2626; font-size: .82rem; padding: .6rem .9rem;
+      border-radius: 10px; margin-top: .75rem; text-align: center;
+    }
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(46,36,81,.2); border-top-color: var(--deep);
+      border-radius: 50%; animation: spin .7s linear infinite;
+      display: none; vertical-align: middle; margin-left: .5rem;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-header">
+      <div class="logo-wrap">
+        <img src="https://raw.githubusercontent.com/halahi1447-netizen/halahi47/main/halahiblack.png"
+             onerror="this.style.display='none'" alt="Hala Hi">
+      </div>
+      <div class="gold-tag">إنشاء حساب</div>
+      <h1>Hala Hi</h1>
+      <p>Already paid on Salla? Enter your email and set a password to access your account.</p>
+    </div>
+
+    <div class="card-body">
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="fullName" placeholder="Sara Al-Omari" />
+      </div>
+      <div class="form-group">
+        <label>Email Address (used on Salla)</label>
+        <input type="email" id="email" dir="ltr" placeholder="example@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Choose a Password</label>
+        <input type="password" id="password" dir="ltr" placeholder="••••••••" />
+      </div>
+      <div class="form-group">
+        <label>Confirm Password</label>
+        <input type="password" id="confirmPassword" dir="ltr" placeholder="••••••••" />
+      </div>
+
+      <button class="btn" id="submitBtn" onclick="register()">
+        Create My Account
+        <span class="spinner" id="spinner"></span>
+      </button>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <p class="footer-note">
+        Already have an account? <a href="login.html">Login here</a>
+      </p>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+      authDomain: "halahi47-52b2d.firebaseapp.com",
+      projectId: "halahi47-52b2d",
+      storageBucket: "halahi47-52b2d.firebasestorage.app",
+      messagingSenderId: "607706363591",
+      appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    window.register = async function() {
+      const fullName = document.getElementById('fullName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      const btn = document.getElementById('submitBtn');
+      const spinner = document.getElementById('spinner');
+      const errorMsg = document.getElementById('errorMsg');
+
+      errorMsg.style.display = 'none';
+
+      if (!fullName || !email || !password || !confirmPassword) {
+        errorMsg.textContent = 'Please fill in all fields.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        errorMsg.textContent = 'Passwords do not match.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      if (password.length < 6) {
+        errorMsg.textContent = 'Password must be at least 6 characters.';
+        errorMsg.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      spinner.style.display = 'inline-block';
+
+      try {
+        // تحقق إن الإيميل موجود في members بـ status: approved
+        const memberRef = doc(db, "members", email);
+        const memberSnap = await getDoc(memberRef);
+
+        if (!memberSnap.exists() || memberSnap.data().status !== "approved") {
+          errorMsg.textContent = 'This email is not approved. Please complete activation first.';
+          errorMsg.style.display = 'block';
+          btn.disabled = false;
+          spinner.style.display = 'none';
+          return;
+        }
+
+        // أنشئ حساب Firebase Auth
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName: fullName });
+
+        // غيّر الـ status لـ active
+        await updateDoc(memberRef, { status: "active" });
+
+        // وجّه للوق إن
+        window.location.href = "login.html";
+
+      } catch (err) {
+        if (err.code === 'auth/email-already-in-use') {
+          errorMsg.textContent = 'This email already has an account. Please login instead.';
+        } else {
+          errorMsg.textContent = 'An error occurred. Please try again.';
+        }
+        errorMsg.style.display = 'block';
+        btn.disabled = false;
+        spinner.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
