@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Community</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--deep:#2E2451;--purple:#4B3F72;--mid:#8B82B9;--gold:#F4B740;--gold-light:#FFD36A;--bg:#F5F6FA;--muted:#6E6E7E;--card-bg:#FFFFFF;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,63,114,.09)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--deep);text-decoration:none}
+    .nav-back{font-size:.85rem;color:var(--purple);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--deep)}
+
+    .page{padding:5.5rem 2rem 4rem;max-width:720px;margin:0 auto}
+
+    /* HERO */
+    .hero{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:28px;padding:2.2rem 2.5rem;margin-bottom:2rem;position:relative;overflow:hidden;animation:fadeUp .5s ease both}
+    .hblob{position:absolute;border-radius:50%;opacity:.12;filter:blur(45px);pointer-events:none}
+    .hb1{width:220px;height:220px;background:var(--gold);top:-70px;right:-50px}
+    .hb2{width:160px;height:160px;background:var(--mid);bottom:-40px;left:-30px}
+    .hero-inner{position:relative;z-index:1}
+    .hero-tag{display:inline-flex;align-items:center;gap:.5rem;background:rgba(244,183,64,.18);border:1px solid rgba(244,183,64,.3);color:var(--gold-light);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:.28rem .9rem;border-radius:50px;margin-bottom:.8rem}
+    .hero-title{font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:900;color:white;margin-bottom:.4rem}
+    .hero-sub{font-size:.9rem;color:rgba(255,255,255,.7);line-height:1.6}
+
+    /* FILTERS */
+    .filters{display:flex;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap;animation:fadeUp .5s ease .1s both}
+    .filter-btn{padding:.45rem 1.1rem;border-radius:50px;border:1.5px solid rgba(75,63,114,.2);background:none;font-size:.82rem;font-weight:500;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .filter-btn.active{background:var(--purple);color:white;border-color:var(--purple)}
+    .filter-btn:hover:not(.active){background:rgba(75,63,114,.06)}
+
+    /* QUESTION CARDS */
+    .questions-list{display:flex;flex-direction:column;gap:1rem;animation:fadeUp .5s ease .15s both}
+    .question-card{background:white;border-radius:20px;padding:1.6rem;border:1px solid rgba(75,63,114,.08);transition:transform .25s,box-shadow .25s}
+    .question-card:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(46,36,81,.1)}
+    .qc-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+    .qc-cat{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:.22rem .7rem;border-radius:50px}
+    .cat-daily{background:rgba(244,183,64,.15);color:#b7770d}
+    .cat-vocabulary{background:rgba(75,63,114,.1);color:var(--purple)}
+    .cat-culture{background:rgba(46,204,113,.1);color:#1a8a4a}
+    .cat-grammar{background:rgba(231,76,60,.1);color:#c0392b}
+    .cat-fun{background:rgba(15,76,117,.1);color:#0f4c75}
+    .qc-question{font-size:1.05rem;font-weight:600;color:var(--deep);line-height:1.5;margin-bottom:.3rem}
+    .qc-question-ar{font-size:.88rem;color:var(--muted);line-height:1.5;margin-bottom:1rem}
+    .qc-reply-count{font-size:.78rem;color:var(--muted);margin-bottom:.8rem}
+
+    /* REPLY INPUT */
+    .reply-wrap{display:flex;gap:.6rem;align-items:flex-start}
+    .reply-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--purple),var(--mid));display:flex;align-items:center;justify-content:center;color:white;font-size:.75rem;font-weight:700;flex-shrink:0;margin-top:.2rem}
+    .reply-input{flex:1;padding:.65rem 1rem;border:1.5px solid rgba(75,63,114,.15);border-radius:12px;font-size:.88rem;font-family:'DM Sans',sans-serif;color:var(--deep);outline:none;resize:none;transition:border-color .2s;min-height:44px}
+    .reply-input:focus{border-color:var(--purple)}
+    .reply-submit{padding:.6rem 1.2rem;background:var(--gold);color:var(--deep);border:none;border-radius:50px;font-weight:700;font-size:.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .2s;flex-shrink:0;margin-top:.2rem}
+    .reply-submit:hover{transform:translateY(-1px)}
+
+    /* REPLIES */
+    .replies-list{margin-top:1rem;display:flex;flex-direction:column;gap:.6rem}
+    .reply-item{display:flex;gap:.6rem;align-items:flex-start}
+    .reply-item-avatar{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:700;color:white;flex-shrink:0}
+    .reply-item-body{flex:1;background:var(--bg);border-radius:12px;padding:.65rem .9rem}
+    .reply-item-name{font-size:.75rem;font-weight:600;color:var(--purple);margin-bottom:.2rem}
+    .reply-item-text{font-size:.85rem;color:var(--deep);line-height:1.5}
+    .reply-item-time{font-size:.68rem;color:var(--muted);margin-top:.2rem}
+
+    .show-replies-btn{font-size:.78rem;color:var(--purple);background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:500;margin-top:.4rem;padding:0}
+    .show-replies-btn:hover{text-decoration:underline}
+
+    /* EMPTY */
+    .empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+    .empty-icon{font-size:3.5rem;margin-bottom:1rem}
+
+    /* LOADING */
+    .loading-wrap{text-align:center;padding:3rem;color:var(--muted)}
+    .spinner{width:36px;height:36px;border:3px solid rgba(75,63,114,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+    @media(max-width:600px){nav{padding:.6rem 1.2rem}.page{padding:5rem 1rem 3rem}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Hala Hi</a>
+  <a class="nav-back" href="dashboard.html">← Dashboard</a>
+</nav>
+
+<div class="page">
+
+  <div class="hero">
+    <div class="hblob hb1"></div>
+    <div class="hblob hb2"></div>
+    <div class="hero-inner">
+      <div class="hero-tag">💬 Community</div>
+      <h1 class="hero-title">Discussion Board</h1>
+      <p class="hero-sub">Practice your English by answering questions and reading others' responses. Every reply earns you XP! ⭐</p>
+    </div>
+  </div>
+
+  <!-- FILTERS -->
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterQuestions('all', this)">All</button>
+    <button class="filter-btn" onclick="filterQuestions('daily', this)">Daily Reflection</button>
+    <button class="filter-btn" onclick="filterQuestions('vocabulary', this)">Vocabulary</button>
+    <button class="filter-btn" onclick="filterQuestions('culture', this)">Culture</button>
+    <button class="filter-btn" onclick="filterQuestions('grammar', this)">Grammar</button>
+    <button class="filter-btn" onclick="filterQuestions('fun', this)">Fun</button>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div id="questions-container">
+    <div class="loading-wrap"><div class="spinner"></div><p>Loading discussions...</p></div>
+  </div>
+
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, increment, serverTimestamp, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  let currentUser = null;
+  let memberName = '';
+  let allQuestions = [];
+  let currentFilter = 'all';
+
+  const colors = ['#4B3F72','#1b6ca8','#1a5c38','#7c2d12','#0f4c75','#6B21A8'];
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'login.html'; return; }
+    currentUser = user;
+
+    // Get member name
+    try {
+      const snap = await getDoc(doc(db, 'members', user.email.toLowerCase()));
+      if (snap.exists()) memberName = snap.data().name || user.email.split('@')[0];
+      else memberName = user.email.split('@')[0];
+    } catch { memberName = user.email.split('@')[0]; }
+
+    await loadQuestions();
+  });
+
+  async function loadQuestions() {
+    try {
+      const snap = await getDocs(query(collection(db, 'questions'), orderBy('createdAt', 'desc')));
+      allQuestions = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+      renderQuestions();
+    } catch(e) {
+      document.getElementById('questions-container').innerHTML = '<div class="empty-state"><div class="empty-icon">😔</div><p>Could not load questions. Try again later.</p></div>';
+    }
+  }
+
+  function renderQuestions() {
+    const filtered = currentFilter === 'all' ? allQuestions : allQuestions.filter(q => q.category === currentFilter);
+    const container = document.getElementById('questions-container');
+
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">💬</div><p>No questions in this category yet.</p></div>';
+      return;
+    }
+
+    container.innerHTML = '<div class="questions-list">' + filtered.map(q => `
+      <div class="question-card" id="qcard-${q.id}">
+        <div class="qc-top">
+          <div>
+            <span class="qc-cat cat-${q.category}">${getCatLabel(q.category)}</span>
+          </div>
+        </div>
+        <div class="qc-question">${q.questionEn}</div>
+        ${q.questionAr ? `<div class="qc-question-ar">${q.questionAr}</div>` : ''}
+        <div class="qc-reply-count" id="reply-count-${q.id}">Loading replies...</div>
+        <div class="replies-list" id="replies-${q.id}" style="display:none"></div>
+        <button class="show-replies-btn" id="toggle-${q.id}" onclick="toggleReplies('${q.id}')">Show replies</button>
+        <div class="reply-wrap" style="margin-top:.8rem">
+          <div class="reply-avatar">${memberName.charAt(0).toUpperCase()}</div>
+          <textarea class="reply-input" id="input-${q.id}" placeholder="Share your answer in English..." rows="1" oninput="autoResize(this)"></textarea>
+          <button class="reply-submit" onclick="submitReply('${q.id}')">Post →</button>
+        </div>
+      </div>
+    `).join('') + '</div>';
+
+    // Load reply counts
+    filtered.forEach(q => loadReplies(q.id, false));
+  }
+
+  async function loadReplies(questionId, show) {
+    try {
+      const snap = await getDocs(query(collection(db, 'questions', questionId, 'replies'), orderBy('createdAt', 'asc')));
+      const replies = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+
+      const countEl = document.getElementById(`reply-count-${questionId}`);
+      const toggleEl = document.getElementById(`toggle-${questionId}`);
+      if (countEl) countEl.textContent = replies.length === 0 ? 'Be the first to reply!' : `${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`;
+      if (toggleEl) toggleEl.textContent = replies.length === 0 ? '' : (show ? 'Hide replies' : `Show ${replies.length} ${replies.length === 1 ? 'reply' : 'replies'}`);
+
+      if (show) {
+        const repliesEl = document.getElementById(`replies-${questionId}`);
+        if (!repliesEl) return;
+        repliesEl.style.display = replies.length ? 'flex' : 'none';
+        repliesEl.innerHTML = replies.map((r, i) => `
+          <div class="reply-item">
+            <div class="reply-item-avatar" style="background:${colors[i % colors.length]}">${(r.authorName || '?').charAt(0).toUpperCase()}</div>
+            <div class="reply-item-body">
+              <div class="reply-item-name">${r.authorName || 'Member'}</div>
+              <div class="reply-item-text">${r.text}</div>
+              <div class="reply-item-time">${fmtTime(r.createdAt)}</div>
+            </div>
+          </div>
+        `).join('');
+      }
+    } catch(e) { console.error(e); }
+  }
+
+  window.toggleReplies = function(questionId) {
+    const repliesEl = document.getElementById(`replies-${questionId}`);
+    const isShowing = repliesEl.style.display !== 'none' && repliesEl.style.display !== '';
+    if (isShowing) {
+      repliesEl.style.display = 'none';
+      document.getElementById(`toggle-${questionId}`).textContent = 'Show replies';
+    } else {
+      loadReplies(questionId, true);
+    }
+  };
+
+  window.submitReply = async function(questionId) {
+    const input = document.getElementById(`input-${questionId}`);
+    const text = input.value.trim();
+    if (!text) return;
+
+    const btn = input.nextElementSibling;
+    btn.textContent = '...'; btn.disabled = true;
+
+    try {
+      await addDoc(collection(db, 'questions', questionId, 'replies'), {
+        text,
+        authorEmail: currentUser.email,
+        authorName: memberName,
+        createdAt: serverTimestamp()
+      });
+
+      // XP reward for replying
+      await updateDoc(doc(db, 'members', currentUser.email.toLowerCase()), {
+        xp: increment(5)
+      });
+
+      input.value = '';
+      btn.textContent = 'Post →'; btn.disabled = false;
+      loadReplies(questionId, true);
+    } catch(e) {
+      btn.textContent = 'Post →'; btn.disabled = false;
+      alert('Could not post reply. Try again.');
+    }
+  };
+
+  window.filterQuestions = function(cat, el) {
+    currentFilter = cat;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    renderQuestions();
+  };
+
+  window.autoResize = function(el) {
+    el.style.height = 'auto';
+    el.style.height = el.scrollHeight + 'px';
+  };
+
+  function getCatLabel(cat) {
+    const labels = { daily: '📅 Daily', vocabulary: '📚 Vocabulary', culture: '🌍 Culture', grammar: '✏️ Grammar', fun: '🎉 Fun' };
+    return labels[cat] || cat;
+  }
+
+  function fmtTime(val) {
+    if (!val) return '';
+    try {
+      const d = val.toDate ? val.toDate() : new Date(val);
+      const diff = Date.now() - d.getTime();
+      if (diff < 60000) return 'Just now';
+      if (diff < 3600000) return `${Math.floor(diff/60000)}m ago`;
+      if (diff < 86400000) return `${Math.floor(diff/3600000)}h ago`;
+      return d.toLocaleDateString('en-GB', { day:'2-digit', month:'short' });
+    } catch { return ''; }
+  }
+</script>
+
+</body>
+</html>
