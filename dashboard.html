@@ -415,7 +415,7 @@
       }
 
       // Render name & avatar
-      const firstName = (memberData.name || user.email).split(' ')[0];
+      const firstName = (memberData.fullName || memberData.name || user.email).split(' ')[0];
       document.getElementById('member-name').textContent = firstName;
       document.getElementById('nav-name').textContent = firstName;
       document.getElementById('nav-avatar').textContent = firstName.charAt(0).toUpperCase();
