@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>English Placement Test — Hala Hi</title>
+<meta name="description" content="Discover your current English level in just a few minutes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&family=Lemonada:wght@500;600;700&family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-950:#191531;
+    --purple-900:#2E2451;
+    --purple-800:#392E63;
+    --purple-700:#4A3D80;
+    --purple-100:#EEEAF9;
+    --gold-500:#F4B740;
+    --gold-600:#DD9F26;
+    --gold-100:#FDF1D8;
+    --cream:#FBF9F4;
+    --white:#FFFFFF;
+    --ink:#221D36;
+    --gray-600:#6E6780;
+    --gray-400:#9C95AE;
+    --gray-200:#E4E0EF;
+    --green-wa:#25D366;
+    --green-wa-dark:#1CB959;
+    --radius-xl:28px;
+    --radius-lg:22px;
+    --radius-md:14px;
+    --shadow-card: 0 24px 60px -28px rgba(25,21,49,0.45);
+    --shadow-soft: 0 10px 30px -14px rgba(25,21,49,0.28);
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; height:100%;}
+  body{
+    font-family:'DM Sans', sans-serif;
+    color:var(--ink);
+    background:var(--purple-900);
+    overflow-x:hidden;
+    min-height:100vh;
+    min-height:100dvh;
+  }
+  h1,h2,h3{font-family:'Playfair Display', serif; margin:0;}
+  p{margin:0;}
+  button{font-family:inherit; cursor:pointer;}
+  [lang="ar"], .ar{ font-family:'Vazirmatn', sans-serif; }
+  [lang="ar"] h1,[lang="ar"] h2,[lang="ar"] h3, .ar-display{ font-family:'Lemonada', sans-serif; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
+  }
+
+  /* ---------- Background ---------- */
+  .app-bg{
+    position:fixed; inset:0; z-index:0;
+    background:
+      radial-gradient(120% 90% at 15% -10%, #3F3373 0%, transparent 55%),
+      radial-gradient(90% 70% at 110% 10%, #4A3D80 0%, transparent 50%),
+      linear-gradient(180deg, var(--purple-950) 0%, var(--purple-900) 55%, var(--purple-950) 100%);
+  }
+  .app-bg::before, .app-bg::after{
+    content:""; position:absolute; border-radius:50%;
+    filter:blur(2px); opacity:0.5;
+  }
+  .app-bg::before{
+    width:340px; height:340px; right:-120px; top:-100px;
+    background:radial-gradient(circle at 35% 30%, rgba(244,183,64,0.35), transparent 70%);
+  }
+  .app-bg::after{
+    width:420px; height:420px; left:-160px; bottom:-140px;
+    background:radial-gradient(circle at 60% 60%, rgba(244,183,64,0.18), transparent 70%);
+  }
+
+  .shell{
+    position:relative; z-index:1;
+    min-height:100vh; min-height:100dvh;
+    display:flex; align-items:center; justify-content:center;
+    padding:28px 18px 40px;
+  }
+
+  .screen{ display:none; width:100%; max-width:560px; }
+  .screen.active{ display:block; animation:fadeUp .55s ease both; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+
+  /* ---------- Home ---------- */
+  .home-card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,255,255,0.10);
+    border-radius:var(--radius-xl);
+    padding:40px 30px 34px;
+    text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  .eyebrow{
+    font-size:12px; letter-spacing:.22em; font-weight:700; text-transform:uppercase;
+    color:var(--gold-500); margin-bottom:16px;
+  }
+  .hero-title{
+    color:var(--white); font-size:clamp(30px,7vw,42px); line-height:1.15; font-weight:800;
+    margin-bottom:14px;
+  }
+  .hero-title .cursive{ color:var(--gold-500); font-style:italic; font-weight:700; }
+  .hero-sub{
+    color:var(--gray-200); font-size:15.5px; line-height:1.6; max-width:400px; margin:0 auto 26px;
+  }
+  .evaluates-label{
+    color:var(--gray-400); font-size:12.5px; letter-spacing:.06em; text-transform:uppercase;
+    margin-bottom:12px; font-weight:600;
+  }
+  .skills-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px;
+  }
+  .skill-chip{
+    border:1px solid rgba(244,183,64,0.35);
+    background:rgba(244,183,64,0.07);
+    color:var(--gold-100);
+    border-radius:14px; padding:12px 10px;
+    font-size:13.5px; font-weight:600;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .skill-chip .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold-500); flex:none; }
+
+  .btn-primary{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    width:100%; padding:17px 20px; border:none; border-radius:16px;
+    background:linear-gradient(135deg, var(--gold-500), var(--gold-600));
+    color:var(--purple-950); font-weight:700; font-size:16.5px;
+    box-shadow:0 16px 30px -12px rgba(244,183,64,0.55);
+    transition:transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+  }
+  .btn-primary:active{ transform:scale(.98); }
+  .btn-primary:disabled{ opacity:.4; box-shadow:none; cursor:not-allowed; }
+
+  .home-meta{ margin-top:16px; color:var(--gray-400); font-size:12.5px; }
+
+  /* ---------- Question screen ---------- */
+  .q-header{ margin-bottom:18px; }
+  .q-progress-track{
+    height:6px; border-radius:999px; background:rgba(255,255,255,0.14); overflow:hidden; margin-bottom:10px;
+  }
+  .q-progress-fill{
+    height:100%; border-radius:999px;
+    background:linear-gradient(90deg, var(--gold-600), var(--gold-500));
+    width:0%; transition:width .5s cubic-bezier(.4,0,.2,1);
+  }
+  .q-counter{ color:var(--gray-200); font-size:12.5px; font-weight:600; letter-spacing:.03em; }
+
+  .q-card{
+    background:var(--cream); border-radius:var(--radius-xl);
+    padding:28px 22px 22px; box-shadow:var(--shadow-card);
+    margin-bottom:18px;
+  }
+  .q-category{
+    display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--purple-900); background:var(--purple-100);
+    padding:6px 12px; border-radius:999px; margin-bottom:16px;
+  }
+  .q-text{
+    font-size:clamp(19px,4.6vw,23px); line-height:1.42; color:var(--ink); font-weight:700;
+    margin-bottom:22px;
+  }
+  .q-options{ display:flex; flex-direction:column; gap:10px; }
+  .option-btn{
+    display:flex; align-items:center; gap:12px; text-align:left;
+    width:100%; padding:14px 14px; border-radius:var(--radius-md);
+    border:1.5px solid var(--gray-200); background:var(--white);
+    font-size:14.5px; color:var(--ink); font-weight:500;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .option-btn:active{ transform:scale(.99); }
+  .opt-letter{
+    flex:none; width:26px; height:26px; border-radius:50%;
+    background:var(--purple-100); color:var(--purple-900);
+    font-size:12.5px; font-weight:700; display:flex; align-items:center; justify-content:center;
+    transition:background .15s ease, color .15s ease;
+  }
+  .option-btn.selected{
+    border-color:var(--gold-600); background:var(--gold-100);
+  }
+  .option-btn.selected .opt-letter{ background:var(--gold-500); color:var(--purple-950); }
+
+  .btn-next{ margin-top:4px; }
+
+  /* ---------- Loading ---------- */
+  .loading-wrap{ text-align:center; padding:60px 10px; color:var(--white); }
+  .loading-ring{
+    width:64px; height:64px; margin:0 auto 26px;
+    border-radius:50%;
+    border:4px solid rgba(244,183,64,0.22);
+    border-top-color:var(--gold-500);
+    animation:spin 0.9s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  .loading-msg{ font-size:15.5px; color:var(--gray-200); font-weight:500; min-height:22px; }
+
+  /* ---------- Results ---------- */
+  .results-card{
+    background:var(--cream); border-radius:var(--radius-xl);
+    padding:32px 24px 26px; box-shadow:var(--shadow-card); text-align:center;
+  }
+  .score-gauge{ position:relative; width:220px; margin:0 auto 6px; }
+  .score-gauge svg{ width:100%; height:auto; display:block; }
+  .gauge-track{ fill:none; stroke:var(--purple-100); stroke-width:14; stroke-linecap:round; }
+  .gauge-fill{ fill:none; stroke:url(#gaugeGrad); stroke-width:14; stroke-linecap:round; }
+  .score-center{
+    position:absolute; left:0; right:0; bottom:6px; text-align:center;
+  }
+  .score-num{ font-family:'Playfair Display', serif; font-weight:800; font-size:28px; color:var(--purple-900); }
+  .score-caption{ font-size:11.5px; color:var(--gray-600); letter-spacing:.05em; text-transform:uppercase; font-weight:600; }
+
+  .level-label{
+    margin-top:8px; font-size:12px; letter-spacing:.1em; text-transform:uppercase;
+    color:var(--gray-600); font-weight:700;
+  }
+  .level-name{
+    font-size:clamp(26px,6vw,32px); color:var(--purple-900); font-weight:800; margin:4px 0 16px;
+  }
+  .level-scale{ display:flex; justify-content:center; gap:8px; margin-bottom:26px; }
+  .level-dot{
+    width:100%; max-width:44px; height:6px; border-radius:999px; background:var(--gray-200);
+  }
+  .level-dot.filled{ background:linear-gradient(90deg, var(--gold-600), var(--gold-500)); }
+
+  .category-breakdown{ text-align:left; margin-bottom:8px; }
+  .cat-row{ margin-bottom:14px; }
+  .cat-row-top{
+    display:flex; justify-content:space-between; align-items:baseline; margin-bottom:6px;
+  }
+  .cat-row-name{ font-size:13.5px; font-weight:700; color:var(--ink); }
+  .cat-row-score{ font-size:12.5px; color:var(--gray-600); font-weight:600; }
+  .cat-row-track{ height:8px; border-radius:999px; background:var(--purple-100); overflow:hidden; }
+  .cat-row-fill{ height:100%; border-radius:999px; background:linear-gradient(90deg, var(--purple-700), var(--purple-900)); width:0%; transition:width 1s cubic-bezier(.3,.8,.3,1); }
+
+  /* ---------- Course recommendation (Arabic) ---------- */
+  .course-rec{
+    margin-top:26px; text-align:right;
+    background:linear-gradient(180deg, var(--purple-900), var(--purple-950));
+    border-radius:var(--radius-lg); padding:26px 22px; color:var(--white);
+    box-shadow:var(--shadow-soft);
+  }
+  .course-rec h3{
+    font-size:20px; color:var(--gold-500); margin-bottom:14px; line-height:1.5;
+  }
+  .course-rec p{ font-size:14px; line-height:1.9; color:var(--gray-200); margin-bottom:14px; }
+  .course-rec .course-name{ color:var(--gold-500); font-weight:700; }
+  .course-list{ list-style:none; padding:0; margin:0 0 18px; text-align:right; }
+  .course-list li{
+    font-size:13.5px; line-height:1.8; color:var(--gray-200); margin-bottom:8px;
+    padding-right:0;
+  }
+  .course-note{
+    font-size:13px; line-height:1.85; color:var(--gold-100);
+    background:rgba(244,183,64,0.10); border:1px solid rgba(244,183,64,0.28);
+    border-radius:12px; padding:14px 14px; margin-top:6px;
+  }
+
+  /* ---------- Action buttons ---------- */
+  .actions{ margin-top:22px; display:flex; flex-direction:column; gap:12px; }
+  .btn-whatsapp{
+    display:flex; align-items:center; justify-content:center; gap:10px;
+    width:100%; padding:16px 18px; border-radius:16px; border:none;
+    background:linear-gradient(135deg, var(--green-wa), var(--green-wa-dark));
+    color:var(--white); font-weight:700; font-size:15.5px; text-decoration:none;
+    box-shadow:0 16px 28px -12px rgba(37,211,102,0.55);
+    font-family:'Vazirmatn', sans-serif;
+  }
+  .btn-outline{
+    width:100%; padding:14px 18px; border-radius:16px;
+    background:transparent; border:1.5px solid var(--purple-100);
+    color:var(--purple-900); font-weight:700; font-size:14.5px;
+    font-family:'Vazirmatn', sans-serif;
+  }
+
+  .footer-note{
+    text-align:center; color:var(--gray-400); font-size:11.5px; margin-top:18px;
+  }
+</style>
+</head>
+<body>
+
+<div class="app-bg"></div>
+
+<div class="shell">
+
+  <!-- HOME SCREEN -->
+  <section id="screen-home" class="screen active">
+    <div class="home-card">
+      <div class="eyebrow">Hala Hi · English Assessment</div>
+      <h1 class="hero-title">English Placement Test</h1>
+      <p class="hero-sub">Discover your current English level in just a few minutes.</p>
+
+      <div class="evaluates-label">This test evaluates your</div>
+      <div class="skills-grid">
+        <div class="skill-chip"><span class="dot"></span>Vocabulary</div>
+        <div class="skill-chip"><span class="dot"></span>Grammar</div>
+        <div class="skill-chip"><span class="dot"></span>Everyday English</div>
+        <div class="skill-chip"><span class="dot"></span>Conversation Skills</div>
+      </div>
+
+      <button id="startBtn" class="btn-primary">Start Test →</button>
+      <div class="home-meta">33 questions · no sign-up needed</div>
+    </div>
+  </section>
+
+  <!-- QUESTION SCREEN -->
+  <section id="screen-question" class="screen">
+    <div class="q-header">
+      <div class="q-progress-track"><div id="progressFill" class="q-progress-fill"></div></div>
+      <div id="qCounter" class="q-counter">Question 1 of 33</div>
+    </div>
+    <div class="q-card">
+      <span id="qCategory" class="q-category">Vocabulary</span>
+      <h2 id="qText" class="q-text">Loading question…</h2>
+      <div id="qOptions" class="q-options"></div>
+    </div>
+    <button id="nextBtn" class="btn-primary btn-next" disabled>Next</button>
+  </section>
+
+  <!-- LOADING SCREEN -->
+  <section id="screen-loading" class="screen">
+    <div class="loading-wrap">
+      <div class="loading-ring"></div>
+      <p id="loadingMsg" class="loading-msg">Analyzing your English…</p>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section id="screen-results" class="screen">
+    <div class="results-card">
+      <div class="score-gauge">
+        <svg viewBox="0 0 220 130">
+          <defs>
+            <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#DD9F26"/>
+              <stop offset="100%" stop-color="#F4B740"/>
+            </linearGradient>
+          </defs>
+          <path class="gauge-track" d="M20,112 A90,90 0 0 1 200,112"/>
+          <path id="gaugeFill" class="gauge-fill" d="M20,112 A90,90 0 0 1 200,112"/>
+        </svg>
+        <div class="score-center">
+          <div id="scoreNum" class="score-num">0/33</div>
+          <div class="score-caption">Your Score</div>
+        </div>
+      </div>
+
+      <div class="level-label">Your Level</div>
+      <div id="levelName" class="level-name">—</div>
+      <div id="levelScale" class="level-scale"></div>
+
+      <div id="categoryBreakdown" class="category-breakdown"></div>
+
+      <div id="courseRecommendation" class="course-rec ar" lang="ar" dir="rtl" hidden>
+        <h3>🎉 تم تحليل نتيجتك!</h3>
+        <p>
+          نتيجتك توضح أن لديك أساسًا جيدًا في اللغة الإنجليزية، لكن ما زالت هناك مهارات تحتاج إلى تطوير
+          حتى تتمكن من التحدث بثقة وفهم الإنجليزية المستخدمة في الحياة اليومية.
+        </p>
+        <p>لهذا السبب نرشح لك <span class="course-name">دورة تطوير اللغة الإنجليزية - المستوى الأول</span>.</p>
+        <p>ستتعلم في الدورة بإذن الله:</p>
+        <ul class="course-list">
+          <li>✅ بناء الجمل بطريقة صحيحة.</li>
+          <li>✅ التحدث بثقة في المواقف اليومية.</li>
+          <li>✅ تطوير مهارة الاستماع وفهم الإنجليزية الطبيعية.</li>
+          <li>✅ اكتساب مفردات وتعبيرات يستخدمها المتحدثون باللغة يوميًا.</li>
+          <li>✅ تعلم القواعد بطريقة عملية تساعدك على استخدامها أثناء الكلام.</li>
+        </ul>
+        <div class="course-note">
+          🎁 عند إرسال نتيجة الاختبار لنا عبر واتساب، سيقوم أحد المدربين بتحليل نتيجتك وإرشادك إلى أفضل نقطة تبدأ منها.
+        </div>
+      </div>
+
+      <div class="actions">
+        <a id="whatsappBtn" class="btn-whatsapp" target="_blank" rel="noopener">📱 أرسل نتيجتي عبر واتساب</a>
+        <button id="retakeBtn" class="btn-outline">🔄 إعادة الاختبار</button>
+      </div>
+    </div>
+    <div class="footer-note">Hala Hi English Placement Test</div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+
+  // ---------- Config ----------
+  const WHATSAPP_NUMBER = "966550201680"; // 0550201680 in international format
+  const SECTION_CONFIG = [
+    { category: "Vocabulary",             count: 8  },
+    { category: "Grammar",                count: 10 },
+    { category: "Listening Awareness",    count: 5  },
+    { category: "Conversation Response",  count: 5  },
+    { category: "Sentence Completion",    count: 5  }
+  ];
+  const TOTAL_QUESTIONS = SECTION_CONFIG.reduce((s,c)=>s+c.count,0);
+
+  const LEVELS = [
+    { name: "Beginner",          min: 0,  max: 5  },
+    { name: "Elementary",        min: 6,  max: 11 },
+    { name: "Pre-Intermediate",  min: 12, max: 17 },
+    { name: "Intermediate",      min: 18, max: 23 },
+    { name: "Upper Intermediate",min: 24, max: 28 },
+    { name: "Advanced",          min: 29, max: TOTAL_QUESTIONS }
+  ];
+
+  const LOADING_MESSAGES = [
+    "Analyzing your English…",
+    "Checking your grammar…",
+    "Evaluating your vocabulary…",
+    "Measuring your conversation skills…"
+  ];
+
+  // ---------- State ----------
+  let questionBank = [];
+  let testQuestions = [];
+  let currentIndex = 0;
+  let answers = []; // { question, selected, correct, isCorrect }
+
+  // ---------- Elements ----------
+  const screens = {
+    home: document.getElementById('screen-home'),
+    question: document.getElementById('screen-question'),
+    loading: document.getElementById('screen-loading'),
+    results: document.getElementById('screen-results')
+  };
+  const startBtn = document.getElementById('startBtn');
+  const progressFill = document.getElementById('progressFill');
+  const qCounter = document.getElementById('qCounter');
+  const qCategory = document.getElementById('qCategory');
+  const qText = document.getElementById('qText');
+  const qOptions = document.getElementById('qOptions');
+  const nextBtn = document.getElementById('nextBtn');
+  const loadingMsg = document.getElementById('loadingMsg');
+  const scoreNum = document.getElementById('scoreNum');
+  const levelName = document.getElementById('levelName');
+  const levelScale = document.getElementById('levelScale');
+  const categoryBreakdown = document.getElementById('categoryBreakdown');
+  const courseRecommendation = document.getElementById('courseRecommendation');
+  const whatsappBtn = document.getElementById('whatsappBtn');
+  const retakeBtn = document.getElementById('retakeBtn');
+  const gaugeFill = document.getElementById('gaugeFill');
+
+  function showScreen(name){
+    Object.values(screens).forEach(s => s.classList.remove('active'));
+    screens[name].classList.add('active');
+  }
+
+  // ---------- Utilities ----------
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]] = [a[j],a[i]];
+    }
+    return a;
+  }
+
+  function buildTest(){
+    let all = [];
+    SECTION_CONFIG.forEach(sec=>{
+      const pool = questionBank.filter(q=>q.category===sec.category);
+      const picked = shuffle(pool).slice(0, sec.count);
+      all = all.concat(picked);
+    });
+    return all;
+  }
+
+  // ---------- Load question bank ----------
+  fetch('questions.json')
+    .then(r=>r.json())
+    .then(data=>{
+      questionBank = data;
+      startBtn.disabled = false;
+    })
+    .catch(()=>{
+      qText.textContent = "Couldn't load the question bank. Please check that questions.json is in the same folder.";
+      startBtn.disabled = true;
+    });
+
+  // ---------- Start test ----------
+  startBtn.addEventListener('click', ()=>{
+    testQuestions = buildTest();
+    currentIndex = 0;
+    answers = [];
+    showScreen('question');
+    renderQuestion();
+  });
+
+  // ---------- Render question ----------
+  function renderQuestion(){
+    const q = testQuestions[currentIndex];
+    qCategory.textContent = q.category;
+    qText.textContent = q.question;
+    qCounter.textContent = `Question ${currentIndex+1} of ${testQuestions.length}`;
+    progressFill.style.width = `${(currentIndex / testQuestions.length) * 100}%`;
+
+    qOptions.innerHTML = '';
+    ['A','B','C','D'].forEach(letter=>{
+      const btn = document.createElement('button');
+      btn.className = 'option-btn';
+      btn.type = 'button';
+      btn.dataset.option = letter;
+      btn.innerHTML = `<span class="opt-letter">${letter}</span><span class="opt-text">${q['option'+letter]}</span>`;
+      btn.addEventListener('click', ()=> selectOption(letter));
+      qOptions.appendChild(btn);
+    });
+
+    nextBtn.disabled = true;
+    nextBtn.textContent = (currentIndex === testQuestions.length-1) ? 'See Results' : 'Next';
+  }
+
+  let currentSelection = null;
+  function selectOption(letter){
+    currentSelection = letter;
+    [...qOptions.children].forEach(btn=>{
+      btn.classList.toggle('selected', btn.dataset.option === letter);
+    });
+    nextBtn.disabled = false;
+  }
+
+  nextBtn.addEventListener('click', ()=>{
+    const q = testQuestions[currentIndex];
+    answers.push({
+      category: q.category,
+      selected: currentSelection,
+      correct: q.correctAnswer,
+      isCorrect: currentSelection === q.correctAnswer
+    });
+    currentSelection = null;
+
+    if(currentIndex < testQuestions.length - 1){
+      currentIndex++;
+      renderQuestion();
+    } else {
+      progressFill.style.width = '100%';
+      runLoadingSequence();
+    }
+  });
+
+  // ---------- Loading sequence ----------
+  function runLoadingSequence(){
+    showScreen('loading');
+    let i = 0;
+    loadingMsg.textContent = LOADING_MESSAGES[0];
+    const interval = setInterval(()=>{
+      i++;
+      loadingMsg.textContent = LOADING_MESSAGES[i % LOADING_MESSAGES.length];
+    }, 650);
+
+    setTimeout(()=>{
+      clearInterval(interval);
+      showResults();
+    }, 2600);
+  }
+
+  // ---------- Results ----------
+  function showResults(){
+    const totalScore = answers.filter(a=>a.isCorrect).length;
+    const level = LEVELS.find(l => totalScore >= l.min && totalScore <= l.max) || LEVELS[0];
+    const levelIndex = LEVELS.indexOf(level);
+
+    scoreNum.textContent = `${totalScore}/${testQuestions.length}`;
+    levelName.textContent = level.name;
+
+    // level scale dots
+    levelScale.innerHTML = '';
+    LEVELS.forEach((l, idx)=>{
+      const dot = document.createElement('div');
+      dot.className = 'level-dot' + (idx <= levelIndex ? ' filled' : '');
+      levelScale.appendChild(dot);
+    });
+
+    // gauge arc
+    const pathLength = gaugeFill.getTotalLength();
+    gaugeFill.style.strokeDasharray = pathLength;
+    gaugeFill.style.strokeDashoffset = pathLength;
+    const pct = totalScore / testQuestions.length;
+    requestAnimationFrame(()=>{
+      gaugeFill.style.transition = 'stroke-dashoffset 1.1s cubic-bezier(.3,.8,.3,1)';
+      gaugeFill.style.strokeDashoffset = String(pathLength * (1 - pct));
+    });
+
+    // category breakdown
+    categoryBreakdown.innerHTML = '';
+    const catScores = {};
+    SECTION_CONFIG.forEach(sec=>{ catScores[sec.category] = { correct:0, total:sec.count }; });
+    answers.forEach(a=>{
+      if(a.isCorrect) catScores[a.category].correct++;
+    });
+    SECTION_CONFIG.forEach(sec=>{
+      const s = catScores[sec.category];
+      const row = document.createElement('div');
+      row.className = 'cat-row';
+      row.innerHTML = `
+        <div class="cat-row-top">
+          <span class="cat-row-name">${sec.category}</span>
+          <span class="cat-row-score">${s.correct}/${s.total}</span>
+        </div>
+        <div class="cat-row-track"><div class="cat-row-fill" data-pct="${(s.correct/s.total)*100}"></div></div>
+      `;
+      categoryBreakdown.appendChild(row);
+    });
+    setTimeout(()=>{
+      categoryBreakdown.querySelectorAll('.cat-row-fill').forEach(el=>{
+        el.style.width = el.dataset.pct + '%';
+      });
+    }, 60);
+
+    // course recommendation (below Intermediate)
+    const showRecommendation = levelIndex < 3; // Beginner, Elementary, Pre-Intermediate
+    courseRecommendation.hidden = !showRecommendation;
+
+    // whatsapp message
+    const lines = [
+      "السلام عليكم،",
+      "",
+      "هذه نتيجة اختبار تحديد المستوى الخاص بي:",
+      "",
+      "الدرجة:",
+      `${totalScore} / ${testQuestions.length}`,
+      "",
+      "المستوى:",
+      level.name,
+      ""
+    ];
+    SECTION_CONFIG.forEach(sec=>{
+      const s = catScores[sec.category];
+      lines.push(`${sec.category}:`);
+      lines.push(`${s.correct} / ${s.total}`);
+      lines.push("");
+    });
+    lines.push("وأرغب في معرفة الدورة المناسبة لي.");
+    const waText = encodeURIComponent(lines.join("\n"));
+    whatsappBtn.href = `https://wa.me/${WHATSAPP_NUMBER}?text=${waText}`;
+
+    showScreen('results');
+  }
+
+  // ---------- Retake ----------
+  retakeBtn.addEventListener('click', ()=>{
+    testQuestions = buildTest();
+    currentIndex = 0;
+    answers = [];
+    showScreen('question');
+    renderQuestion();
+  });
+
+})();
+</script>
+</body>
+</html>
