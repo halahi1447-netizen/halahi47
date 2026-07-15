@@ -1,0 +1,1502 @@
+[
+  {
+    "id": "voc-001",
+    "category": "Vocabulary",
+    "question": "She was so ______ by the news that she couldn't speak for a minute.",
+    "optionA": "bored",
+    "optionB": "stunned",
+    "optionC": "relieved",
+    "optionD": "content",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-002",
+    "category": "Vocabulary",
+    "question": "He tends to ______ his problems instead of dealing with them directly.",
+    "optionA": "avoid",
+    "optionB": "admire",
+    "optionC": "deliver",
+    "optionD": "approve",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-003",
+    "category": "Vocabulary",
+    "question": "The manager asked us to ______ the report before the meeting starts.",
+    "optionA": "postpone",
+    "optionB": "review",
+    "optionC": "apologize",
+    "optionD": "complain",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-004",
+    "category": "Vocabulary",
+    "question": "Even though he was exhausted, he ______ finished the project on time.",
+    "optionA": "barely",
+    "optionB": "hardly",
+    "optionC": "rarely",
+    "optionD": "somehow",
+    "correctAnswer": "D"
+  },
+  {
+    "id": "voc-005",
+    "category": "Vocabulary",
+    "question": "The two brothers look so ______ that people often mistake one for the other.",
+    "optionA": "alike",
+    "optionB": "equal",
+    "optionC": "similar",
+    "optionD": "matching",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-006",
+    "category": "Vocabulary",
+    "question": "It was a ______ decision; she didn't think it through at all.",
+    "optionA": "careful",
+    "optionB": "reckless",
+    "optionC": "modest",
+    "optionD": "genuine",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-007",
+    "category": "Vocabulary",
+    "question": "He always tries to ______ conflict whenever possible.",
+    "optionA": "create",
+    "optionB": "avoid",
+    "optionC": "support",
+    "optionD": "increase",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-008",
+    "category": "Vocabulary",
+    "question": "The company had to ______ its plans due to unexpected costs.",
+    "optionA": "revise",
+    "optionB": "celebrate",
+    "optionC": "ignore",
+    "optionD": "publish",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-009",
+    "category": "Vocabulary",
+    "question": "She gave a very ______ explanation, so everyone understood immediately.",
+    "optionA": "vague",
+    "optionB": "clear",
+    "optionC": "complex",
+    "optionD": "doubtful",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-010",
+    "category": "Vocabulary",
+    "question": "I don't ______ spending money on things I don't need.",
+    "optionA": "mind",
+    "optionB": "bother",
+    "optionC": "approve",
+    "optionD": "mean",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-011",
+    "category": "Vocabulary",
+    "question": "The weather changed ______ during the trip, so we had to adjust our plans.",
+    "optionA": "rapidly",
+    "optionB": "slightly",
+    "optionC": "barely",
+    "optionD": "evenly",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-012",
+    "category": "Vocabulary",
+    "question": "He's a ______ person; he never lets small problems upset him.",
+    "optionA": "nervous",
+    "optionB": "calm",
+    "optionC": "anxious",
+    "optionD": "tense",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-013",
+    "category": "Vocabulary",
+    "question": "The instructions were ______, so many people made mistakes.",
+    "optionA": "confusing",
+    "optionB": "obvious",
+    "optionC": "accurate",
+    "optionD": "simple",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-014",
+    "category": "Vocabulary",
+    "question": "They decided to ______ the meeting until next week.",
+    "optionA": "attend",
+    "optionB": "postpone",
+    "optionC": "organize",
+    "optionD": "begin",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-015",
+    "category": "Vocabulary",
+    "question": "Her performance was ______; the judges gave her a perfect score.",
+    "optionA": "average",
+    "optionB": "outstanding",
+    "optionC": "acceptable",
+    "optionD": "ordinary",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-016",
+    "category": "Vocabulary",
+    "question": "He made a ______ effort to fix the issue, but it still didn't work.",
+    "optionA": "genuine",
+    "optionB": "fake",
+    "optionC": "lazy",
+    "optionD": "careless",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-017",
+    "category": "Vocabulary",
+    "question": "The team worked ______ to meet the deadline.",
+    "optionA": "separately",
+    "optionB": "closely",
+    "optionC": "rarely",
+    "optionD": "occasionally",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-018",
+    "category": "Vocabulary",
+    "question": "I can't ______ why he reacted that way.",
+    "optionA": "figure out",
+    "optionB": "look after",
+    "optionC": "turn down",
+    "optionD": "give up",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-019",
+    "category": "Vocabulary",
+    "question": "The results were ______ different from what we expected.",
+    "optionA": "slightly",
+    "optionB": "completely",
+    "optionC": "partly",
+    "optionD": "barely",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-020",
+    "category": "Vocabulary",
+    "question": "She's very ______ about her work; she always double-checks everything.",
+    "optionA": "careless",
+    "optionB": "thorough",
+    "optionC": "casual",
+    "optionD": "indifferent",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-021",
+    "category": "Vocabulary",
+    "question": "He tried to ______ the tension by making a joke.",
+    "optionA": "increase",
+    "optionB": "ease",
+    "optionC": "ignore",
+    "optionD": "hide",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-022",
+    "category": "Vocabulary",
+    "question": "The new policy will ______ affect small businesses the most.",
+    "optionA": "likely",
+    "optionB": "hardly",
+    "optionC": "rarely",
+    "optionD": "barely",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-023",
+    "category": "Vocabulary",
+    "question": "It's important to stay ______ during a crisis.",
+    "optionA": "composed",
+    "optionB": "anxious",
+    "optionC": "frustrated",
+    "optionD": "restless",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-024",
+    "category": "Vocabulary",
+    "question": "He gave a ______ answer that didn't really address the question.",
+    "optionA": "direct",
+    "optionB": "vague",
+    "optionC": "precise",
+    "optionD": "detailed",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-025",
+    "category": "Vocabulary",
+    "question": "The two companies are currently in ______ negotiations.",
+    "optionA": "ongoing",
+    "optionB": "finished",
+    "optionC": "canceled",
+    "optionD": "forgotten",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-026",
+    "category": "Vocabulary",
+    "question": "She felt a bit ______ before her big presentation.",
+    "optionA": "confident",
+    "optionB": "nervous",
+    "optionC": "relaxed",
+    "optionD": "proud",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-027",
+    "category": "Vocabulary",
+    "question": "The results of the experiment were quite ______.",
+    "optionA": "predictable",
+    "optionB": "surprising",
+    "optionC": "boring",
+    "optionD": "familiar",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-028",
+    "category": "Vocabulary",
+    "question": "He decided to ______ his resignation after thinking it over.",
+    "optionA": "withdraw",
+    "optionB": "submit",
+    "optionC": "announce",
+    "optionD": "delay",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "voc-029",
+    "category": "Vocabulary",
+    "question": "The instructions ______ clearly explain how to assemble the product.",
+    "optionA": "faintly",
+    "optionB": "fairly",
+    "optionC": "barely",
+    "optionD": "briefly",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "voc-030",
+    "category": "Vocabulary",
+    "question": "They had a ______ disagreement about the budget, but resolved it quickly.",
+    "optionA": "minor",
+    "optionB": "severe",
+    "optionC": "major",
+    "optionD": "permanent",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-001",
+    "category": "Grammar",
+    "question": "Why ______ you laughing? Did something funny happen?",
+    "optionA": "was",
+    "optionB": "were",
+    "optionC": "are",
+    "optionD": "is",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-002",
+    "category": "Grammar",
+    "question": "The keys ______ on the table when I left them.",
+    "optionA": "was",
+    "optionB": "is",
+    "optionC": "were",
+    "optionD": "be",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-003",
+    "category": "Grammar",
+    "question": "Water ______ at 100 degrees Celsius.",
+    "optionA": "boil",
+    "optionB": "boils",
+    "optionC": "boiling",
+    "optionD": "boiled",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-004",
+    "category": "Grammar",
+    "question": "My sister rarely ______ to the gym before work.",
+    "optionA": "go",
+    "optionB": "goes",
+    "optionC": "going",
+    "optionD": "gone",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-005",
+    "category": "Grammar",
+    "question": "She's used to ______ up early for training.",
+    "optionA": "wake",
+    "optionB": "waking",
+    "optionC": "woke",
+    "optionD": "waken",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-006",
+    "category": "Grammar",
+    "question": "There are several ______ in the box that need fixing.",
+    "optionA": "mouse",
+    "optionB": "mouses",
+    "optionC": "mice",
+    "optionD": "miceses",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-007",
+    "category": "Grammar",
+    "question": "He works as ______ engineer at a software company.",
+    "optionA": "a",
+    "optionB": "an",
+    "optionC": "the",
+    "optionD": "--",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-008",
+    "category": "Grammar",
+    "question": "Is that ______ car parked outside?",
+    "optionA": "your sister",
+    "optionB": "your sisters",
+    "optionC": "your sister's",
+    "optionD": "your sisters'",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-009",
+    "category": "Grammar",
+    "question": "______ shoes over there belong to my brother.",
+    "optionA": "This",
+    "optionB": "That",
+    "optionC": "These",
+    "optionD": "Those",
+    "correctAnswer": "D"
+  },
+  {
+    "id": "gram-010",
+    "category": "Grammar",
+    "question": "______ long have you been studying English?",
+    "optionA": "What",
+    "optionB": "How",
+    "optionC": "Which",
+    "optionD": "When",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-011",
+    "category": "Grammar",
+    "question": "The report is due ______ the end of the week.",
+    "optionA": "at",
+    "optionB": "on",
+    "optionC": "in",
+    "optionD": "to",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-012",
+    "category": "Grammar",
+    "question": "Choose the correct sentence.",
+    "optionA": "Always she eats breakfast early.",
+    "optionB": "She eats always breakfast early.",
+    "optionC": "She always eats breakfast early.",
+    "optionD": "Eats she always breakfast early.",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-013",
+    "category": "Grammar",
+    "question": "I have ______ been late for work; it happened only once this year.",
+    "optionA": "rarely",
+    "optionB": "always",
+    "optionC": "often",
+    "optionD": "usually",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-014",
+    "category": "Grammar",
+    "question": "______ a strange noise coming from the engine.",
+    "optionA": "It's",
+    "optionB": "There's",
+    "optionC": "They're",
+    "optionD": "There are",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-015",
+    "category": "Grammar",
+    "question": "She ______ two brothers and one sister.",
+    "optionA": "have",
+    "optionB": "has",
+    "optionC": "having",
+    "optionD": "had",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-016",
+    "category": "Grammar",
+    "question": "______ forget to lock the door before you leave.",
+    "optionA": "Don't",
+    "optionB": "Doesn't",
+    "optionC": "Not",
+    "optionD": "No",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-017",
+    "category": "Grammar",
+    "question": "You ______ smoke in here; it's strictly prohibited.",
+    "optionA": "can",
+    "optionB": "can't",
+    "optionC": "should",
+    "optionD": "shouldn't",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-018",
+    "category": "Grammar",
+    "question": "She wanted to go for a walk, ______ it started raining.",
+    "optionA": "but",
+    "optionB": "so",
+    "optionC": "and",
+    "optionD": "because",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-019",
+    "category": "Grammar",
+    "question": "______ your parents coming to the party tonight?",
+    "optionA": "Is",
+    "optionB": "Are",
+    "optionC": "Do",
+    "optionD": "Does",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-020",
+    "category": "Grammar",
+    "question": "He doesn't ______ coffee in the morning; he prefers tea.",
+    "optionA": "drink",
+    "optionB": "drinks",
+    "optionC": "drinking",
+    "optionD": "drank",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-021",
+    "category": "Grammar",
+    "question": "Does she usually ______ home late on weekdays?",
+    "optionA": "get",
+    "optionB": "gets",
+    "optionC": "getting",
+    "optionD": "got",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-022",
+    "category": "Grammar",
+    "question": "I'm interested ______ learning more about photography.",
+    "optionA": "learn",
+    "optionB": "learning",
+    "optionC": "learns",
+    "optionD": "learned",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-023",
+    "category": "Grammar",
+    "question": "The ______ were playing in the garden.",
+    "optionA": "child",
+    "optionB": "childs",
+    "optionC": "children",
+    "optionD": "childrens",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-024",
+    "category": "Grammar",
+    "question": "______ sun rises in the east.",
+    "optionA": "A",
+    "optionB": "An",
+    "optionC": "The",
+    "optionD": "--",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "gram-025",
+    "category": "Grammar",
+    "question": "The ______ toys were scattered all over the floor.",
+    "optionA": "children's",
+    "optionB": "childrens",
+    "optionC": "children",
+    "optionD": "childs'",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-026",
+    "category": "Grammar",
+    "question": "I don't like ______ kind of weather; it's too humid.",
+    "optionA": "this",
+    "optionB": "that",
+    "optionC": "these",
+    "optionD": "those",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-027",
+    "category": "Grammar",
+    "question": "______ of these two options do you prefer?",
+    "optionA": "What",
+    "optionB": "Which",
+    "optionC": "Who",
+    "optionD": "Whose",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-028",
+    "category": "Grammar",
+    "question": "She walked ______ the room without saying a word.",
+    "optionA": "through",
+    "optionB": "into",
+    "optionC": "at",
+    "optionD": "on",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "gram-029",
+    "category": "Grammar",
+    "question": "______ any milk left in the fridge?",
+    "optionA": "Is there",
+    "optionB": "Are there",
+    "optionC": "There is",
+    "optionD": "There are",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "gram-030",
+    "category": "Grammar",
+    "question": "______ you got a pen I could borrow?",
+    "optionA": "Have",
+    "optionB": "Has",
+    "optionC": "Do",
+    "optionD": "Does",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "lis-001",
+    "category": "Listening Awareness",
+    "question": "Your colleague says: \"I'm on it.\" What does she mean?",
+    "optionA": "She has no idea how to start.",
+    "optionB": "She is already dealing with the task.",
+    "optionC": "She refuses to do the task.",
+    "optionD": "She finished the task already.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-002",
+    "category": "Listening Awareness",
+    "question": "A friend says: \"Let's just play it by ear.\" What does this mean?",
+    "optionA": "Let's write down a detailed plan.",
+    "optionB": "Let's cancel our plans.",
+    "optionC": "Let's decide as things happen, without a fixed plan.",
+    "optionD": "Let's listen to music together.",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "lis-003",
+    "category": "Listening Awareness",
+    "question": "Someone says: \"Honestly, opera isn't my cup of tea.\" What does this mean?",
+    "optionA": "They don't drink tea.",
+    "optionB": "They don't enjoy opera.",
+    "optionC": "They have never tried opera.",
+    "optionD": "They are allergic to tea.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-004",
+    "category": "Listening Awareness",
+    "question": "A coworker texts: \"Sorry, I'm running late.\" What is she telling you?",
+    "optionA": "She isn't coming at all.",
+    "optionB": "She will arrive after the planned time.",
+    "optionC": "She arrived earlier than expected.",
+    "optionD": "She needs you to reschedule completely.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-005",
+    "category": "Listening Awareness",
+    "question": "\"He's been under the weather all week.\" What does this mean?",
+    "optionA": "He has been very busy with outdoor work.",
+    "optionB": "He has been feeling slightly sick.",
+    "optionC": "He has been traveling a lot.",
+    "optionD": "He has been in a bad mood.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-006",
+    "category": "Listening Awareness",
+    "question": "Before her interview, her friend says: \"Break a leg!\" What does this mean?",
+    "optionA": "Be careful not to fall.",
+    "optionB": "Good luck.",
+    "optionC": "Don't be nervous, it's not important.",
+    "optionD": "Cancel the interview.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-007",
+    "category": "Listening Awareness",
+    "question": "\"Go ahead, I'm all ears.\" What does the speaker mean?",
+    "optionA": "I can't hear you well.",
+    "optionB": "I'm ready to listen carefully.",
+    "optionC": "I'm too busy to listen right now.",
+    "optionD": "I've heard this before.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-008",
+    "category": "Listening Awareness",
+    "question": "\"She's been a bit off today.\" What does this suggest?",
+    "optionA": "She is behaving differently than usual.",
+    "optionB": "She left the office early.",
+    "optionC": "She got a promotion.",
+    "optionD": "She is on vacation.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "lis-009",
+    "category": "Listening Awareness",
+    "question": "\"Let's touch base after lunch.\" What does the speaker want to do?",
+    "optionA": "Meet in person for a formal meeting.",
+    "optionB": "Have a quick check-in or update later.",
+    "optionC": "End the conversation completely.",
+    "optionD": "Avoid speaking for a while.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-010",
+    "category": "Listening Awareness",
+    "question": "\"Don't worry, it's a piece of cake.\" What is being communicated?",
+    "optionA": "The task is very easy.",
+    "optionB": "The task requires baking skills.",
+    "optionC": "The task is impossible.",
+    "optionD": "The task will take a long time.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "lis-011",
+    "category": "Listening Awareness",
+    "question": "\"Sorry I'm late, I completely lost track of time.\" What happened?",
+    "optionA": "He forgot about the meeting entirely.",
+    "optionB": "He didn't notice how much time had passed.",
+    "optionC": "His watch stopped working.",
+    "optionD": "He was stuck in traffic.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-012",
+    "category": "Listening Awareness",
+    "question": "\"He's always up in the air about big decisions.\" What does this mean about him?",
+    "optionA": "He decides very quickly.",
+    "optionB": "He travels frequently for work.",
+    "optionC": "He stays undecided for a long time.",
+    "optionD": "He avoids making mistakes.",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "lis-013",
+    "category": "Listening Awareness",
+    "question": "\"Thanks for the invite, but I'll pass on that.\" What is the speaker doing?",
+    "optionA": "Accepting the invitation happily.",
+    "optionB": "Declining the invitation.",
+    "optionC": "Asking for more details.",
+    "optionD": "Postponing their answer.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-014",
+    "category": "Listening Awareness",
+    "question": "After a long shift, the manager says: \"Let's call it a day.\" What does he mean?",
+    "optionA": "Let's plan tomorrow's schedule.",
+    "optionB": "Let's stop working for now.",
+    "optionC": "Let's celebrate today's success.",
+    "optionD": "Let's start a new project.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-015",
+    "category": "Listening Awareness",
+    "question": "\"She's under a lot of pressure lately.\" What does this mean?",
+    "optionA": "She is dealing with high stress or demands.",
+    "optionB": "She is very relaxed these days.",
+    "optionC": "She has too much free time.",
+    "optionD": "She is being ignored at work.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "lis-016",
+    "category": "Listening Awareness",
+    "question": "\"I'm short on time, can we make this quick?\" What is the speaker saying?",
+    "optionA": "They have plenty of free time.",
+    "optionB": "They don't have much time available.",
+    "optionC": "They want to reschedule for another day.",
+    "optionD": "They are unsure about the topic.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-017",
+    "category": "Listening Awareness",
+    "question": "\"I meant to call you back, but it slipped my mind.\" What happened?",
+    "optionA": "He decided not to call on purpose.",
+    "optionB": "He forgot to call.",
+    "optionC": "He lost your phone number.",
+    "optionD": "He called at the wrong time.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-018",
+    "category": "Listening Awareness",
+    "question": "\"Mr. Ahmed is out of the office this week.\" What does this mean?",
+    "optionA": "He resigned from his job.",
+    "optionB": "He is not physically present at work.",
+    "optionC": "He moved to a new office.",
+    "optionD": "He is working overtime.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-019",
+    "category": "Listening Awareness",
+    "question": "\"I'll get back to you by tomorrow.\" What is being promised?",
+    "optionA": "An immediate answer right now.",
+    "optionB": "A reply at a later time.",
+    "optionC": "A refusal to answer.",
+    "optionD": "A meeting in person tomorrow.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-020",
+    "category": "Listening Awareness",
+    "question": "\"Taking two weeks off in the middle of the project? That's out of the question.\" What does this mean?",
+    "optionA": "It's a great idea.",
+    "optionB": "It's not possible or allowed.",
+    "optionC": "It needs more discussion.",
+    "optionD": "It's already been approved.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-021",
+    "category": "Listening Awareness",
+    "question": "\"I can't talk right now, I'm swamped with work.\" What does this mean?",
+    "optionA": "He has very little to do.",
+    "optionB": "He is overwhelmed with a lot of work.",
+    "optionC": "He finished all his tasks early.",
+    "optionD": "He is on a short break.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-022",
+    "category": "Listening Awareness",
+    "question": "\"Let's not jump to conclusions before we hear both sides.\" What is being suggested?",
+    "optionA": "Make a fast decision immediately.",
+    "optionB": "Avoid deciding too quickly without enough information.",
+    "optionC": "Ignore both sides completely.",
+    "optionD": "Ask someone else to decide.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-023",
+    "category": "Listening Awareness",
+    "question": "\"Honestly, he talked me into it.\" What does this mean?",
+    "optionA": "He forced her physically to do it.",
+    "optionB": "He convinced her to do it.",
+    "optionC": "He stopped her from doing it.",
+    "optionD": "He did it for her.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-024",
+    "category": "Listening Awareness",
+    "question": "\"I'm counting on you to finish this by Friday.\" What does the speaker mean?",
+    "optionA": "They doubt you can finish it.",
+    "optionB": "They are relying on you to complete it.",
+    "optionC": "They will finish it themselves.",
+    "optionD": "They don't care about the deadline.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-025",
+    "category": "Listening Awareness",
+    "question": "\"She backed out at the last minute.\" What happened?",
+    "optionA": "She arrived earlier than planned.",
+    "optionB": "She withdrew from something she had agreed to.",
+    "optionC": "She helped organize the event.",
+    "optionD": "She was the first to arrive.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-026",
+    "category": "Listening Awareness",
+    "question": "\"It's up to you whether we go today or tomorrow.\" What does this mean?",
+    "optionA": "The decision has already been made.",
+    "optionB": "You are responsible for deciding.",
+    "optionC": "Neither option is available.",
+    "optionD": "The speaker refuses to choose.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-027",
+    "category": "Listening Awareness",
+    "question": "\"I'm really sorry, but I can't make it tonight.\" What is being communicated?",
+    "optionA": "He will arrive a little late.",
+    "optionB": "He is unable to attend.",
+    "optionC": "He needs a ride to get there.",
+    "optionD": "He will attend but leave early.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-028",
+    "category": "Listening Awareness",
+    "question": "\"Let's cut to the chase, we don't have much time.\" What does the speaker want?",
+    "optionA": "To talk about something unrelated first.",
+    "optionB": "To get straight to the main point.",
+    "optionC": "To end the meeting immediately.",
+    "optionD": "To slow down and explain everything in detail.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-029",
+    "category": "Listening Awareness",
+    "question": "\"He's dragging his feet on signing the contract.\" What does this suggest?",
+    "optionA": "He is excited to sign it quickly.",
+    "optionB": "He is deliberately delaying it.",
+    "optionC": "He already signed it.",
+    "optionD": "He lost the contract.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "lis-030",
+    "category": "Listening Awareness",
+    "question": "\"Can't make dinner tonight, but can I take a rain check?\" What is being asked?",
+    "optionA": "To cancel the plan permanently.",
+    "optionB": "To postpone the plan to another time.",
+    "optionC": "To change the location instead.",
+    "optionD": "To bring an umbrella to dinner.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "conv-001",
+    "category": "Conversation Response",
+    "question": "You accidentally spill coffee on your coworker's desk. What's the most natural thing to say?",
+    "optionA": "Oops, my bad. I'll clean this up right away.",
+    "optionB": "It's not a big deal, don't worry about it.",
+    "optionC": "That's unfortunate, isn't it?",
+    "optionD": "I hope you're not too upset.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-002",
+    "category": "Conversation Response",
+    "question": "You're 20 minutes late to a meeting because of traffic. What do you say when you walk in?",
+    "optionA": "Sorry I'm late, traffic was terrible.",
+    "optionB": "I hope I didn't miss much.",
+    "optionC": "You should have started without me.",
+    "optionD": "I was busy with something else.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-003",
+    "category": "Conversation Response",
+    "question": "Your friend tells you she's been feeling dizzy and tired for days. What's the most appropriate response?",
+    "optionA": "That sounds rough. Have you seen a doctor?",
+    "optionB": "Everyone feels tired sometimes.",
+    "optionC": "You should just sleep more.",
+    "optionD": "That happens to me too, don't worry.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-004",
+    "category": "Conversation Response",
+    "question": "Your manager asks if you can finish a report by tomorrow morning, but you're already overloaded. What's a natural, professional response?",
+    "optionA": "I'm a bit stretched thin, but I'll do my best.",
+    "optionB": "No, I can't do that.",
+    "optionC": "Sure, whatever you say.",
+    "optionD": "I don't think that's fair.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-005",
+    "category": "Conversation Response",
+    "question": "A classmate asks to borrow your notes because she missed a lecture. How would you naturally respond if you agree?",
+    "optionA": "Sure, I'll send them to you tonight.",
+    "optionB": "I guess you'll have to figure it out.",
+    "optionC": "You shouldn't have missed class.",
+    "optionD": "Maybe ask someone else.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-006",
+    "category": "Conversation Response",
+    "question": "You're at the airport and your flight has just been delayed by three hours. What might you say to the person next to you?",
+    "optionA": "Great, another delay. Typical.",
+    "optionB": "I guess we're stuck here for a while.",
+    "optionC": "This never happens to me.",
+    "optionD": "I'm so relieved about this.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "conv-007",
+    "category": "Conversation Response",
+    "question": "You're at a clothing store and the shirt you want isn't in your size. What would you ask the salesperson?",
+    "optionA": "Do you have this in a medium, by any chance?",
+    "optionB": "Why don't you have my size?",
+    "optionC": "This store never has what I need.",
+    "optionD": "I'll just take it anyway.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-008",
+    "category": "Conversation Response",
+    "question": "Your roommate asks if you can help her move some furniture this weekend. You're free, so how would you respond?",
+    "optionA": "Sure, just let me know what time.",
+    "optionB": "I might be busy, we'll see.",
+    "optionC": "Why do you need help with that?",
+    "optionD": "I already did that once.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-009",
+    "category": "Conversation Response",
+    "question": "You need to reschedule a doctor's appointment because of a work conflict. What would you say when you call?",
+    "optionA": "Hi, I need to move my appointment to another day if possible.",
+    "optionB": "I don't think I'll make it, sorry.",
+    "optionC": "Can you just cancel it completely?",
+    "optionD": "I forgot about the appointment.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-010",
+    "category": "Conversation Response",
+    "question": "Your friend just told you she got accepted into her dream university. What's a natural reaction?",
+    "optionA": "That's amazing! You must be so happy.",
+    "optionB": "That's nice, I guess.",
+    "optionC": "Was it hard to get in?",
+    "optionD": "I'm sure you'll be fine there.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-011",
+    "category": "Conversation Response",
+    "question": "Your coworker tells you the company is cutting your department's budget next quarter. How might you respond?",
+    "optionA": "That's concerning. Do we know how it'll affect us?",
+    "optionB": "That's great news, actually.",
+    "optionC": "I already knew that would happen.",
+    "optionD": "It doesn't matter to me at all.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-012",
+    "category": "Conversation Response",
+    "question": "Someone asks your opinion about a new restaurant you tried recently, and you didn't like it much. What's a natural, polite response?",
+    "optionA": "Honestly, it wasn't really my favorite.",
+    "optionB": "It was the worst meal I've ever had.",
+    "optionC": "I don't have any opinion about it.",
+    "optionD": "You should never go there.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-013",
+    "category": "Conversation Response",
+    "question": "You're struggling to understand a math problem and need help from your classmate. What would you say?",
+    "optionA": "Could you walk me through this part? I'm stuck.",
+    "optionB": "This is too hard, I give up.",
+    "optionC": "I don't think anyone can explain this.",
+    "optionD": "You probably don't know either.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-014",
+    "category": "Conversation Response",
+    "question": "Your friend is choosing between two job offers and asks what you think she should do. What's a thoughtful response?",
+    "optionA": "Which one feels like the better fit for your goals?",
+    "optionB": "Just pick whichever one, it doesn't matter.",
+    "optionC": "I wouldn't take either of them.",
+    "optionD": "You should ask someone else.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-015",
+    "category": "Conversation Response",
+    "question": "You're at a hotel front desk and your room isn't ready yet, even though check-in time has passed. What would you say?",
+    "optionA": "I understand, but do you know roughly how much longer it'll be?",
+    "optionB": "This is completely unacceptable, I want a refund.",
+    "optionC": "I'll just leave then.",
+    "optionD": "It's fine, I didn't want to check in anyway.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-016",
+    "category": "Conversation Response",
+    "question": "You forgot your best friend's birthday and she's clearly upset. What's the most natural way to apologize?",
+    "optionA": "I'm really sorry, I completely lost track of the date.",
+    "optionB": "It's not that big of a deal, is it?",
+    "optionC": "You should have reminded me.",
+    "optionD": "Birthdays aren't really important anyway.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-017",
+    "category": "Conversation Response",
+    "question": "A colleague suggests moving your weekly meeting to Monday mornings instead of Fridays. You think it's a good idea. What do you say?",
+    "optionA": "That actually works better for me too.",
+    "optionB": "I don't see why we need to change it.",
+    "optionC": "Fridays were fine, why bother?",
+    "optionD": "I'll think about it for a while.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-018",
+    "category": "Conversation Response",
+    "question": "You're trying on shoes and they're a bit too tight. What would you tell the salesperson?",
+    "optionA": "These feel a little tight, do you have a bigger size?",
+    "optionB": "These shoes are terrible quality.",
+    "optionC": "I'll just squeeze into them.",
+    "optionD": "Never mind, I don't want shoes anymore.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-019",
+    "category": "Conversation Response",
+    "question": "Your professor gives you feedback that your essay needs a stronger argument. How would you respond professionally?",
+    "optionA": "That's helpful, I'll work on strengthening it.",
+    "optionB": "I thought it was already strong enough.",
+    "optionC": "I don't really agree with that.",
+    "optionD": "I'll just leave it as it is.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-020",
+    "category": "Conversation Response",
+    "question": "You're traveling and your suitcase didn't arrive at baggage claim. What would you say at the airline counter?",
+    "optionA": "Hi, my luggage didn't show up. Can you help me track it down?",
+    "optionB": "This is ridiculous, I want compensation now.",
+    "optionC": "I guess I'll just buy new clothes.",
+    "optionD": "It's probably lost forever.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-021",
+    "category": "Conversation Response",
+    "question": "Your friend cancels plans with you last minute for the second time this month. How might you express how you feel?",
+    "optionA": "It's happened a few times now, is everything okay?",
+    "optionB": "Whatever, I don't care.",
+    "optionC": "You always do this to me.",
+    "optionD": "I guess we're not really friends then.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-022",
+    "category": "Conversation Response",
+    "question": "You're at work and you accidentally sent an email to the wrong client. What would you tell your manager?",
+    "optionA": "I made a mistake with an email, I wanted to let you know right away.",
+    "optionB": "It wasn't really my fault.",
+    "optionC": "I'll deal with it later.",
+    "optionD": "It's probably not a big deal.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-023",
+    "category": "Conversation Response",
+    "question": "A friend invites you to a party, but you already have other plans that night. How would you politely decline?",
+    "optionA": "I wish I could, but I already have something planned.",
+    "optionB": "No, I'm busy.",
+    "optionC": "Parties aren't really my thing.",
+    "optionD": "Maybe, I'll see how I feel.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-024",
+    "category": "Conversation Response",
+    "question": "You notice a coworker seems stressed and overwhelmed with tasks. What would you naturally say to offer help?",
+    "optionA": "You seem swamped, is there anything I can take off your plate?",
+    "optionB": "You should manage your time better.",
+    "optionC": "That's not really my problem.",
+    "optionD": "Everyone's busy these days.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-025",
+    "category": "Conversation Response",
+    "question": "Your landlord tells you the rent will increase next month. What's a reasonable response?",
+    "optionA": "I appreciate you letting me know. Can we talk about the details?",
+    "optionB": "That's completely unfair, I refuse.",
+    "optionC": "I guess I have no choice.",
+    "optionD": "I'm moving out immediately.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-026",
+    "category": "Conversation Response",
+    "question": "You're at a café and the waiter brings you the wrong order. What would you say?",
+    "optionA": "I think there's been a mix-up, this isn't what I ordered.",
+    "optionB": "This is unacceptable service.",
+    "optionC": "I'll just eat it anyway.",
+    "optionD": "Forget it, I'm leaving.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-027",
+    "category": "Conversation Response",
+    "question": "Your sister just told you she failed an important exam. What's a supportive response?",
+    "optionA": "I'm sorry to hear that. Do you want to talk about what happened?",
+    "optionB": "You probably didn't study enough.",
+    "optionC": "That's disappointing, honestly.",
+    "optionD": "It's just one exam, don't worry.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-028",
+    "category": "Conversation Response",
+    "question": "You need directions because you're lost in an unfamiliar city. What would you ask a stranger?",
+    "optionA": "Excuse me, could you point me toward the train station?",
+    "optionB": "Where am I supposed to go?",
+    "optionC": "This city is so confusing.",
+    "optionD": "I don't know where anything is.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-029",
+    "category": "Conversation Response",
+    "question": "A friend suggests trying a new hiking trail this weekend, and you like the idea. How do you respond?",
+    "optionA": "That sounds great, I'm in.",
+    "optionB": "I'll think about it, maybe.",
+    "optionC": "Hiking isn't really for me.",
+    "optionD": "We'll see how the weather is, I guess not.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "conv-030",
+    "category": "Conversation Response",
+    "question": "You're negotiating the price of a used car with a seller. What's a natural way to make a counteroffer?",
+    "optionA": "Would you be willing to come down a bit on the price?",
+    "optionB": "That price is way too high, forget it.",
+    "optionC": "I'll pay whatever you ask.",
+    "optionD": "I don't really want this car anyway.",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-001",
+    "category": "Sentence Completion",
+    "question": "By the time we arrived, the meeting had already ______.",
+    "optionA": "start",
+    "optionB": "started",
+    "optionC": "starting",
+    "optionD": "starts",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-002",
+    "category": "Sentence Completion",
+    "question": "She's been working here ______ almost five years now.",
+    "optionA": "since",
+    "optionB": "for",
+    "optionC": "from",
+    "optionD": "during",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-003",
+    "category": "Sentence Completion",
+    "question": "He apologized ______ being late to the interview.",
+    "optionA": "for",
+    "optionB": "about",
+    "optionC": "with",
+    "optionD": "of",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-004",
+    "category": "Sentence Completion",
+    "question": "It took me a while to get ______ the new software at work.",
+    "optionA": "used to",
+    "optionB": "use to",
+    "optionC": "using",
+    "optionD": "used",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-005",
+    "category": "Sentence Completion",
+    "question": "The company is looking for someone who can work ______ pressure.",
+    "optionA": "under",
+    "optionB": "in",
+    "optionC": "with",
+    "optionD": "on",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-006",
+    "category": "Sentence Completion",
+    "question": "I'd rather stay home tonight ______ go out in this weather.",
+    "optionA": "that",
+    "optionB": "than",
+    "optionC": "then",
+    "optionD": "as",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-007",
+    "category": "Sentence Completion",
+    "question": "She's not only talented ______ also incredibly hardworking.",
+    "optionA": "but",
+    "optionB": "and",
+    "optionC": "so",
+    "optionD": "yet",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-008",
+    "category": "Sentence Completion",
+    "question": "We need to make a decision ______ the end of this week.",
+    "optionA": "until",
+    "optionB": "by",
+    "optionC": "at",
+    "optionD": "since",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-009",
+    "category": "Sentence Completion",
+    "question": "He's known ______ his generosity throughout the neighborhood.",
+    "optionA": "for",
+    "optionB": "with",
+    "optionC": "by",
+    "optionD": "as",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-010",
+    "category": "Sentence Completion",
+    "question": "The new employee still needs to get ______ with the company's procedures.",
+    "optionA": "familiar",
+    "optionB": "familiarize",
+    "optionC": "familiarity",
+    "optionD": "familiarly",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-011",
+    "category": "Sentence Completion",
+    "question": "Choose the sentence with correct word order.",
+    "optionA": "Never I have seen such a beautiful view.",
+    "optionB": "I have never seen such a beautiful view.",
+    "optionC": "I never have seen such a beautiful view.",
+    "optionD": "Seen I have never such a beautiful view.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-012",
+    "category": "Sentence Completion",
+    "question": "The teacher insisted ______ the assignment be submitted by Friday.",
+    "optionA": "that",
+    "optionB": "for",
+    "optionC": "on",
+    "optionD": "about",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-013",
+    "category": "Sentence Completion",
+    "question": "Despite ______ tired, she kept working until midnight.",
+    "optionA": "be",
+    "optionB": "being",
+    "optionC": "been",
+    "optionD": "is",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-014",
+    "category": "Sentence Completion",
+    "question": "He's responsible ______ managing the entire sales team.",
+    "optionA": "of",
+    "optionB": "for",
+    "optionC": "with",
+    "optionD": "to",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-015",
+    "category": "Sentence Completion",
+    "question": "This restaurant is famous ______ its seafood dishes.",
+    "optionA": "with",
+    "optionB": "for",
+    "optionC": "about",
+    "optionD": "at",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-016",
+    "category": "Sentence Completion",
+    "question": "The two candidates have very ______ opinions on the issue.",
+    "optionA": "differ",
+    "optionB": "different",
+    "optionC": "difference",
+    "optionD": "differently",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-017",
+    "category": "Sentence Completion",
+    "question": "I'm afraid we can't proceed ______ your manager's approval.",
+    "optionA": "without",
+    "optionB": "besides",
+    "optionC": "except",
+    "optionD": "unless",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-018",
+    "category": "Sentence Completion",
+    "question": "Choose the correct sentence.",
+    "optionA": "She gave to me some helpful advice.",
+    "optionB": "She gave some helpful advice to me.",
+    "optionC": "She gave me some helpful advice.",
+    "optionD": "To me she gave some helpful advice.",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "sent-019",
+    "category": "Sentence Completion",
+    "question": "The results ______ show a significant improvement compared to last year.",
+    "optionA": "clear",
+    "optionB": "clarity",
+    "optionC": "clearly",
+    "optionD": "clearness",
+    "correctAnswer": "C"
+  },
+  {
+    "id": "sent-020",
+    "category": "Sentence Completion",
+    "question": "He apologized for the delay and promised to ______ the issue immediately.",
+    "optionA": "address",
+    "optionB": "discuss",
+    "optionC": "mention",
+    "optionD": "describe",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-021",
+    "category": "Sentence Completion",
+    "question": "The project was completed well ______ the deadline.",
+    "optionA": "before",
+    "optionB": "ago",
+    "optionC": "since",
+    "optionD": "until",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-022",
+    "category": "Sentence Completion",
+    "question": "It's essential ______ everyone follows the safety guidelines.",
+    "optionA": "for",
+    "optionB": "that",
+    "optionC": "if",
+    "optionD": "when",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-023",
+    "category": "Sentence Completion",
+    "question": "Her explanation left no room ______ misunderstanding.",
+    "optionA": "to",
+    "optionB": "for",
+    "optionC": "of",
+    "optionD": "with",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-024",
+    "category": "Sentence Completion",
+    "question": "Choose the correct sentence.",
+    "optionA": "Rarely I have felt so confident about anything.",
+    "optionB": "I have rarely felt so confident about anything.",
+    "optionC": "I felt rarely so confident about anything.",
+    "optionD": "Have I rarely felt so confident about anything.",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-025",
+    "category": "Sentence Completion",
+    "question": "The manager asked everyone to ______ their opinions before the vote.",
+    "optionA": "rise",
+    "optionB": "raise",
+    "optionC": "arise",
+    "optionD": "arouse",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-026",
+    "category": "Sentence Completion",
+    "question": "She's determined ______ finish the marathon this year.",
+    "optionA": "to",
+    "optionB": "for",
+    "optionC": "at",
+    "optionD": "on",
+    "correctAnswer": "A"
+  },
+  {
+    "id": "sent-027",
+    "category": "Sentence Completion",
+    "question": "The report needs to be ______ over before we submit it.",
+    "optionA": "look",
+    "optionB": "looked",
+    "optionC": "looking",
+    "optionD": "looks",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-028",
+    "category": "Sentence Completion",
+    "question": "He's usually calm, but he ______ lose his temper if things go wrong.",
+    "optionA": "does",
+    "optionB": "is",
+    "optionC": "has",
+    "optionD": "can",
+    "correctAnswer": "D"
+  },
+  {
+    "id": "sent-029",
+    "category": "Sentence Completion",
+    "question": "There's no point ______ arguing about something we can't change.",
+    "optionA": "to",
+    "optionB": "in",
+    "optionC": "for",
+    "optionD": "with",
+    "correctAnswer": "B"
+  },
+  {
+    "id": "sent-030",
+    "category": "Sentence Completion",
+    "question": "The committee is expected to announce its decision ______ the coming days.",
+    "optionA": "at",
+    "optionB": "in",
+    "optionC": "on",
+    "optionD": "within",
+    "correctAnswer": "B"
+  }
+]
