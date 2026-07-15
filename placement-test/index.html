@@ -353,25 +353,7 @@
 
       <div id="categoryBreakdown" class="category-breakdown"></div>
 
-      <div id="courseRecommendation" class="course-rec ar" lang="ar" dir="rtl" hidden>
-        <h3>🎉 تم تحليل نتيجتك!</h3>
-        <p>
-          نتيجتك توضح أن لديك أساسًا جيدًا في اللغة الإنجليزية، لكن ما زالت هناك مهارات تحتاج إلى تطوير
-          حتى تتمكن من التحدث بثقة وفهم الإنجليزية المستخدمة في الحياة اليومية.
-        </p>
-        <p>لهذا السبب نرشح لك <span class="course-name">دورة تطوير اللغة الإنجليزية - المستوى الأول</span>.</p>
-        <p>ستتعلم في الدورة بإذن الله:</p>
-        <ul class="course-list">
-          <li>✅ بناء الجمل بطريقة صحيحة.</li>
-          <li>✅ التحدث بثقة في المواقف اليومية.</li>
-          <li>✅ تطوير مهارة الاستماع وفهم الإنجليزية الطبيعية.</li>
-          <li>✅ اكتساب مفردات وتعبيرات يستخدمها المتحدثون باللغة يوميًا.</li>
-          <li>✅ تعلم القواعد بطريقة عملية تساعدك على استخدامها أثناء الكلام.</li>
-        </ul>
-        <div class="course-note">
-          🎁 عند إرسال نتيجة الاختبار لنا عبر واتساب، سيقوم أحد المدربين بتحليل نتيجتك وإرشادك إلى أفضل نقطة تبدأ منها.
-        </div>
-      </div>
+      <div id="courseRecommendation" class="course-rec ar" lang="ar" dir="rtl"></div>
 
       <div class="actions">
         <a id="whatsappBtn" class="btn-whatsapp" target="_blank" rel="noopener">📱 أرسل نتيجتي عبر واتساب</a>
@@ -405,6 +387,34 @@
     { name: "Upper Intermediate",min: 24, max: 28 },
     { name: "Advanced",          min: 29, max: TOTAL_QUESTIONS }
   ];
+
+  const RECOMMENDATION_BELOW_95 = `
+    <h3>🚀 خطوتك التالية</h3>
+    <p>تشير نتيجتك إلى أن هناك بعض المهارات التي تحتاج إلى تطوير حتى تبني أساسًا قويًا في اللغة الإنجليزية.</p>
+    <p>لذلك نرشح لك <span class="course-name">دورة تطوير اللغة الإنجليزية - المستوى الأول</span>.</p>
+    <p>في هذا المستوى ستتعلم بإذن الله:</p>
+    <ul class="course-list">
+      <li>✅ بناء الجمل بطريقة صحيحة.</li>
+      <li>✅ التحدث بثقة في المواقف اليومية.</li>
+      <li>✅ تطوير مهارة الاستماع وفهم الإنجليزية الطبيعية.</li>
+      <li>✅ اكتساب مفردات وتعبيرات يستخدمها المتحدثون باللغة الإنجليزية يوميًا.</li>
+      <li>✅ تعلم القواعد بطريقة عملية تساعدك على استخدامها أثناء التحدث.</li>
+    </ul>
+    <p>✨ بعد إتقان هذا المستوى ستكون مستعدًا للانتقال إلى المستويات الأعلى ضمن مسار التطوير.</p>
+    <div class="course-note">
+      🎁 أرسل لنا نتيجتك عبر واتساب، وسيساعدك أحد المدربين في بدء رحلتك التعليمية واختيار المجموعة المناسبة.
+    </div>
+  `;
+
+  const RECOMMENDATION_95_PLUS = `
+    <h3>🌟 ما شاء الله!</h3>
+    <p>نتيجتك ممتازة جدًا، ويبدو أنك أتقنت معظم المهارات التي يقيسها هذا الاختبار.</p>
+    <p>ونظرًا لأن هذا الاختبار يقيس مهارات المستوى الأول فقط، فقد تكون مستعدًا للانتقال إلى مستوى أعلى أو إلى نادي المحادثة.</p>
+    <p>لكن قبل ترشيح البرنامج المناسب، يحتاج أحد المدربين إلى مراجعة نتيجتك وإجراء تقييم بسيط للتأكد من أفضل نقطة تبدأ منها.</p>
+    <div class="course-note">
+      🎁 أرسل لنا نتيجتك عبر واتساب، وسنساعدك في اختيار البرنامج الأنسب لك.
+    </div>
+  `;
 
   const LOADING_MESSAGES = [
     "Analyzing your English…",
@@ -609,9 +619,9 @@
       });
     }, 60);
 
-    // course recommendation (below Intermediate)
-    const showRecommendation = levelIndex < 3; // Beginner, Elementary, Pre-Intermediate
-    courseRecommendation.hidden = !showRecommendation;
+    // course recommendation (based on score percentage, Level 1 program only)
+    const scorePct = totalScore / testQuestions.length;
+    courseRecommendation.innerHTML = (scorePct < 0.95) ? RECOMMENDATION_BELOW_95 : RECOMMENDATION_95_PLUS;
 
     // whatsapp message
     const lines = [
