@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hala Hi Flashcards — Free Course</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --deep-purple:#2E2451;
+    --mid-purple:#4B3F72;
+    --gold:#F4B740;
+    --gold-soft:#FBE3AE;
+    --off-white:#FBF9F5;
+    --card-face:#FFFFFF;
+    --lavender:#EFEAF7;
+    --ink:#2A2438;
+    --ink-soft:#6B647F;
+    --line:#E7E2F0;
+    --success:#3C8A5B;
+    --danger:#B85454;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    background:var(--off-white);
+    font-family:'DM Sans',sans-serif;
+    color:var(--ink);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    overflow-x:hidden;
+    position:relative;
+  }
+  /* ambient breathing blobs */
+  .blob{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(60px);
+    opacity:.35;
+    z-index:0;
+    animation:breathe 9s ease-in-out infinite;
+  }
+  .blob-1{width:380px;height:380px;background:var(--gold-soft);top:-120px;right:-100px;}
+  .blob-2{width:420px;height:420px;background:var(--lavender);bottom:-140px;left:-120px;animation-delay:2.5s;}
+  @keyframes breathe{
+    0%,100%{transform:scale(1);opacity:.3;}
+    50%{transform:scale(1.15);opacity:.5;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .blob{animation:none;}
+  }
+
+  header{
+    width:100%;
+    max-width:640px;
+    padding:28px 20px 10px;
+    text-align:center;
+    position:relative;
+    z-index:1;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .brand-mark{
+    width:34px;height:34px;
+    border-radius:10px;
+    background:linear-gradient(135deg,var(--deep-purple),var(--mid-purple));
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .brand-mark svg{width:18px;height:18px;stroke:var(--gold);}
+  .brand-name{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:1.35rem;
+    color:var(--deep-purple);
+  }
+  .brand-sub{
+    font-size:.8rem;
+    color:var(--ink-soft);
+    letter-spacing:.3px;
+  }
+
+  main{
+    width:100%;
+    max-width:640px;
+    padding:10px 20px 60px;
+    position:relative;
+    z-index:1;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  /* stats strip */
+  .stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+    width:100%;
+    margin:18px 0 22px;
+  }
+  .stat{
+    background:var(--card-face);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:12px 8px;
+    text-align:center;
+  }
+  .stat-num{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:1.25rem;
+    color:var(--deep-purple);
+    line-height:1;
+  }
+  .stat-label{
+    font-size:.68rem;
+    color:var(--ink-soft);
+    margin-top:5px;
+  }
+
+  /* rep dots - gym set counter */
+  .rep-track{
+    display:flex;
+    gap:6px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:26px;
+    max-width:420px;
+  }
+  .rep-dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:var(--line);
+    transition:background .25s ease, transform .25s ease;
+  }
+  .rep-dot.done{background:var(--gold);}
+  .rep-dot.current{background:var(--deep-purple);transform:scale(1.4);}
+
+  /* card stage */
+  .stage{
+    position:relative;
+    width:100%;
+    max-width:480px;
+    aspect-ratio:0.72;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .ring{
+    position:absolute;
+    inset:0;
+    border-radius:28px;
+    border:2px solid var(--gold);
+    opacity:.5;
+    animation:pulse-ring 3.2s ease-in-out infinite;
+  }
+  @keyframes pulse-ring{
+    0%,100%{transform:scale(1);opacity:.35;}
+    50%{transform:scale(1.035);opacity:.65;}
+  }
+  @media (prefers-reduced-motion: reduce){ .ring{animation:none;} }
+
+  .card{
+    position:relative;
+    width:100%;
+    height:100%;
+    background:var(--card-face);
+    border-radius:26px;
+    box-shadow:0 20px 50px -20px rgba(46,36,81,.28);
+    display:flex;
+    flex-direction:column;
+    cursor:pointer;
+    user-select:none;
+    overflow:hidden;
+    transition:transform .18s ease, box-shadow .18s ease;
+  }
+  .card:active{transform:scale(.985);}
+
+  .card-image{
+    position:relative;
+    width:100%;
+    height:42%;
+    flex-shrink:0;
+    background:linear-gradient(135deg,var(--lavender),var(--gold-soft));
+    overflow:hidden;
+  }
+  .card-image img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+    opacity:0;
+    transition:opacity .35s ease;
+  }
+  .card-image img.loaded{opacity:1;}
+  .card-category{
+    position:absolute;
+    top:14px;
+    right:14px;
+    font-size:.7rem;
+    letter-spacing:.5px;
+    color:var(--gold);
+    background:var(--deep-purple);
+    padding:4px 12px;
+    border-radius:100px;
+    z-index:2;
+  }
+
+  .card-content{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:22px 26px 30px;
+    text-align:center;
+    position:relative;
+  }
+  .card-word{
+    font-family:'Playfair Display',serif;
+    font-weight:700;
+    font-size:2.6rem;
+    color:var(--deep-purple);
+    direction:ltr;
+    margin-bottom:6px;
+  }
+  .card-hint{
+    font-size:.85rem;
+    color:var(--ink-soft);
+    margin-top:14px;
+  }
+  .card-meaning{
+    display:none;
+    width:100%;
+  }
+  .card.revealed .card-hint{display:none;}
+  .card.revealed .card-meaning{display:block;}
+  .meaning-ar{
+    font-size:1.4rem;
+    font-weight:700;
+    color:var(--mid-purple);
+    margin-bottom:14px;
+  }
+  .meaning-divider{
+    width:40px;height:1px;background:var(--line);margin:0 auto 14px;
+  }
+  .meaning-ex{
+    font-size:.95rem;
+    color:var(--ink-soft);
+    direction:ltr;
+    line-height:1.5;
+  }
+
+  .speak-btn{
+    position:absolute;
+    bottom:12px;
+    left:50%;
+    transform:translateX(-50%);
+    width:42px;height:42px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--off-white);
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .speak-btn:hover{background:var(--lavender);}
+  .speak-btn svg{width:18px;height:18px;stroke:var(--deep-purple);}
+
+  /* rating buttons */
+  .ratings{
+    width:100%;
+    max-width:420px;
+    display:none;
+    grid-template-columns:repeat(5,1fr);
+    gap:8px;
+    margin-top:20px;
+  }
+  .ratings.show{display:grid;}
+  .rate-btn{
+    border:none;
+    border-radius:14px;
+    padding:12px 4px 10px;
+    font-family:'DM Sans',sans-serif;
+    font-weight:600;
+    font-size:.72rem;
+    color:#fff;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    transition:transform .12s ease, filter .12s ease;
+  }
+  .rate-btn:hover{transform:translateY(-2px);filter:brightness(1.05);}
+  .rate-btn:active{transform:translateY(0);}
+  .rate-btn span.n{font-size:.62rem;opacity:.85;font-weight:500;}
+  .rate-blackout{background:#7A6F94;}
+  .rate-hard{background:var(--danger);}
+  .rate-ok{background:var(--mid-purple);}
+  .rate-good{background:var(--success);}
+  .rate-easy{background:var(--gold);color:var(--deep-purple);}
+
+  .tap-instruction{
+    font-size:.78rem;
+    color:var(--ink-soft);
+    margin-top:16px;
+    text-align:center;
+  }
+
+  /* completion screen */
+  .complete{
+    display:none;
+    width:100%;
+    max-width:420px;
+    text-align:center;
+    padding:20px 0;
+  }
+  .complete.show{display:flex;flex-direction:column;align-items:center;}
+  .complete-badge{
+    width:76px;height:76px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--deep-purple),var(--mid-purple));
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:20px;
+  }
+  .complete-badge svg{width:32px;height:32px;stroke:var(--gold);}
+  .complete h2{
+    font-family:'Playfair Display',serif;
+    font-size:1.5rem;
+    color:var(--deep-purple);
+    margin-bottom:8px;
+  }
+  .complete p{
+    color:var(--ink-soft);
+    font-size:.92rem;
+    margin-bottom:24px;
+    line-height:1.6;
+  }
+  .restart-btn{
+    background:var(--deep-purple);
+    color:#fff;
+    border:none;
+    padding:14px 32px;
+    border-radius:100px;
+    font-family:'DM Sans',sans-serif;
+    font-weight:600;
+    font-size:.9rem;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .restart-btn:hover{background:var(--mid-purple);}
+
+  .empty-state{
+    display:none;
+    text-align:center;
+    padding:40px 20px;
+  }
+  .empty-state.show{display:block;}
+  .empty-state h2{
+    font-family:'Playfair Display',serif;
+    color:var(--deep-purple);
+    margin-bottom:10px;
+  }
+  .empty-state p{color:var(--ink-soft);font-size:.9rem;line-height:1.6;}
+
+  footer{
+    padding:20px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:.75rem;
+    position:relative;
+    z-index:1;
+  }
+
+  @media (max-width:420px){
+    .card-word{font-size:2.1rem;}
+    .stat-num{font-size:1.05rem;}
+  }
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+    </div>
+    <span class="brand-name">Hala Hi</span>
+  </div>
+  <div class="brand-sub">Vocabulary Flashcards — Free Course</div>
+</header>
+
+<main>
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="statQueue">0</div><div class="stat-label">In Round</div></div>
+    <div class="stat"><div class="stat-num" id="statMastered">0</div><div class="stat-label">Mastered</div></div>
+    <div class="stat"><div class="stat-num" id="statStreak">0</div><div class="stat-label">Day Streak</div></div>
+    <div class="stat"><div class="stat-num" id="statXp">0</div><div class="stat-label">XP</div></div>
+  </div>
+
+  <div id="repTrack" class="rep-track"></div>
+
+  <div id="playArea">
+    <div class="stage">
+      <div class="ring"></div>
+      <div class="card" id="card">
+        <div class="card-image" id="cardImageWrap">
+          <div class="card-category" id="cardCategory">General</div>
+          <img id="cardImage" src="" alt="">
+        </div>
+        <div class="card-content">
+          <div class="card-word" id="cardWord">word</div>
+          <div class="card-hint" id="cardHint">Tap to reveal meaning</div>
+          <div class="card-meaning" id="cardMeaning">
+            <div class="meaning-ar" id="meaningAr" dir="rtl">معنى</div>
+            <div class="meaning-divider"></div>
+            <div class="meaning-ex" id="meaningEx">example sentence</div>
+          </div>
+          <button class="speak-btn" id="speakBtn" title="Pronounce word" onclick="event.stopPropagation(); speakWord();">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="tap-instruction" id="tapInstruction">Tap the card to see the meaning</div>
+
+    <div class="ratings" id="ratings">
+      <button class="rate-btn rate-blackout" onclick="rate('blackout')">Blackout<span class="n">5 cards</span></button>
+      <button class="rate-btn rate-hard" onclick="rate('hard')">Hard<span class="n">10 cards</span></button>
+      <button class="rate-btn rate-ok" onclick="rate('ok')">OK<span class="n">20 cards</span></button>
+      <button class="rate-btn rate-good" onclick="rate('good')">Good<span class="n">in 2 days</span></button>
+      <button class="rate-btn rate-easy" onclick="rate('easy')">Easy<span class="n">in 1 week</span></button>
+    </div>
+  </div>
+
+  <div class="complete" id="completeScreen">
+    <div class="complete-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    </div>
+    <h2>Round complete</h2>
+    <p id="completeMsg">Well done! Come back tomorrow for a new round of words.</p>
+    <button class="restart-btn" onclick="restartExtra()">Practice more words</button>
+  </div>
+
+  <div class="empty-state" id="emptyState">
+    <h2>No words due today</h2>
+    <p>All your available words are in good shape right now. Come back later based on the review schedule, or practice extra words now.</p>
+    <button class="restart-btn" style="margin-top:20px;" onclick="restartExtra()">Practice more words</button>
+  </div>
+</main>
+
+<footer>Hala Hi — English Conversation Club</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+/* Read-only Firebase init — only used to fetch the public Pexels key
+   from settings/apikeys (no auth, no writes, no member data touched).
+   Diagnostics are logged to the console to make it easy to spot the
+   exact failure point (init / permission / missing field / network). */
+try{
+  firebase.initializeApp({
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d"
+  });
+  console.log("[HalaHi] Firebase initialized");
+}catch(e){ console.error("[HalaHi] Firebase init failed:", e); }
+
+let PEXELS_KEY = "";
+let pexelsReady = (async function loadPexelsKey(){
+  try{
+    const db = firebase.firestore();
+    const snap = await db.collection("settings").doc("apikeys").get();
+    if(!snap.exists){
+      console.warn("[HalaHi] settings/apikeys document does not exist, or read was blocked by Firestore rules.");
+      return;
+    }
+    PEXELS_KEY = snap.data().pexels || "";
+    if(PEXELS_KEY){
+      console.log("[HalaHi] Pexels key loaded successfully.");
+    } else {
+      console.warn("[HalaHi] settings/apikeys exists but has no 'pexels' field.");
+    }
+  }catch(e){
+    console.error("[HalaHi] Could not read settings/apikeys — likely a Firestore rules permission error:", e);
+  }
+})();
+</script>
+
+<script>
+/* ============ Word bank: 200 intermediate (B1–B2) words ============ */
+const WORDS = [
+// Emotions & mindset
+{c:"Emotions & Mindset",w:"anxious",ar:"قلق",ex:"She felt anxious before the interview."},
+{c:"Emotions & Mindset",w:"confident",ar:"واثق من نفسه",ex:"He spoke with a confident voice."},
+{c:"Emotions & Mindset",w:"frustrated",ar:"محبط",ex:"I was frustrated when the plan failed."},
+{c:"Emotions & Mindset",w:"overwhelmed",ar:"غارق بالمشاعر/الأعباء",ex:"She felt overwhelmed by all the tasks."},
+{c:"Emotions & Mindset",w:"relieved",ar:"مرتاح بعد قلق",ex:"He was relieved to hear the good news."},
+{c:"Emotions & Mindset",w:"grateful",ar:"ممتن",ex:"I'm grateful for your help."},
+{c:"Emotions & Mindset",w:"curious",ar:"فضولي",ex:"The child was curious about everything."},
+{c:"Emotions & Mindset",w:"motivated",ar:"لديه دافع",ex:"She felt motivated to start the course."},
+{c:"Emotions & Mindset",w:"hesitant",ar:"متردد",ex:"He was hesitant to answer the question."},
+{c:"Emotions & Mindset",w:"jealous",ar:"غيور",ex:"He felt jealous of his friend's success."},
+{c:"Emotions & Mindset",w:"embarrassed",ar:"محرج",ex:"I was embarrassed when I forgot her name."},
+{c:"Emotions & Mindset",w:"ashamed",ar:"خجلان من فعل",ex:"He felt ashamed of his mistake."},
+{c:"Emotions & Mindset",w:"proud",ar:"فخور",ex:"Her parents are proud of her."},
+{c:"Emotions & Mindset",w:"nervous",ar:"متوتر",ex:"I always get nervous before exams."},
+{c:"Emotions & Mindset",w:"calm",ar:"هادئ",ex:"Try to stay calm during the test."},
+{c:"Emotions & Mindset",w:"exhausted",ar:"منهك",ex:"After the trip, we were exhausted."},
+{c:"Emotions & Mindset",w:"hopeful",ar:"متفائل",ex:"I'm hopeful about the future."},
+{c:"Emotions & Mindset",w:"disappointed",ar:"خائب الأمل",ex:"She was disappointed with the result."},
+{c:"Emotions & Mindset",w:"content",ar:"راضٍ",ex:"He seems content with his simple life."},
+{c:"Emotions & Mindset",w:"determined",ar:"مصمم",ex:"She is determined to finish the course."},
+
+// Personality
+{c:"Personality",w:"stubborn",ar:"عنيد",ex:"My brother is too stubborn to admit mistakes."},
+{c:"Personality",w:"generous",ar:"كريم",ex:"He is generous with his time."},
+{c:"Personality",w:"reliable",ar:"يُعتمد عليه",ex:"She is a reliable colleague."},
+{c:"Personality",w:"honest",ar:"صادق",ex:"Please be honest with me."},
+{c:"Personality",w:"ambitious",ar:"طموح",ex:"He has ambitious plans for the business."},
+{c:"Personality",w:"humble",ar:"متواضع",ex:"Despite his success, he stayed humble."},
+{c:"Personality",w:"arrogant",ar:"متكبر",ex:"His arrogant attitude annoyed everyone."},
+{c:"Personality",w:"patient",ar:"صبور",ex:"Teachers need to be patient."},
+{c:"Personality",w:"outgoing",ar:"اجتماعي منفتح",ex:"She's outgoing and makes friends easily."},
+{c:"Personality",w:"reserved",ar:"متحفظ",ex:"He's quite reserved with strangers."},
+{c:"Personality",w:"sensitive",ar:"حساس",ex:"He is sensitive about his weight."},
+{c:"Personality",w:"considerate",ar:"يراعي مشاعر الآخرين",ex:"It was considerate of you to ask first."},
+{c:"Personality",w:"easy-going",ar:"سهل التعامل",ex:"My manager is very easy-going."},
+{c:"Personality",w:"competitive",ar:"تنافسي",ex:"She has a competitive nature."},
+{c:"Personality",w:"cautious",ar:"حذر",ex:"Be cautious when driving in the rain."},
+{c:"Personality",w:"spontaneous",ar:"عفوي",ex:"We took a spontaneous trip last weekend."},
+{c:"Personality",w:"loyal",ar:"وفي",ex:"He has been a loyal friend for years."},
+{c:"Personality",w:"selfish",ar:"أناني",ex:"It was selfish of him not to share."},
+{c:"Personality",w:"thoughtful",ar:"مراعٍ للآخرين",ex:"That was a thoughtful gift."},
+{c:"Personality",w:"independent",ar:"مستقل",ex:"She became independent at a young age."},
+
+// Work & career
+{c:"Work & Career",w:"deadline",ar:"الموعد النهائي",ex:"The deadline for the report is Friday."},
+{c:"Work & Career",w:"colleague",ar:"زميل عمل",ex:"I asked a colleague for advice."},
+{c:"Work & Career",w:"promotion",ar:"ترقية",ex:"She got a promotion last month."},
+{c:"Work & Career",w:"salary",ar:"راتب",ex:"His salary increased this year."},
+{c:"Work & Career",w:"interview",ar:"مقابلة عمل",ex:"I have a job interview tomorrow."},
+{c:"Work & Career",w:"resign",ar:"يستقيل",ex:"He decided to resign from his position."},
+{c:"Work & Career",w:"negotiate",ar:"يتفاوض",ex:"We need to negotiate the price."},
+{c:"Work & Career",w:"workload",ar:"عبء العمل",ex:"My workload increased this week."},
+{c:"Work & Career",w:"teamwork",ar:"العمل الجماعي",ex:"The project succeeded through teamwork."},
+{c:"Work & Career",w:"feedback",ar:"ملاحظات وتقييم",ex:"Thank you for your honest feedback."},
+{c:"Work & Career",w:"supervisor",ar:"مشرف",ex:"My supervisor approved the plan."},
+{c:"Work & Career",w:"responsibility",ar:"مسؤولية",ex:"It's your responsibility to check the data."},
+{c:"Work & Career",w:"qualification",ar:"مؤهل",ex:"She has the right qualifications for the job."},
+{c:"Work & Career",w:"opportunity",ar:"فرصة",ex:"This job is a great opportunity."},
+{c:"Work & Career",w:"contract",ar:"عقد",ex:"They signed a two-year contract."},
+{c:"Work & Career",w:"overtime",ar:"وقت إضافي",ex:"He worked overtime to finish the project."},
+{c:"Work & Career",w:"efficient",ar:"فعّال",ex:"She is an efficient manager."},
+{c:"Work & Career",w:"productive",ar:"منتج",ex:"I had a productive day at work."},
+{c:"Work & Career",w:"achievement",ar:"إنجاز",ex:"Finishing the project was a big achievement."},
+{c:"Work & Career",w:"task",ar:"مهمة",ex:"I finished all my tasks today."},
+
+// Daily life
+{c:"Daily Life",w:"routine",ar:"روتين",ex:"I have a morning routine."},
+{c:"Daily Life",w:"chore",ar:"عمل منزلي",ex:"Washing dishes is a daily chore."},
+{c:"Daily Life",w:"errand",ar:"مشوار بسيط",ex:"I have a few errands to run today."},
+{c:"Daily Life",w:"habit",ar:"عادة",ex:"Reading before bed is a good habit."},
+{c:"Daily Life",w:"schedule",ar:"جدول مواعيد",ex:"My schedule is full this week."},
+{c:"Daily Life",w:"budget",ar:"ميزانية",ex:"We need to stick to our budget."},
+{c:"Daily Life",w:"grocery",ar:"بقالة/تسوق أساسي",ex:"I need to buy groceries after work."},
+{c:"Daily Life",w:"laundry",ar:"غسيل الملابس",ex:"I do the laundry every Friday."},
+{c:"Daily Life",w:"commute",ar:"التنقل اليومي للعمل",ex:"My commute takes about 30 minutes."},
+{c:"Daily Life",w:"leisure",ar:"وقت فراغ",ex:"I spend my leisure time reading."},
+{c:"Daily Life",w:"appointment",ar:"موعد",ex:"I have a doctor's appointment today."},
+{c:"Daily Life",w:"reminder",ar:"تذكير",ex:"Set a reminder for the meeting."},
+{c:"Daily Life",w:"maintenance",ar:"صيانة",ex:"The building needs regular maintenance."},
+{c:"Daily Life",w:"household",ar:"المنزل وشؤونه",ex:"We share the household chores."},
+{c:"Daily Life",w:"neighbor",ar:"جار",ex:"My neighbor is very friendly."},
+{c:"Daily Life",w:"convenient",ar:"مناسب وعملي",ex:"This location is very convenient."},
+{c:"Daily Life",w:"inconvenient",ar:"غير مناسب",ex:"The timing was inconvenient for me."},
+{c:"Daily Life",w:"occasion",ar:"مناسبة",ex:"We save this dress for special occasions."},
+{c:"Daily Life",w:"gathering",ar:"تجمع",ex:"We had a family gathering last night."},
+{c:"Daily Life",w:"arrangement",ar:"ترتيب",ex:"We made an arrangement to meet later."},
+
+// Communication
+{c:"Communication",w:"argument",ar:"جدال",ex:"They had an argument about the plan."},
+{c:"Communication",w:"opinion",ar:"رأي",ex:"What's your opinion on this?"},
+{c:"Communication",w:"agreement",ar:"اتفاق",ex:"We finally reached an agreement."},
+{c:"Communication",w:"disagreement",ar:"خلاف",ex:"There was a disagreement about the budget."},
+{c:"Communication",w:"persuade",ar:"يقنع",ex:"She tried to persuade him to stay."},
+{c:"Communication",w:"convince",ar:"يقنع بدليل",ex:"He convinced me with strong reasons."},
+{c:"Communication",w:"complain",ar:"يشتكي",ex:"He complained about the noise."},
+{c:"Communication",w:"apologize",ar:"يعتذر",ex:"She apologized for being late."},
+{c:"Communication",w:"compromise",ar:"حل وسط",ex:"They reached a compromise on the price."},
+{c:"Communication",w:"criticize",ar:"ينتقد",ex:"He criticized the plan openly."},
+{c:"Communication",w:"compliment",ar:"مجاملة",ex:"She gave me a nice compliment."},
+{c:"Communication",w:"interrupt",ar:"يقاطع",ex:"Please don't interrupt me while I'm speaking."},
+{c:"Communication",w:"misunderstand",ar:"يسيء الفهم",ex:"I think you misunderstood my message."},
+{c:"Communication",w:"clarify",ar:"يوضح",ex:"Can you clarify what you mean?"},
+{c:"Communication",w:"mention",ar:"يذكر",ex:"She mentioned the meeting yesterday."},
+{c:"Communication",w:"suggest",ar:"يقترح",ex:"I suggest we start earlier."},
+{c:"Communication",w:"recommend",ar:"يوصي",ex:"I recommend this book."},
+{c:"Communication",w:"discuss",ar:"يناقش",ex:"Let's discuss the details later."},
+{c:"Communication",w:"debate",ar:"مناظرة ونقاش",ex:"There was a debate about the new rule."},
+{c:"Communication",w:"assumption",ar:"افتراض",ex:"Don't make assumptions without facts."},
+
+// Study & learning
+{c:"Study & Learning",w:"knowledge",ar:"معرفة",ex:"She has deep knowledge of the subject."},
+{c:"Study & Learning",w:"skill",ar:"مهارة",ex:"Speaking is an important skill."},
+{c:"Study & Learning",w:"memorize",ar:"يحفظ",ex:"I need to memorize these words."},
+{c:"Study & Learning",w:"comprehend",ar:"يستوعب",ex:"It took time to comprehend the lesson."},
+{c:"Study & Learning",w:"concentrate",ar:"يركز",ex:"I can't concentrate with all this noise."},
+{c:"Study & Learning",w:"improve",ar:"يحسّن",ex:"Practice will improve your English."},
+{c:"Study & Learning",w:"practice",ar:"يتمرن",ex:"You should practice speaking daily."},
+{c:"Study & Learning",w:"progress",ar:"تقدم",ex:"She made great progress this month."},
+{c:"Study & Learning",w:"mistake",ar:"خطأ",ex:"Everyone makes mistakes sometimes."},
+{c:"Study & Learning",w:"correct",ar:"يصحح",ex:"Please correct my pronunciation."},
+{c:"Study & Learning",w:"challenge",ar:"تحدٍ",ex:"Learning a language is a challenge."},
+{c:"Study & Learning",w:"effort",ar:"جهد",ex:"She put a lot of effort into the exam."},
+{c:"Study & Learning",w:"ability",ar:"قدرة",ex:"He has the ability to learn quickly."},
+{c:"Study & Learning",w:"focus",ar:"تركيز",ex:"Try to keep your focus on one task."},
+{c:"Study & Learning",w:"motivation",ar:"دافع",ex:"She lost her motivation to study."},
+{c:"Study & Learning",w:"curriculum",ar:"منهج دراسي",ex:"The curriculum covers speaking and writing."},
+{c:"Study & Learning",w:"lecture",ar:"محاضرة",ex:"The lecture starts at nine."},
+{c:"Study & Learning",w:"assignment",ar:"واجب",ex:"I finished my assignment last night."},
+{c:"Study & Learning",w:"research",ar:"بحث",ex:"She is doing research on the topic."},
+{c:"Study & Learning",w:"examine",ar:"يفحص ويمتحن",ex:"The teacher will examine our work."},
+
+// Travel & places
+{c:"Travel",w:"journey",ar:"رحلة",ex:"It was a long journey home."},
+{c:"Travel",w:"destination",ar:"وجهة",ex:"Our final destination is Istanbul."},
+{c:"Travel",w:"accommodation",ar:"سكن وإقامة",ex:"We booked our accommodation online."},
+{c:"Travel",w:"reservation",ar:"حجز",ex:"I made a reservation for two nights."},
+{c:"Travel",w:"luggage",ar:"أمتعة",ex:"Please don't leave your luggage unattended."},
+{c:"Travel",w:"passport",ar:"جواز سفر",ex:"Don't forget your passport."},
+{c:"Travel",w:"itinerary",ar:"خطة الرحلة",ex:"Our itinerary includes three cities."},
+{c:"Travel",w:"transportation",ar:"وسيلة نقل",ex:"Public transportation here is excellent."},
+{c:"Travel",w:"sightseeing",ar:"التجول السياحي",ex:"We spent the day sightseeing."},
+{c:"Travel",w:"souvenir",ar:"هدية تذكارية",ex:"I bought a souvenir for my sister."},
+{c:"Travel",w:"delayed",ar:"مؤجل ومتأخر",ex:"Our flight was delayed by two hours."},
+{c:"Travel",w:"departure",ar:"مغادرة",ex:"The departure time is 6 a.m."},
+{c:"Travel",w:"arrival",ar:"وصول",ex:"Our arrival was later than expected."},
+{c:"Travel",w:"adventure",ar:"مغامرة",ex:"The trip was a real adventure."},
+{c:"Travel",w:"explore",ar:"يستكشف",ex:"We love to explore new cities."},
+{c:"Travel",w:"culture",ar:"ثقافة",ex:"I enjoy learning about other cultures."},
+{c:"Travel",w:"tradition",ar:"تقليد",ex:"This festival is an old tradition."},
+{c:"Travel",w:"landscape",ar:"منظر طبيعي",ex:"The landscape was beautiful."},
+{c:"Travel",w:"environment",ar:"بيئة",ex:"We should protect the environment."},
+{c:"Travel",w:"atmosphere",ar:"أجواء",ex:"The cafe has a cozy atmosphere."},
+
+// Technology
+{c:"Technology",w:"device",ar:"جهاز",ex:"Turn off the device before leaving."},
+{c:"Technology",w:"application",ar:"تطبيق",ex:"I downloaded a new application."},
+{c:"Technology",w:"network",ar:"شبكة",ex:"The network connection is slow today."},
+{c:"Technology",w:"password",ar:"كلمة مرور",ex:"Please choose a strong password."},
+{c:"Technology",w:"download",ar:"يحمّل",ex:"I need to download the file."},
+{c:"Technology",w:"update",ar:"تحديث",ex:"There's a new update available."},
+{c:"Technology",w:"connection",ar:"اتصال",ex:"My internet connection is unstable."},
+{c:"Technology",w:"storage",ar:"تخزين",ex:"My phone is out of storage."},
+{c:"Technology",w:"screen",ar:"شاشة",ex:"The screen is cracked."},
+{c:"Technology",w:"battery",ar:"بطارية",ex:"My battery is almost dead."},
+{c:"Technology",w:"software",ar:"برمجيات",ex:"They updated the software last week."},
+{c:"Technology",w:"hardware",ar:"عتاد ومكونات صلبة",ex:"The hardware needs to be replaced."},
+{c:"Technology",w:"feature",ar:"ميزة",ex:"This app has a useful new feature."},
+{c:"Technology",w:"privacy",ar:"خصوصية",ex:"I care about my online privacy."},
+{c:"Technology",w:"security",ar:"أمان",ex:"The website has strong security."},
+{c:"Technology",w:"online",ar:"متصل بالإنترنت",ex:"The class is fully online."},
+{c:"Technology",w:"offline",ar:"غير متصل",ex:"You can also use the app offline."},
+{c:"Technology",w:"artificial",ar:"اصطناعي",ex:"Artificial intelligence is changing many jobs."},
+{c:"Technology",w:"virtual",ar:"افتراضي",ex:"We had a virtual meeting today."},
+{c:"Technology",w:"digital",ar:"رقمي",ex:"Most books are now available digitally."},
+
+// Health & lifestyle
+{c:"Health",w:"fitness",ar:"لياقة بدنية",ex:"She goes to a fitness class twice a week."},
+{c:"Health",w:"nutrition",ar:"تغذية",ex:"Good nutrition improves your health."},
+{c:"Health",w:"symptom",ar:"عرض مرضي",ex:"A headache can be a symptom of stress."},
+{c:"Health",w:"treatment",ar:"علاج",ex:"The treatment lasted two weeks."},
+{c:"Health",w:"recovery",ar:"تعافي",ex:"Her recovery took a few months."},
+{c:"Health",w:"injury",ar:"إصابة",ex:"He suffered an injury during training."},
+{c:"Health",w:"stress",ar:"توتر وضغط نفسي",ex:"Work has caused her a lot of stress."},
+{c:"Health",w:"balance",ar:"توازن",ex:"It's important to keep a work-life balance."},
+{c:"Health",w:"wellbeing",ar:"رفاهية وصحة عامة",ex:"Sleep affects your overall wellbeing."},
+{c:"Health",w:"discipline",ar:"انضباط",ex:"Success needs discipline and effort."},
+{c:"Health",w:"hydrate",ar:"يرطب الجسم بالماء",ex:"Remember to hydrate during exercise."},
+{c:"Health",w:"diet",ar:"نظام غذائي",ex:"She follows a healthy diet."},
+{c:"Health",w:"mental",ar:"عقلي ونفسي",ex:"Mental health is just as important as physical health."},
+{c:"Health",w:"physical",ar:"جسدي",ex:"He does physical exercise every morning."},
+{c:"Health",w:"rest",ar:"راحة",ex:"Your body needs rest to recover."},
+{c:"Health",w:"energy",ar:"طاقة",ex:"I feel full of energy in the morning."},
+{c:"Health",w:"illness",ar:"مرض",ex:"He missed work because of an illness."},
+{c:"Health",w:"prevent",ar:"يمنع ويقي",ex:"Exercise can prevent many diseases."},
+{c:"Health",w:"strengthen",ar:"يقوّي",ex:"This exercise helps strengthen your back."},
+{c:"Health",w:"relax",ar:"يسترخي",ex:"Take time to relax after work."},
+
+// Abstract / general
+{c:"General Concepts",w:"advantage",ar:"ميزة وفائدة",ex:"Working from home has many advantages."},
+{c:"General Concepts",w:"disadvantage",ar:"عيب",ex:"Every choice has some disadvantages."},
+{c:"General Concepts",w:"benefit",ar:"فائدة",ex:"Reading has many benefits."},
+{c:"General Concepts",w:"obstacle",ar:"عائق",ex:"Fear was the biggest obstacle for him."},
+{c:"General Concepts",w:"solution",ar:"حل",ex:"We finally found a solution."},
+{c:"General Concepts",w:"purpose",ar:"غرض وهدف",ex:"What is the purpose of this meeting?"},
+{c:"General Concepts",w:"goal",ar:"هدف",ex:"Her goal is to speak fluently."},
+{c:"General Concepts",w:"success",ar:"نجاح",ex:"Hard work leads to success."},
+{c:"General Concepts",w:"failure",ar:"فشل",ex:"He learned a lot from that failure."},
+{c:"General Concepts",w:"decision",ar:"قرار",ex:"It was a difficult decision to make."},
+{c:"General Concepts",w:"choice",ar:"خيار",ex:"You have two choices."},
+{c:"General Concepts",w:"consequence",ar:"نتيجة",ex:"Every action has a consequence."},
+{c:"General Concepts",w:"impact",ar:"تأثير",ex:"The decision had a big impact on the team."},
+{c:"General Concepts",w:"influence",ar:"تأثير ونفوذ",ex:"Friends can influence our choices."},
+{c:"General Concepts",w:"importance",ar:"أهمية",ex:"She explained the importance of practice."},
+{c:"General Concepts",w:"priority",ar:"أولوية",ex:"Family is his top priority."},
+{c:"General Concepts",w:"value",ar:"قيمة",ex:"Honesty is an important value."},
+{c:"General Concepts",w:"perspective",ar:"وجهة نظر",ex:"Try to see it from her perspective."},
+{c:"General Concepts",w:"reality",ar:"واقع",ex:"The plan didn't match reality."},
+{c:"General Concepts",w:"possibility",ar:"احتمال",ex:"There's a possibility of rain tomorrow."}
+];
+
+/* ============ State ============ */
+const STORAGE_KEY = "halahi_free_flashcards_v1";
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) return JSON.parse(raw);
+  }catch(e){}
+  return {
+    cards: WORDS.map(()=>({level:0, dueAt:0})),
+    xp: 0,
+    streak: 0,
+    lastVisit: null
+  };
+}
+function saveState(){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+let state = loadState();
+if(!state.cards || state.cards.length !== WORDS.length){
+  state.cards = WORDS.map(()=>({level:0, dueAt:0}));
+}
+
+/* streak handling */
+(function updateStreak(){
+  const today = new Date().toDateString();
+  if(state.lastVisit === today){
+    // already counted today
+  } else {
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    if(state.lastVisit === yesterday){
+      state.streak = (state.streak||0) + 1;
+    } else {
+      state.streak = 1;
+    }
+    state.lastVisit = today;
+  }
+  saveState();
+})();
+
+/* ============ Session queue ============ */
+let queue = [];
+let revealed = false;
+
+function buildQueue(){
+  const now = Date.now();
+  queue = [];
+  WORDS.forEach((_, i)=>{
+    const c = state.cards[i];
+    if(c.level < 3 && (c.dueAt||0) <= now){
+      queue.push(i);
+    }
+  });
+  // shuffle
+  for(let i = queue.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [queue[i], queue[j]] = [queue[j], queue[i]];
+  }
+  // cap a session at 20 cards to keep it light
+  queue = queue.slice(0, 20);
+}
+
+function buildExtraQueue(){
+  // all non-mastered words regardless of due date, for extra practice
+  const now = Date.now();
+  queue = WORDS.map((_,i)=>i).filter(i=> state.cards[i].level < 5);
+  for(let i = queue.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [queue[i], queue[j]] = [queue[j], queue[i]];
+  }
+  queue = queue.slice(0, 20);
+}
+
+let sessionTotal = 0;
+
+function renderRepTrack(){
+  const track = document.getElementById("repTrack");
+  track.innerHTML = "";
+  const total = sessionTotal;
+  const remaining = queue.length;
+  const doneCount = total - remaining;
+  for(let i=0;i<total;i++){
+    const dot = document.createElement("div");
+    dot.className = "rep-dot";
+    if(i < doneCount) dot.className += " done";
+    else if(i === doneCount) dot.className += " current";
+    track.appendChild(dot);
+  }
+}
+
+function updateStats(){
+  document.getElementById("statQueue").textContent = queue.length;
+  document.getElementById("statMastered").textContent = state.cards.filter(c=>c.level>=3).length;
+  document.getElementById("statStreak").textContent = state.streak || 0;
+  document.getElementById("statXp").textContent = state.xp || 0;
+}
+
+const IMG_CACHE_KEY = "halahi_free_flashcards_images_v1";
+function loadImageCache(){
+  try{ return JSON.parse(localStorage.getItem(IMG_CACHE_KEY)) || {}; }catch(e){ return {}; }
+}
+function saveImageCache(cache){
+  try{ localStorage.setItem(IMG_CACHE_KEY, JSON.stringify(cache)); }catch(e){}
+}
+const imageCache = loadImageCache();
+
+async function getImageUrl(word){
+  if(imageCache[word]) return imageCache[word];
+  await pexelsReady;
+  if(!PEXELS_KEY){
+    console.warn("[HalaHi] No Pexels key available, skipping image for:", word);
+    return null;
+  }
+  try{
+    const res = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(word)}&per_page=1&orientation=square`, {
+      headers: { Authorization: PEXELS_KEY }
+    });
+    if(!res.ok){
+      console.error(`[HalaHi] Pexels API returned ${res.status} for "${word}". Check the key is valid.`);
+      return null;
+    }
+    const data = await res.json();
+    const url = data && data.photos && data.photos[0] ? data.photos[0].src.medium : null;
+    if(url){
+      imageCache[word] = url;
+      saveImageCache(imageCache);
+    } else {
+      console.warn("[HalaHi] Pexels returned no photo for:", word);
+    }
+    return url;
+  }catch(e){
+    console.error("[HalaHi] Pexels fetch failed (likely CORS or network):", e);
+    return null;
+  }
+}
+
+async function loadCardImage(word){
+  const imgEl = document.getElementById("cardImage");
+  imgEl.classList.remove("loaded");
+  imgEl.src = "";
+  const requestedWord = word;
+  const url = await getImageUrl(word);
+  // avoid race condition if user already moved to next card
+  const currentIdx = queue[0];
+  if(currentIdx === undefined || WORDS[currentIdx].w !== requestedWord) return;
+  if(url){
+    imgEl.onload = ()=> imgEl.classList.add("loaded");
+    imgEl.src = url;
+  }
+}
+
+function showCard(){
+  if(queue.length === 0){
+    finishSession();
+    return;
+  }
+  revealed = false;
+  const idx = queue[0];
+  const w = WORDS[idx];
+  const card = document.getElementById("card");
+  card.classList.remove("revealed");
+  document.getElementById("cardCategory").textContent = w.c;
+  document.getElementById("cardWord").textContent = w.w;
+  document.getElementById("meaningAr").textContent = w.ar;
+  document.getElementById("meaningEx").textContent = w.ex;
+  document.getElementById("ratings").classList.remove("show");
+  document.getElementById("tapInstruction").style.display = "block";
+  loadCardImage(w.w);
+  renderRepTrack();
+  updateStats();
+}
+
+function revealCard(){
+  if(revealed) return;
+  revealed = true;
+  document.getElementById("card").classList.add("revealed");
+  document.getElementById("ratings").classList.add("show");
+  document.getElementById("tapInstruction").style.display = "none";
+}
+
+function speakWord(){
+  const idx = queue[0];
+  if(idx === undefined) return;
+  const utter = new SpeechSynthesisUtterance(WORDS[idx].w);
+  utter.lang = "en-US";
+  utter.rate = 0.9;
+  window.speechSynthesis.cancel();
+  window.speechSynthesis.speak(utter);
+}
+
+const XP_MAP = {blackout:1, hard:2, ok:3, good:5, easy:8};
+
+function rate(kind){
+  const idx = queue.shift();
+  const c = state.cards[idx];
+
+  if(kind === "blackout"){
+    c.level = 0;
+    insertAt(idx, 5);
+  } else if(kind === "hard"){
+    insertAt(idx, 10);
+  } else if(kind === "ok"){
+    c.level = Math.max(c.level, 1);
+    insertAt(idx, 20);
+  } else if(kind === "good"){
+    c.level = c.level + 1;
+    c.dueAt = Date.now() + 2*86400000;
+  } else if(kind === "easy"){
+    c.level = c.level + 2;
+    c.dueAt = Date.now() + 7*86400000;
+  }
+
+  state.xp = (state.xp||0) + XP_MAP[kind];
+  saveState();
+  showCard();
+}
+
+function insertAt(idx, offset){
+  const pos = Math.min(queue.length, offset);
+  queue.splice(pos, 0, idx);
+}
+
+function finishSession(){
+  document.getElementById("playArea").style.display = "none";
+  document.getElementById("repTrack").style.display = "none";
+  const masteredNow = state.cards.filter(c=>c.level>=3).length;
+  document.getElementById("completeMsg").textContent =
+    `You finished ${sessionTotal} cards. Words mastered so far: ${masteredNow} of ${WORDS.length}.`;
+  document.getElementById("completeScreen").classList.add("show");
+  updateStats();
+}
+
+function restartExtra(){
+  document.getElementById("completeScreen").classList.remove("show");
+  document.getElementById("emptyState").classList.remove("show");
+  document.getElementById("playArea").style.display = "block";
+  document.getElementById("repTrack").style.display = "flex";
+  buildExtraQueue();
+  sessionTotal = queue.length;
+  if(queue.length === 0){
+    document.getElementById("playArea").style.display = "none";
+    document.getElementById("repTrack").style.display = "none";
+    document.getElementById("emptyState").classList.add("show");
+    return;
+  }
+  showCard();
+}
+
+/* ============ Init ============ */
+document.getElementById("card").addEventListener("click", revealCard);
+
+buildQueue();
+sessionTotal = queue.length;
+if(queue.length === 0){
+  document.getElementById("playArea").style.display = "none";
+  document.getElementById("repTrack").style.display = "none";
+  document.getElementById("emptyState").classList.add("show");
+  updateStats();
+} else {
+  showCard();
+}
+</script>
+</body>
+</html>
