@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hala Hi | رحلتك مع الإنجليزية تبدأ من هنا</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple:#7C3AED;
+    --purple-dark:#5B21B6;
+    --purple-deep:#28104f;
+    --purple-light:#A78BFA;
+    --magenta:#D946EF;
+    --yellow:#FFD54A;
+    --yellow-soft:#FFE8A8;
+    --bg:#FAFAFC;
+    --card:#ffffff;
+    --text:#231937;
+    --text-light:#6b6478;
+    --radius:22px;
+    --radius-lg:28px;
+    --shadow-soft:0 10px 30px rgba(124,58,237,.10);
+    --shadow-hover:0 20px 45px rgba(124,58,237,.22);
+    --ease:cubic-bezier(.16,1,.3,1);
+    --font-display:'Cairo', sans-serif;
+    --font-body:'Tajawal', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:var(--font-body);
+    background:var(--bg);
+    color:var(--text);
+    overflow-x:hidden;
+    line-height:1.7;
+  }
+  h1,h2,h3,h4{font-family:var(--font-display);}
+  img,svg{display:block;max-width:100%;}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px;}
+  section{position:relative;padding:100px 0;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(124,58,237,.08);
+    color:var(--purple-dark);
+    font-weight:700;font-size:.95rem;
+    padding:8px 20px;border-radius:100px;
+    margin-bottom:20px;
+  }
+  .section-title{
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    font-weight:800;
+    margin-bottom:16px;
+  }
+  .section-sub{
+    color:var(--text-light);
+    font-size:1.1rem;
+    max-width:620px;
+  }
+  .center{text-align:center;margin-inline:auto;}
+
+  /* Buttons */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:10px;
+    font-family:var(--font-display);
+    font-weight:800;
+    font-size:1.05rem;
+    padding:18px 42px;
+    border-radius:100px;
+    border:none;
+    cursor:pointer;
+    transition:transform .5s var(--ease), box-shadow .5s var(--ease), background .5s var(--ease);
+    text-decoration:none;
+    white-space:nowrap;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--purple),var(--magenta) 60%,var(--purple-dark));
+    background-size:200% 200%;
+    color:#fff;
+    box-shadow:0 14px 32px rgba(124,58,237,.35);
+  }
+  .btn-primary:hover{transform:translateY(-5px) scale(1.03);box-shadow:0 22px 48px rgba(124,58,237,.5);background-position:100% 50%;}
+  .btn-yellow{
+    background:var(--yellow);
+    color:var(--purple-deep);
+    box-shadow:0 14px 32px rgba(255,213,74,.35);
+  }
+  .btn-yellow:hover{transform:translateY(-4px) scale(1.02);box-shadow:0 20px 45px rgba(255,213,74,.5);}
+  .btn-outline{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    border:2px solid rgba(255,255,255,.5);
+    backdrop-filter:blur(6px);
+  }
+  .btn-outline:hover{background:rgba(255,255,255,.18);transform:translateY(-4px);}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(38px) scale(.98);transition:opacity 1s var(--ease), transform 1s var(--ease);}
+  .reveal.visible{opacity:1;transform:translateY(0) scale(1);}
+  .reveal-delay-1.visible{transition-delay:.12s;}
+  .reveal-delay-2.visible{transition-delay:.24s;}
+  .reveal-delay-3.visible{transition-delay:.36s;}
+
+  /* Ambient animated background */
+  .ambient-bg{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;}
+  .amb{position:absolute;border-radius:50%;filter:blur(60px);}
+  .amb1{width:440px;height:440px;top:-110px;left:-130px;background:radial-gradient(circle, var(--purple-light), transparent 70%);opacity:.30;animation:drift1 19s ease-in-out infinite;}
+  .amb2{width:380px;height:380px;top:32%;right:-150px;background:radial-gradient(circle, var(--magenta), transparent 70%);opacity:.20;animation:drift2 23s ease-in-out infinite;}
+  .amb3{width:320px;height:320px;bottom:-90px;left:18%;background:radial-gradient(circle, var(--yellow), transparent 70%);opacity:.22;animation:drift3 16s ease-in-out infinite;}
+  .amb4{width:260px;height:260px;bottom:22%;right:8%;background:radial-gradient(circle, var(--purple), transparent 70%);opacity:.18;animation:drift1 25s ease-in-out infinite reverse;}
+  @keyframes drift1{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(60px,80px) scale(1.15);}}
+  @keyframes drift2{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-70px,55px) scale(.9);}}
+  @keyframes drift3{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(45px,-60px) scale(1.1);}}
+
+  .float-deco{position:absolute;font-size:2.4rem;opacity:.10;pointer-events:none;animation:float 8s ease-in-out infinite;z-index:0;}
+  @media (max-width:700px){.float-deco{display:none;}}
+
+  /* WhatsApp floating contact */
+  .wa-float{
+    position:fixed;bottom:26px;left:26px;z-index:50;
+    width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 12px 28px rgba(18,140,126,.4);
+    transition:transform .4s var(--ease), box-shadow .4s var(--ease);
+  }
+  .wa-float:hover{transform:scale(1.1) translateY(-3px);box-shadow:0 16px 36px rgba(18,140,126,.5);}
+  .wa-float svg{width:30px;height:30px;}
+  .wa-float .ping{
+    position:absolute;inset:0;border-radius:50%;
+    background:rgba(37,211,102,.55);
+    animation:ping 2.4s cubic-bezier(0,.5,.5,1) infinite;
+  }
+  @keyframes ping{0%{transform:scale(1);opacity:.6;}100%{transform:scale(1.7);opacity:0;}}
+
+  /* ================= HERO ================= */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(255,213,74,.28), transparent 45%),
+      radial-gradient(circle at 85% 20%, rgba(217,70,239,.28), transparent 45%),
+      radial-gradient(circle at 75% 85%, rgba(255,213,74,.16), transparent 40%),
+      linear-gradient(160deg, var(--purple-deep) 0%, var(--purple-dark) 45%, var(--purple) 100%);
+    background-size:140% 140%, 140% 140%, 140% 140%, 100% 100%;
+    animation:heroShift 16s ease-in-out infinite;
+    color:#fff;
+    padding:140px 0 100px;
+    overflow:hidden;
+  }
+  @keyframes heroShift{
+    0%,100%{background-position:0% 0%, 100% 0%, 50% 100%, 0 0;}
+    50%{background-position:20% 30%, 80% 30%, 40% 80%, 0 0;}
+  }
+  .hero .container{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:60px;
+    align-items:center;
+  }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.25);
+    backdrop-filter:blur(10px);
+    padding:10px 22px;border-radius:100px;
+    font-weight:700;font-size:1.05rem;
+    margin-bottom:26px;
+  }
+  .hero h1{
+    font-size:clamp(2.1rem,4.2vw,3.4rem);
+    font-weight:900;
+    line-height:1.35;
+    margin-bottom:22px;
+  }
+  .hero h1 span{color:var(--yellow);}
+  .hero p{
+    font-size:1.15rem;
+    color:rgba(255,255,255,.88);
+    max-width:560px;
+    margin-bottom:36px;
+  }
+  .hero-actions{display:flex;flex-wrap:wrap;gap:16px;margin-bottom:60px;}
+  .scroll-cue{
+    display:flex;flex-direction:column;align-items:center;gap:8px;
+    color:rgba(255,255,255,.7);
+    font-size:.9rem;
+    width:fit-content;
+  }
+  .scroll-cue .arrow{
+    width:22px;height:22px;
+    border-left:3px solid var(--yellow);
+    border-bottom:3px solid var(--yellow);
+    transform:rotate(-45deg);
+    animation:bounce 1.8s infinite;
+  }
+  @keyframes bounce{0%,100%{transform:translateY(0) rotate(-45deg);}50%{transform:translateY(8px) rotate(-45deg);}}
+
+  .hero-visual{position:relative;display:flex;justify-content:center;}
+  .hero-visual .blob{
+    position:absolute;inset:0;
+    background:radial-gradient(circle, rgba(255,213,74,.35), transparent 70%);
+    filter:blur(10px);
+    animation:float 7s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-16px);}}
+  .hero-illustration{position:relative;z-index:2;width:100%;max-width:430px;}
+  .floaty{position:absolute;z-index:3;background:rgba(255,255,255,.14);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.25);border-radius:16px;padding:10px 16px;font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:8px;}
+  .floaty.f1{top:6%;right:-4%;animation:float 6s ease-in-out infinite;}
+  .floaty.f2{bottom:14%;left:-6%;animation:float 5s ease-in-out infinite reverse;}
+  .floaty.f3{bottom:-2%;right:10%;animation:float 7s ease-in-out infinite;}
+
+  @media (max-width:900px){
+    .hero .container{grid-template-columns:1fr;text-align:center;}
+    .hero p{margin-inline:auto;}
+    .hero-actions{justify-content:center;}
+    .scroll-cue{margin-inline:auto;}
+    .hero-visual{margin-top:20px;}
+    .floaty{display:none;}
+  }
+
+  /* ================= PROGRAM CARDS ================= */
+  .programs-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:28px;
+    margin-top:56px;
+  }
+  .program-card{
+    background:var(--card);
+    border-radius:var(--radius-lg);
+    padding:42px 32px;
+    box-shadow:var(--shadow-soft);
+    text-align:center;
+    transition:transform .5s var(--ease), box-shadow .5s var(--ease);
+    position:relative;
+    overflow:hidden;
+    border:1px solid rgba(124,58,237,.06);
+  }
+  .program-card:hover{transform:translateY(-12px);box-shadow:var(--shadow-hover);}
+  .program-card .blob-bg{
+    position:absolute;top:-40px;right:-40px;width:140px;height:140px;
+    background:radial-gradient(circle, rgba(255,213,74,.35), transparent 70%);
+    border-radius:50%;
+  }
+  .program-icon{
+    width:88px;height:88px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.4rem;
+    margin:0 auto 24px;
+    background:linear-gradient(135deg, rgba(124,58,237,.12), rgba(255,213,74,.2));
+    position:relative;z-index:2;
+  }
+  .program-card h3{font-size:1.35rem;margin-bottom:12px;position:relative;z-index:2;}
+  .program-card p{color:var(--text-light);font-size:.98rem;margin-bottom:22px;position:relative;z-index:2;}
+  .program-card .tag{
+    display:inline-block;font-weight:700;font-size:.85rem;
+    color:var(--purple-dark);background:rgba(124,58,237,.08);
+    padding:6px 16px;border-radius:100px;position:relative;z-index:2;
+  }
+  @media (max-width:860px){.programs-grid{grid-template-columns:1fr;}}
+
+  /* ================= COURSE DETAIL SECTIONS ================= */
+  .detail-section{background:var(--card);}
+  .detail-section.alt{background:linear-gradient(180deg, #F4F1FF 0%, var(--bg) 100%);}
+  .detail-head{max-width:720px;margin-bottom:50px;}
+  .pill-level{
+    display:inline-block;background:var(--yellow);color:var(--purple-deep);
+    font-weight:800;font-size:.85rem;padding:6px 18px;border-radius:100px;margin-bottom:14px;
+  }
+
+  .two-col{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    align-items:start;
+  }
+  @media (max-width:860px){.two-col{grid-template-columns:1fr;}}
+
+  .check-list{list-style:none;}
+  .check-list li{
+    display:flex;align-items:flex-start;gap:14px;
+    padding:14px 0;
+    border-bottom:1px dashed rgba(124,58,237,.15);
+    font-size:1.02rem;
+  }
+  .check-list li:last-child{border-bottom:none;}
+  .check-list .ico{
+    flex:none;width:32px;height:32px;border-radius:50%;
+    background:rgba(124,58,237,.1);color:var(--purple-dark);
+    display:flex;align-items:center;justify-content:center;font-weight:800;font-size:.95rem;
+  }
+
+  .feature-grid{
+    display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:8px;
+  }
+  @media (max-width:600px){.feature-grid{grid-template-columns:1fr;}}
+  .feature-chip{
+    display:flex;align-items:center;gap:12px;
+    background:var(--card);
+    border:1px solid rgba(124,58,237,.1);
+    border-radius:16px;padding:16px 18px;
+    font-weight:700;font-size:.98rem;
+    box-shadow:0 6px 18px rgba(124,58,237,.06);
+    transition:transform .5s var(--ease);
+  }
+  .feature-chip:hover{transform:translateY(-4px);}
+  .feature-chip .emo{font-size:1.3rem;}
+
+  .outcome-box{
+    background:linear-gradient(135deg, var(--purple-deep), var(--purple-dark));
+    color:#fff;border-radius:var(--radius-lg);
+    padding:44px;margin-top:60px;
+  }
+  .outcome-box h3{font-size:1.5rem;margin-bottom:26px;text-align:center;}
+  .outcome-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:18px;}
+  .outcome-item{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    border-radius:14px;padding:18px;
+    display:flex;gap:12px;align-items:flex-start;
+    backdrop-filter:blur(6px);
+  }
+  .outcome-item .mark{color:var(--yellow);font-weight:900;}
+
+  .cta-panel{
+    margin-top:60px;
+    background:var(--card);
+    border:2px solid rgba(124,58,237,.12);
+    border-radius:var(--radius-lg);
+    padding:38px 40px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:24px;
+    box-shadow:var(--shadow-soft);
+  }
+  .cta-panel .info{display:flex;gap:32px;flex-wrap:wrap;}
+  .cta-panel .info div{display:flex;flex-direction:column;gap:4px;}
+  .cta-panel .info .label{color:var(--text-light);font-size:.85rem;font-weight:700;}
+  .cta-panel .info .value{font-size:1.15rem;font-weight:800;font-family:var(--font-display);}
+  .cta-panel .badge-urgent{
+    color:#d1425b;font-weight:800;font-size:.9rem;
+    display:flex;align-items:center;gap:6px;
+  }
+  .cta-panel .badge-gift{
+    color:#b8860b;font-weight:800;font-size:.9rem;
+    display:flex;align-items:center;gap:6px;margin-top:6px;
+  }
+
+  /* ================= CLUB SECTION EXTRAS ================= */
+  .motto{
+    font-family:var(--font-display);font-weight:800;font-size:1.3rem;
+    color:var(--purple-dark);margin-bottom:18px;
+  }
+  .inside-club{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;
+  }
+  @media (max-width:860px){.inside-club{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:560px){.inside-club{grid-template-columns:1fr;}}
+  .inside-item{
+    background:var(--card);border-radius:18px;padding:26px 20px;text-align:center;
+    box-shadow:var(--shadow-soft);transition:transform .5s var(--ease);
+  }
+  .inside-item:hover{transform:translateY(-6px);}
+  .inside-item .emo{font-size:2rem;margin-bottom:12px;}
+  .inside-item p{font-weight:700;font-size:.95rem;}
+
+  /* ================= TESTIMONIALS ================= */
+  .testi-wrap{max-width:760px;margin:56px auto 0;position:relative;}
+  .testi-viewport{overflow:hidden;border-radius:var(--radius-lg);direction:ltr;}
+  .testi-track{display:flex;transition:transform .7s var(--ease);}
+  .testi-card{
+    flex:0 0 100%;
+    background:var(--card);
+    border-radius:var(--radius-lg);
+    padding:44px 40px;
+    box-shadow:var(--shadow-soft);
+    text-align:center;
+    direction:rtl;
+  }
+  .stars{color:var(--yellow);font-size:1.3rem;letter-spacing:4px;margin-bottom:20px;}
+  .testi-quote{font-size:1.12rem;color:var(--text);margin-bottom:26px;line-height:1.9;}
+  .testi-quote.en{font-family:'Tajawal',sans-serif;direction:ltr;text-align:center;font-style:italic;}
+  .testi-person{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .avatar{
+    width:56px;height:56px;border-radius:50%;
+    background:linear-gradient(135deg, var(--purple), var(--yellow));
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:800;font-size:1.3rem;
+  }
+  .testi-person span{color:var(--text-light);font-size:.9rem;font-weight:700;}
+  .testi-dots{display:flex;justify-content:center;gap:10px;margin-top:26px;}
+  .dot{width:10px;height:10px;border-radius:50%;background:rgba(124,58,237,.2);cursor:pointer;transition:all .45s var(--ease);border:none;}
+  .dot.active{background:var(--purple);width:28px;border-radius:6px;}
+
+  /* ================= COMPARISON ================= */
+  .compare-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:50px;}
+  @media (max-width:860px){.compare-grid{grid-template-columns:1fr;}}
+  .compare-card{
+    background:var(--card);border-radius:20px;padding:32px 26px;text-align:center;
+    box-shadow:var(--shadow-soft);position:relative;transition:transform .5s var(--ease);
+  }
+  .compare-card:hover{transform:translateY(-6px);}
+  .compare-card .goal{color:var(--text-light);font-size:.95rem;margin-bottom:10px;}
+  .compare-card .arrow-down{margin:14px auto;color:var(--yellow);font-size:1.4rem;}
+  .compare-card .program-name{font-family:var(--font-display);font-weight:800;font-size:1.15rem;color:var(--purple-dark);}
+
+  /* ================= FOOTER CTA ================= */
+  .final-cta{
+    background:radial-gradient(circle at 20% 20%, rgba(255,213,74,.15), transparent 50%), linear-gradient(160deg, var(--purple-deep), var(--purple-dark));
+    color:#fff;text-align:center;padding:110px 0;
+  }
+  .final-cta h2{font-size:clamp(1.8rem,4vw,2.6rem);margin-bottom:16px;}
+  .final-cta p{color:rgba(255,255,255,.85);max-width:560px;margin:0 auto 8px;}
+  .urgency-lines{margin:24px auto 40px;display:flex;flex-direction:column;gap:6px;color:var(--yellow);font-weight:700;font-size:.95rem;}
+  .final-actions{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;}
+  .final-actions .btn{padding:16px 30px;font-size:.95rem;}
+
+  footer.credit{
+    text-align:center;padding:26px 0;background:var(--purple-deep);color:rgba(255,255,255,.5);font-size:.85rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient-bg" aria-hidden="true">
+  <div class="amb amb1"></div>
+  <div class="amb amb2"></div>
+  <div class="amb amb3"></div>
+  <div class="amb amb4"></div>
+</div>
+
+<a class="wa-float" href="https://wa.me/966550201680" target="_blank" rel="noopener" aria-label="تواصل عبر واتساب">
+  <span class="ping"></span>
+  <svg viewBox="0 0 32 32" fill="#fff" style="position:relative;z-index:1;"><path d="M16.02 3C9.4 3 4 8.4 4 15.02c0 2.25.62 4.36 1.7 6.17L4 29l8-1.63a12.9 12.9 0 0 0 4.02.64C22.64 28 28 22.6 28 15.98 28 9.4 22.64 3 16.02 3zm7.4 18.4c-.3.87-1.72 1.66-2.37 1.75-.62.1-1.4.14-2.26-.14-.52-.16-1.19-.38-2.05-.75-3.6-1.56-5.95-5.2-6.13-5.44-.18-.24-1.47-1.95-1.47-3.72s.93-2.64 1.26-3c.32-.36.7-.45.94-.45.23 0 .47 0 .68.01.22.01.51-.08.8.61.3.7 1.02 2.47 1.11 2.65.09.18.15.4.03.64-.12.24-.18.39-.36.6-.18.21-.38.47-.54.63-.18.18-.37.37-.16.73.21.36.93 1.53 2 2.48 1.37 1.22 2.53 1.6 2.89 1.78.36.18.57.15.78-.09.21-.24.9-1.05 1.14-1.41.24-.36.48-.3.8-.18.33.12 2.09.99 2.45 1.17.36.18.6.27.69.42.09.15.09.86-.21 1.72z"/></svg>
+</a>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-copy">
+      <div class="hero-badge reveal">🎉 مبروك على إنهاء البرنامج المجاني</div>
+      <h1 class="reveal reveal-delay-1">
+        أنهيت معنا رحلة <span>القراءة والاستماع والتحدث</span>.<br>
+        وهذه مجرد <span>البداية</span>.
+      </h1>
+      <p class="reveal reveal-delay-2">
+        إذا استفدت خلال الأيام الماضية، فتعال نكمل الطريق سوا. اختر البرنامج المناسب لك وابدأ رحلتك الحقيقية مع Hala Hi.
+      </p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a href="#programs" class="btn btn-yellow">ابدأ رحلتك الآن</a>
+      </div>
+      <a href="#programs" class="scroll-cue reveal reveal-delay-3">
+        انزل لتكتشف البرامج
+        <span class="arrow"></span>
+      </a>
+    </div>
+    <div class="hero-visual reveal reveal-delay-2">
+      <div class="blob"></div>
+      <div class="floaty f1">📖 +3000 كلمة</div>
+      <div class="floaty f2">🗣️ تحدث بثقة</div>
+      <div class="floaty f3">⭐ معلمات أجنبيات</div>
+      <svg class="hero-illustration" viewBox="0 0 420 420" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="210" cy="210" r="190" fill="rgba(255,255,255,0.06)"/>
+        <ellipse cx="210" cy="360" rx="140" ry="18" fill="rgba(0,0,0,0.15)"/>
+        <!-- floor cushion -->
+        <ellipse cx="210" cy="330" rx="130" ry="26" fill="#5334C9"/>
+        <!-- body -->
+        <path d="M120 330 C120 250 150 190 210 190 C270 190 300 250 300 330 Z" fill="#FFD54A"/>
+        <!-- head -->
+        <circle cx="210" cy="150" r="46" fill="#F6C9A3"/>
+        <path d="M164 140 C164 100 256 100 256 140 C256 118 244 108 210 108 C176 108 164 118 164 140 Z" fill="#2A1E4A"/>
+        <!-- laptop -->
+        <rect x="160" y="255" width="100" height="66" rx="8" fill="#fff"/>
+        <rect x="168" y="263" width="84" height="46" rx="4" fill="#7C3AED"/>
+        <rect x="150" y="318" width="120" height="10" rx="4" fill="#E4E4F5"/>
+        <!-- arms -->
+        <path d="M150 300 C140 280 140 260 160 250" stroke="#F6C9A3" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <path d="M270 300 C280 280 280 260 260 250" stroke="#F6C9A3" stroke-width="18" stroke-linecap="round" fill="none"/>
+        <!-- floating letters -->
+        <text x="60" y="90" font-size="26" fill="#FFD54A" font-family="Cairo, sans-serif" font-weight="800">A</text>
+        <text x="340" y="130" font-size="30" fill="#ffffff" font-family="Cairo, sans-serif" font-weight="800">B</text>
+        <text x="330" y="300" font-size="24" fill="#FFD54A" font-family="Cairo, sans-serif" font-weight="800">C</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PROGRAM CARDS ============ -->
+<section id="programs">
+  <div class="float-deco" style="top:10%;left:5%;">📘</div>
+  <div class="float-deco" style="top:65%;right:6%;animation-duration:10s;">🗣️</div>
+  <div class="float-deco" style="bottom:8%;left:16%;animation-duration:7s;">📖</div>
+  <div class="container">
+    <div class="center reveal" style="max-width:640px;">
+      <div class="eyebrow">🧭 اختر مسارك</div>
+      <h2 class="section-title">اختر البرنامج المناسب لك</h2>
+      <p class="section-sub" style="margin-inline:auto;">ثلاثة مسارات مختلفة، كل واحد يوصلك لخطوة جديدة في رحلتك مع الإنجليزية.</p>
+    </div>
+    <div class="programs-grid">
+      <div class="program-card reveal">
+        <div class="blob-bg"></div>
+        <div class="program-icon">📘</div>
+        <h3>دورة تطوير اللغة الإنجليزية</h3>
+        <p>ابنِ أساسًا قويًا خطوة بخطوة، مناسبة للمبتدئين ومن لديهم أساسيات بسيطة.</p>
+        <span class="tag">المستوى الأول</span>
+      </div>
+      <div class="program-card reveal reveal-delay-1">
+        <div class="blob-bg"></div>
+        <div class="program-icon">🗣️</div>
+        <h3>نادي المحادثة</h3>
+        <p>لأن اللغة تُكتسب بالممارسة. مساحة يومية للتحدث بثقة أكثر.</p>
+        <span class="tag">ممارسة يومية</span>
+      </div>
+      <div class="program-card reveal reveal-delay-2">
+        <div class="blob-bg"></div>
+        <div class="program-icon">📖</div>
+        <h3>دورة القراءة</h3>
+        <p>تخلص من رهبة الكلمات الجديدة وتعلم أنماط القراءة والأصوات.</p>
+        <span class="tag">أسبوعان فقط</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COURSE DETAIL ============ -->
+<section class="detail-section alt" id="course">
+  <div class="container">
+    <div class="detail-head reveal">
+      <span class="pill-level">المستوى الأول</span>
+      <h2 class="section-title">📘 دورة تطوير اللغة الإنجليزية</h2>
+      <p class="section-sub">
+        ابنِ أساسًا قويًا في الإنجليزية خطوة بخطوة. هذه الدورة مناسبة للمبتدئين أو لمن لديهم أساسيات بسيطة ويريدون تطويرها.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <h3 style="margin-bottom:20px;font-size:1.3rem;">ماذا سيتعلم؟</h3>
+        <ul class="check-list">
+          <li><span class="ico">✓</span> تكوين الجمل الإنجليزية بطريقة صحيحة</li>
+          <li><span class="ico">✓</span> أهم القواعد الأساسية</li>
+          <li><span class="ico">✓</span> زيادة الحصيلة اللغوية</li>
+          <li><span class="ico">✓</span> استخدام القواعد في الكلام والكتابة</li>
+          <li><span class="ico">✓</span> قراءة قصص قصيرة تساعد على التطبيق وزيادة الفهم</li>
+          <li><span class="ico">✓</span> تدريبات وأنشطة عملية في كل لقاء</li>
+          <li><span class="ico">✓</span> بطاقات مراجعة (Flashcards) تساعد على مراجعة الكلمات والجمل باستمرار، وتبني حصيلة تتجاوز 3000 كلمة وجملة بإذن الله</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <h3 style="margin-bottom:20px;font-size:1.3rem;">مميزات الدورة</h3>
+        <div class="feature-grid">
+          <div class="feature-chip"><span class="emo">⭐</span> 16 لقاء مباشر</div>
+          <div class="feature-chip"><span class="emo">⭐</span> معلمة أجنبية</div>
+          <div class="feature-chip"><span class="emo">⭐</span> من السبت إلى الثلاثاء</div>
+          <div class="feature-chip"><span class="emo">⭐</span> الساعة 5 مساءً</div>
+          <div class="feature-chip"><span class="emo">⭐</span> اختبار قبلي وبعدي</div>
+          <div class="feature-chip"><span class="emo">⭐</span> أنشطة وتطبيقات مكثفة</div>
+          <div class="feature-chip"><span class="emo">⭐</span> منهج متدرج للمبتدئين</div>
+          <div class="feature-chip"><span class="emo">⭐</span> متابعة طوال مدة الدورة</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="outcome-box reveal">
+      <h3>بعد نهاية الدورة، ستكون قادرًا على:</h3>
+      <div class="outcome-grid">
+        <div class="outcome-item"><span class="mark">✔</span> تكوين جمل صحيحة بثقة</div>
+        <div class="outcome-item"><span class="mark">✔</span> فهم أهم القواعد الأساسية</div>
+        <div class="outcome-item"><span class="mark">✔</span> زيادة حصيلتك اللغوية</div>
+        <div class="outcome-item"><span class="mark">✔</span> فهم النصوص بشكل أفضل</div>
+        <div class="outcome-item"><span class="mark">✔</span> الاستعداد للمستويات الأعلى أو نادي المحادثة</div>
+      </div>
+    </div>
+
+    <div class="cta-panel reveal">
+      <div class="info">
+        <div><span class="label">📅 البداية</span><span class="value">السبت 18/2 – الموافق 1 أغسطس</span></div>
+        <div><span class="label">💰 الرسوم</span><span class="value">199 ريال</span></div>
+        <div>
+          <span class="badge-urgent">⏰ التسجيل يغلق بعد 24 ساعة</span>
+          <span class="badge-gift">🎁 سعر خاص للمسجلين الأوائل</span>
+        </div>
+      </div>
+      <a href="https://salla.sa/hala.hi/تطوير-اللغة-الإنجليزية-l1/p1908387895" target="_blank" rel="noopener" class="btn btn-primary">سجل في دورة التطوير</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONVERSATION CLUB ============ -->
+<section id="club">
+  <div class="container">
+    <div class="detail-head reveal">
+      <h2 class="section-title">🗣️ نادي المحادثة</h2>
+      <p class="motto">لأن اللغة تُكتسب بالممارسة.</p>
+      <p class="section-sub">
+        إذا كنت تعرف الأساسيات لكن تحتاج تستخدم الإنجليزية باستمرار، فهذا النادي صُمم لك. الهدف هو ممارسة اللغة في بيئة مريحة وتشجيعية تساعدك تتكلم بثقة أكثر مع مرور الوقت.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <h3 style="margin-bottom:20px;font-size:1.3rem;">يناسب</h3>
+        <ul class="check-list">
+          <li><span class="ico">✓</span> خريجي دورة التطوير</li>
+          <li><span class="ico">✓</span> أي شخص عنده أساسيات</li>
+          <li><span class="ico">✓</span> من يريد الحفاظ على مستواه وتطويره</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <h3 style="margin-bottom:20px;font-size:1.3rem;">داخل النادي</h3>
+        <div class="inside-club">
+          <div class="inside-item"><div class="emo">🗣️</div><p>جلسات محادثة باللغة الإنجليزية</p></div>
+          <div class="inside-item"><div class="emo">🎲</div><p>ألعاب وأنشطة تفاعلية</p></div>
+          <div class="inside-item"><div class="emo">🌍</div><p>مواضيع جديدة ومتنوعة</p></div>
+          <div class="inside-item"><div class="emo">🤝</div><p>بيئة مريحة تشجعك على استخدام اللغة</p></div>
+          <div class="inside-item"><div class="emo">🕒</div><p>مفتوح ساعتين يوميًا</p></div>
+          <div class="inside-item"><div class="emo">📱</div><p>Flashcards لمراجعة أكثر من 3000 كلمة وجملة</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="reveal">
+      <div class="center" style="margin-top:70px;">
+        <h3 class="section-title" style="font-size:1.8rem;">ماذا يقول المشتركون؟</h3>
+      </div>
+      <div class="testi-wrap">
+        <div class="testi-viewport">
+          <div class="testi-track" id="testiTrack">
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">النادي كان وسيلة لمواجهة الخوف، وصرت أتكلم بثقة أكثر. هالأسبوعين أثبتوا لي إن التغيير ممكن إذا كنت في البيئة الصح.</p>
+              <div class="testi-person"><div class="avatar">م</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">بعد أسبوعين خفت رهبة التحدث، وصرت أتخيل محادثات بالإنجليزي وأرد عليها وأكوّن جمل.</p>
+              <div class="testi-person"><div class="avatar">س</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">صرت أتكلم بطلاقة أكثر من قبل، وتعلمت كلمات جديدة، والفلاش كارد من أكثر الأشياء اللي ساعدتني.</p>
+              <div class="testi-person"><div class="avatar">ن</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">في البداية كنت متوترة، لكن بعد أول مشاركة ارتحت كثير واستمتعت بالأجواء.</p>
+              <div class="testi-person"><div class="avatar">ر</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote en">The first two days I was shy and afraid to make mistakes, but now I enjoy the classes without fear or tension.</p>
+              <div class="testi-person"><div class="avatar">ل</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+            <div class="testi-card">
+              <div class="stars">★★★★★</div>
+              <p class="testi-quote">الاستاذات لطيفات جدًا، وعطونا مساحة مريحة نتكلم فيها ونشارك.</p>
+              <div class="testi-person"><div class="avatar">ه</div><span>إحدى مشتركات نادي Hala Hi</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-dots" id="testiDots"></div>
+      </div>
+    </div>
+
+    <div class="cta-panel reveal" style="margin-top:60px;">
+      <div class="info">
+        <div><span class="label">💰 الاشتراك</span><span class="value">169 ريال / شهر</span></div>
+        <div>
+          <span class="badge-gift">🎁 سعر خاص للمسجلين الأوائل</span>
+          <span class="badge-urgent">🎯 المقاعد محدودة</span>
+        </div>
+      </div>
+      <a href="https://salla.sa/hala.hi/nadi-hala-hi-english-club/p295416976" target="_blank" rel="noopener" class="btn btn-primary">انضم للنادي</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ READING COURSE ============ -->
+<section class="detail-section alt" id="reading">
+  <div class="container">
+    <div class="detail-head reveal">
+      <h2 class="section-title">📖 دورة القراءة باللغة الإنجليزية</h2>
+      <p class="motto">اقرأ الإنجليزية بثقة.</p>
+      <p class="section-sub">
+        هذه الدورة مخصصة لكل شخص يتردد عندما يرى كلمة جديدة. لن تعتمد على الحفظ، بل ستتعلم أنماط القراءة والأصوات في اللغة الإنجليزية.
+      </p>
+    </div>
+
+    <div class="two-col">
+      <div class="reveal">
+        <h3 style="margin-bottom:20px;font-size:1.3rem;">ستتعلم</h3>
+        <ul class="check-list">
+          <li><span class="ico">🔤</span> الأصوات المركبة</li>
+          <li><span class="ico">📚</span> تبسيط قواعد القراءة</li>
+          <li><span class="ico">🎯</span> التخلص من رهبة القراءة</li>
+          <li><span class="ico">📖</span> قراءة الكلمات الجديدة بثقة</li>
+          <li><span class="ico">📝</span> تدريبات مكثفة على أشهر أنماط القراءة</li>
+          <li><span class="ico">🎙️</span> ممارسة مستمرة</li>
+        </ul>
+      </div>
+      <div class="reveal reveal-delay-1">
+        <div class="outcome-box" style="margin-top:0;">
+          <h3>تفاصيل الدورة</h3>
+          <div class="outcome-grid">
+            <div class="outcome-item"><span class="mark">⏳</span> مدة الدورة: أسبوعان</div>
+            <div class="outcome-item"><span class="mark">💰</span> الرسوم: 149 ريال</div>
+            <div class="outcome-item"><span class="mark">🎁</span> أول عشرة مسجلين يحصلون على سعر خاص</div>
+          </div>
+          <div style="text-align:center;margin-top:32px;">
+            <a href="https://salla.sa/hala.hi/دورة-القراءة-باللغة-الإنجليزية/p1154457818" target="_blank" rel="noopener" class="btn btn-yellow">ابدأ دورة القراءة</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMPARISON ============ -->
+<section id="compare">
+  <div class="float-deco" style="top:12%;right:8%;">⭐</div>
+  <div class="float-deco" style="bottom:14%;left:8%;animation-duration:9s;">🎯</div>
+  <div class="container">
+    <div class="center reveal" style="max-width:600px;">
+      <div class="eyebrow">🎯 مش متأكد وين تبدأ؟</div>
+      <h2 class="section-title">إذا كان هدفك...</h2>
+    </div>
+    <div class="compare-grid">
+      <div class="compare-card reveal">
+        <div class="goal">بناء أساس قوي في اللغة</div>
+        <div class="arrow-down">↓</div>
+        <div class="program-name">📘 دورة التطوير</div>
+      </div>
+      <div class="compare-card reveal reveal-delay-1">
+        <div class="goal">ممارسة اللغة والتحدث بثقة</div>
+        <div class="arrow-down">↓</div>
+        <div class="program-name">🗣️ نادي المحادثة</div>
+      </div>
+      <div class="compare-card reveal reveal-delay-2">
+        <div class="goal">تعلم القراءة الصحيحة</div>
+        <div class="arrow-down">↓</div>
+        <div class="program-name">📖 دورة القراءة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER CTA ============ -->
+<section class="final-cta">
+  <div class="container">
+    <h2 class="reveal">رحلتك مع الإنجليزية تبدأ بخطوة واحدة.</h2>
+    <p class="reveal reveal-delay-1">اختر البرنامج المناسب لك وابدأ اليوم.</p>
+    <div class="urgency-lines reveal reveal-delay-2">
+      <span>⏰ التسجيل في دورة التطوير يغلق بعد 24 ساعة</span>
+      <span>🎁 يوجد سعر خاص للمسجلين الأوائل في جميع البرامج</span>
+      <span>🎯 المقاعد محدودة</span>
+    </div>
+    <div class="final-actions reveal reveal-delay-3">
+      <a href="https://salla.sa/hala.hi/تطوير-اللغة-الإنجليزية-l1/p1908387895" target="_blank" rel="noopener" class="btn btn-yellow">سجل في دورة التطوير</a>
+      <a href="https://salla.sa/hala.hi/nadi-hala-hi-english-club/p295416976" target="_blank" rel="noopener" class="btn btn-outline">انضم إلى نادي المحادثة</a>
+      <a href="https://salla.sa/hala.hi/دورة-القراءة-باللغة-الإنجليزية/p1154457818" target="_blank" rel="noopener" class="btn btn-outline">ابدأ دورة القراءة</a>
+    </div>
+    <div class="reveal reveal-delay-3" style="margin-top:34px;">
+      <a href="https://wa.me/966550201680" target="_blank" rel="noopener" style="color:#fff;text-decoration:none;font-weight:700;display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);padding:12px 24px;border-radius:100px;backdrop-filter:blur(8px);">
+        📱 عندك سؤال؟ تواصلي معنا واتساب: 0550201680
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="credit">Hala Hi © 2026 — رحلتك في تعلم الإنجليزية &nbsp;|&nbsp; واتساب: 0550201680</footer>
+
+<script>
+  // Scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, {threshold:0.15});
+  revealEls.forEach(el=>io.observe(el));
+
+  // Testimonial carousel
+  const track = document.getElementById('testiTrack');
+  const dotsWrap = document.getElementById('testiDots');
+  const cards = track.children.length;
+  let index = 0;
+  let autoTimer;
+
+  for(let i=0;i<cards;i++){
+    const dot = document.createElement('button');
+    dot.className = 'dot' + (i===0 ? ' active' : '');
+    dot.addEventListener('click', ()=> goTo(i));
+    dotsWrap.appendChild(dot);
+  }
+  const dots = dotsWrap.querySelectorAll('.dot');
+
+  function goTo(i){
+    index = i;
+    track.style.transform = `translateX(${-index * 100}%)`;
+    dots.forEach((d,di)=> d.classList.toggle('active', di===index));
+  }
+
+  function next(){ goTo((index+1) % cards); }
+
+  function startAuto(){ autoTimer = setInterval(next, 5000); }
+  function stopAuto(){ clearInterval(autoTimer); }
+
+  startAuto();
+  track.parentElement.addEventListener('mouseenter', stopAuto);
+  track.parentElement.addEventListener('mouseleave', startAuto);
+</script>
+</body>
+</html>
