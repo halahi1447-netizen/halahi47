@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hala Hi – Lessons</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--deep:#2E2451;--purple:#4B3F72;--mid:#8B82B9;--gold:#F4B740;--gold-light:#FFD36A;--bg:#F5F6FA;--muted:#6E6E7E;--card-bg:#FFFFFF;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--deep);min-height:100vh;overflow-x:hidden}
+
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:.6rem 3rem;background:rgba(255,255,255,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(75,63,114,.09)}
+    .nav-logo{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--deep);text-decoration:none}
+    .nav-right{display:flex;align-items:center;gap:1.2rem}
+    .nav-back{font-size:.85rem;color:var(--purple);text-decoration:none;font-weight:500;transition:color .2s}
+    .nav-back:hover{color:var(--deep)}
+
+    .page{padding:5rem 1.5rem 3rem;max-width:980px;margin:0 auto}
+    @media(min-width:768px){.page{padding:6rem 2rem 4rem}}
+
+    .page-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.4rem);font-weight:900;color:var(--deep);margin-bottom:.3rem}
+    .page-sub{color:var(--muted);font-size:.95rem;margin-bottom:2rem}
+
+    /* TOP CARDS */
+    .top-cards{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;margin-bottom:2.5rem}
+    @media(max-width:700px){.top-cards{grid-template-columns:1fr}}
+
+    .zoom-card{background:linear-gradient(135deg,var(--deep),var(--purple));border-radius:24px;padding:1.8rem 2rem;color:white;position:relative;overflow:hidden}
+    .zoom-card .blob{position:absolute;width:180px;height:180px;background:var(--gold);opacity:.12;border-radius:50%;top:-60px;right:-60px;filter:blur(30px)}
+    .zoom-card h2{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:.3rem;position:relative}
+    .zoom-card p{font-size:.85rem;color:rgba(255,255,255,.65);margin-bottom:1.2rem;position:relative}
+    .btn-join{position:relative;display:inline-flex;align-items:center;gap:.5rem;background:var(--gold);color:var(--deep);font-weight:700;font-size:.9rem;padding:.7rem 1.6rem;border-radius:50px;text-decoration:none;box-shadow:0 6px 20px rgba(244,183,64,.35);transition:transform .2s}
+    .btn-join:hover{transform:translateY(-2px)}
+    .btn-join.disabled{background:rgba(255,255,255,.12);color:rgba(255,255,255,.5);box-shadow:none;pointer-events:none}
+
+    .fc-card{background:white;border-radius:24px;padding:1.8rem 2rem;border:1.5px solid rgba(75,63,114,.1);display:flex;flex-direction:column;justify-content:center}
+    .fc-card h2{font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--deep);margin-bottom:.3rem}
+    .fc-card p{font-size:.85rem;color:var(--muted);margin-bottom:1.2rem}
+    .btn-fc{display:inline-flex;align-items:center;gap:.5rem;background:rgba(75,63,114,.08);color:var(--purple);font-weight:700;font-size:.9rem;padding:.7rem 1.6rem;border-radius:50px;text-decoration:none;transition:background .2s;width:fit-content}
+    .btn-fc:hover{background:rgba(75,63,114,.14)}
+
+    /* WEEK GROUPS */
+    .week-block{margin-bottom:2.4rem}
+    .week-label{display:flex;align-items:center;gap:.8rem;margin-bottom:1rem}
+    .week-label span{font-family:'Playfair Display',serif;font-weight:700;font-size:1.1rem;color:var(--deep)}
+    .week-line{flex:1;height:1px;background:rgba(75,63,114,.12)}
+
+    .lesson-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+    @media(max-width:700px){.lesson-grid{grid-template-columns:1fr}}
+
+    .lesson-card{background:white;border-radius:20px;padding:1.4rem 1.5rem;border:1.5px solid rgba(75,63,114,.09);box-shadow:0 8px 24px rgba(46,36,81,.05);display:flex;flex-direction:column;gap:.7rem;transition:transform .2s,box-shadow .2s}
+    .lesson-card:hover{transform:translateY(-3px);box-shadow:0 14px 32px rgba(46,36,81,.1)}
+    .lesson-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+    .lesson-day{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+    .lesson-type{font-size:.68rem;font-weight:700;padding:.2rem .7rem;border-radius:50px}
+    .type-grammar{background:rgba(75,63,114,.1);color:var(--purple)}
+    .type-story{background:rgba(244,183,64,.15);color:#b7770d}
+    .type-conversation{background:rgba(46,204,113,.12);color:#1a8a4a}
+    .lesson-num{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--mid);font-weight:600}
+    .lesson-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--deep);line-height:1.3}
+    .lesson-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.2rem}
+    .btn-start{display:inline-flex;align-items:center;gap:.4rem;background:var(--deep);color:white;font-weight:600;font-size:.8rem;padding:.55rem 1.1rem;border-radius:50px;text-decoration:none;transition:background .2s}
+    .btn-start:hover{background:var(--purple)}
+    .btn-rec{display:inline-flex;align-items:center;gap:.4rem;background:rgba(75,63,114,.08);color:var(--purple);font-weight:600;font-size:.8rem;padding:.55rem 1.1rem;border-radius:50px;text-decoration:none;transition:background .2s}
+    .btn-rec:hover{background:rgba(75,63,114,.14)}
+    .btn-rec.disabled{background:var(--bg);color:var(--mid);pointer-events:none}
+
+    .loading-wrap{text-align:center;padding:5rem 2rem;color:var(--muted)}
+    .spinner{width:40px;height:40px;border:3px solid rgba(75,63,114,.15);border-top-color:var(--purple);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 1rem}
+    @keyframes spin{to{transform:rotate(360deg)}}
+  </style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="index.html">Hala Hi</a>
+  <div class="nav-right">
+    <button class="nav-back" style="background:none;border:none;cursor:pointer;font-family:inherit" onclick="courseLogout()">Logout</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div id="loading" class="loading-wrap">
+    <div class="spinner"></div>
+    <p>Loading your lessons...</p>
+  </div>
+
+  <div id="content" style="display:none">
+
+    <h1 class="page-title">English Development Course — 16 Lessons</h1>
+    <p class="page-sub">Four weeks, four lessons a week — grammar, stories, and conversation practice, all in order.</p>
+
+    <div class="top-cards">
+      <div class="zoom-card">
+        <div class="blob"></div>
+        <h2>🎥 Live Class</h2>
+        <p>Join the current live session on Zoom.</p>
+        <a id="zoom-btn" class="btn-join disabled" href="#" target="_blank" rel="noopener">Join Class →</a>
+      </div>
+      <div class="fc-card">
+        <h2>🃏 Flash Cards</h2>
+        <p>Review vocabulary anytime with spaced repetition.</p>
+        <a class="btn-fc" href="flashcards2.html">Open Flash Cards →</a>
+      </div>
+    </div>
+
+    <div id="weeks-container"></div>
+
+  </div>
+</div>
+
+<!-- FIREBASE -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyASlKXegbN0k37A89HQP96pNVJPNoF6qbk",
+    authDomain: "halahi47-52b2d.firebaseapp.com",
+    projectId: "halahi47-52b2d",
+    storageBucket: "halahi47-52b2d.firebasestorage.app",
+    messagingSenderId: "607706363591",
+    appId: "1:607706363591:web:e6c9efd674ca89a22df0e2"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const LESSONS = [
+    { n:1,  week:1, day:'Saturday', type:'grammar',      title:'Build Your First Sentences',   file:'Lesson1_-_build_your_first_sentence.html' },
+    { n:2,  week:1, day:'Sunday',   type:'story',        title:'The Lost Ring',                file:'Lesson_2-_The_lost_ring.html' },
+    { n:3,  week:1, day:'Monday',   type:'grammar',      title:'Present Continuous',           file:'lesson3-present-continuous.html' },
+    { n:4,  week:1, day:'Tuesday',  type:'conversation', title:"Let's Talk",                   file:"Hala_Hi_-_Lesson_4_-_Let_s_Talk.html" },
+    { n:5,  week:2, day:'Saturday', type:'grammar',      title:'People Around Us',             file:'Lesson_5_-people_around_us.html' },
+    { n:6,  week:2, day:'Sunday',   type:'story',        title:'The Hidden Room',              file:'Lesson6_The_Hidden_Room.html' },
+    { n:7,  week:2, day:'Monday',   type:'grammar',      title:'Talking About the Past',        file:'Lesson7_Talking_About_the_Past.html' },
+    { n:8,  week:2, day:'Tuesday',  type:'conversation', title:'Conversation Club Session',    file:'Conversation_Club_Session.html' },
+    { n:9,  week:3, day:'Saturday', type:'grammar',      title:'Choosing the Right Article',    file:'Lesson9_Choosing_the_Right_Article.html' },
+    { n:10, week:3, day:'Sunday',   type:'story',        title:'The Fearless Man',              file:'The_Fearless_Man_Lesson9.html' },
+    { n:11, week:3, day:'Monday',   type:'grammar',      title:'Asking Great Questions',        file:'Lesson11_Asking_Great_Questions.html' },
+    { n:12, week:3, day:'Tuesday',  type:'conversation', title:'Speaking Time!',                file:'Lesson12_Speaking_Time.html' },
+    { n:13, week:4, day:'Saturday', type:'grammar',      title:'Time & Everyday Prepositions',  file:'Lesson_13_-_Time_and_Everyday_Prepositions.html' },
+    { n:14, week:4, day:'Sunday',   type:'story',        title:"Sally's Lesson",                file:"Lesson_14_-_Sally_s_Lesson.html" },
+    { n:15, week:4, day:'Monday',   type:'grammar',      title:"Can/Can't in Everyday Life",    file:"Lesson_15_-_Can_and_Can_t_in_Everyday_Life.html" },
+    { n:16, week:4, day:'Tuesday',  type:'conversation', title:'Final Speaking Challenge',      file:'Lesson_16_-_Final_Speaking_Challenge.html' }
+  ];
+
+  const TYPE_LABEL = { grammar:'Grammar', story:'Story', conversation:'Conversation' };
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) { window.location.href = 'course-login.html'; return; }
+
+    let ok = false;
+    try {
+      const snap = await getDoc(doc(db, 'courseMembers', user.email.toLowerCase()));
+      ok = snap.exists() && (snap.data().status === 'active' || snap.data().status === 'approved');
+    } catch(e) { console.error(e); }
+
+    if (!ok) { await signOut(auth); window.location.href = 'course-login.html'; return; }
+
+    await Promise.all([loadZoom(), loadRecordings()]);
+    renderWeeks();
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('content').style.display = 'block';
+  });
+
+  window.courseLogout = function() { signOut(auth).then(() => window.location.href = 'course-login.html'); };
+
+  async function loadZoom() {
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'zoom'));
+      const link = snap.exists() ? snap.data().link : '';
+      const btn = document.getElementById('zoom-btn');
+      if (link) { btn.href = link; btn.classList.remove('disabled'); }
+      else { btn.textContent = 'No link yet'; }
+    } catch(e) { console.error('loadZoom', e); }
+  }
+
+  let recordings = {};
+  async function loadRecordings() {
+    try {
+      const snap = await getDoc(doc(db, 'settings', 'lessonRecordings'));
+      recordings = snap.exists() ? snap.data() : {};
+    } catch(e) { console.error('loadRecordings', e); recordings = {}; }
+  }
+
+  function renderWeeks() {
+    const container = document.getElementById('weeks-container');
+    const weeks = [1,2,3,4];
+    container.innerHTML = weeks.map(w => {
+      const items = LESSONS.filter(l => l.week === w);
+      const cards = items.map(l => {
+        const rec = recordings[l.n];
+        return `
+        <div class="lesson-card">
+          <div class="lesson-top">
+            <span class="lesson-day">${l.day}</span>
+            <span class="lesson-type type-${l.type}">${TYPE_LABEL[l.type]}</span>
+          </div>
+          <div class="lesson-num">LESSON ${l.n}</div>
+          <div class="lesson-title">${l.title}</div>
+          <div class="lesson-actions">
+            <a class="btn-start" href="${encodeURI(l.file)}" target="_blank" rel="noopener">▶ Start Lesson</a>
+            ${rec
+              ? `<a class="btn-rec" href="${rec}" target="_blank" rel="noopener">🎥 Watch Recording</a>`
+              : `<span class="btn-rec disabled">🎥 Recording coming soon</span>`}
+          </div>
+        </div>`;
+      }).join('');
+      return `
+        <div class="week-block">
+          <div class="week-label"><span>Week ${w}</span><div class="week-line"></div></div>
+          <div class="lesson-grid">${cards}</div>
+        </div>`;
+    }).join('');
+  }
+</script>
+
+</body>
+</html>
